@@ -5,12 +5,14 @@ import {
 } from 'react-router-dom';
 import AuthProvider from './Contexts/AuthContext';
 
+import Produtos from './Pages/Produtos';
+
 function Routes() {
   return (
     <AuthProvider>
       <Router>
           <Switch>
-              <Route path="" exact component="" />
+              <Route path="/produtos" exact component={Produtos} />
           </Switch>
       </Router>
     </AuthProvider>
