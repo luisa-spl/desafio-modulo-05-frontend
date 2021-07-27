@@ -6,6 +6,7 @@ import {
 import AuthProvider from './Contexts/AuthContext';
 
 import Login from "./Pages/Login";
+import Cadastro from "./Pages/Cadastro";
 
 function Routes() {
   return (
@@ -13,6 +14,7 @@ function Routes() {
       <Router>
         <Switch>
           <Route path="/login" exact component={Login} />
+          <Route path="/cadastro" exact component={Cadastro} />
         </Switch>
       </Router>
     </AuthProvider>
