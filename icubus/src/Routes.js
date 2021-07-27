@@ -5,13 +5,15 @@ import {
 } from 'react-router-dom';
 import AuthProvider from './Contexts/AuthContext';
 
+import Login from "./Pages/Login";
+
 function Routes() {
   return (
     <AuthProvider>
       <Router>
-          <Switch>
-              <Route path="" exact component="" />
-          </Switch>
+        <Switch>
+          <Route path="/login" exact component={Login} />
+        </Switch>
       </Router>
     </AuthProvider>
   )
