@@ -21,7 +21,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 
 
-function CadastroPrimeiroPasso() {
+function CadastroPrimeiroPasso({ onSubmit }) {
     const classes = useStyles();
 
     const [values, setValues] = useState({
@@ -48,11 +48,12 @@ function CadastroPrimeiroPasso() {
         event.preventDefault();
     };
 
+
+
     return (
         <div className={classes.root}>
             <div className={classes.cardCadastro}>
-                <form action="" className={classes.formsCadastro}>
-                    <Typography className={classes.cadastroTitle}>Cadastro</Typography>
+                <form action="" className={classes.formsCadastro} >
                     <Typography className={classes.credentialsStyle}>Nome de usuário</Typography>
                     <OutlinedInput id="input-nome-usuario" type='text' value={""} onChange={""} />
 

@@ -4,6 +4,9 @@ import bgcadastro from '../../Assets/bg-cadastro.png'
 
 const useStyles = makeStyles({
     root: {
+        backgroundImage: `url(${bgcadastro})`,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
         height: "100vh",
         display: "flex",
         justifyContent: "flex-start",
