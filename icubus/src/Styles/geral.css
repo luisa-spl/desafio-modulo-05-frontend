@@ -1,3 +1,8 @@
+@import './alignments.css';
+@import './fonts.css';
+@import './badges.css';
+
 body {
     margin: 0;
+    height: 100vh;
 }
