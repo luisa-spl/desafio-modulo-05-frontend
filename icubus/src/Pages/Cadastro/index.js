@@ -23,13 +23,15 @@ function Cadastro() {
 
 	return (
 		<div className={classes.containerCadastro}>
-			<div className={classes.cardCadastro}>
-				<Typography className={classes.cadastroTitle}>Cadastro</Typography>
-				<Stepper className={classes.stepper} activeStep={etapaAtual}>
-					<Step> <StepLabel>   </StepLabel> </Step>
-					<Step> <StepLabel>  </StepLabel> </Step>
-					<Step> <StepLabel>  </StepLabel> </Step>
-				</Stepper>
+			<div className={classes.formsCadastro}>
+				<div className={classes.cardStepper}>
+					<Typography className={classes.cadastroTitle}>Cadastro</Typography>
+					<Stepper className={classes.stepper} activeStep={etapaAtual}>
+						<Step> <StepLabel>   </StepLabel> </Step>
+						<Step> <StepLabel>  </StepLabel> </Step>
+						<Step> <StepLabel>  </StepLabel> </Step>
+					</Stepper>
+				</div>
 				{formularios[etapaAtual]}
 			</div>
 		</div>

@@ -1,19 +1,18 @@
 import { useState } from 'react'
-
 import useStyles from './styles';
 import {
-    Card,
-    CardContent,
-    TextField,
-    Button,
-    Typography,
-    Backdrop,
-    CircularProgress,
-    Link,
-    InputLabel,
-    OutlinedInput,
-    InputAdornment,
-    IconButton,
+	Card,
+	CardContent,
+	TextField,
+	Button,
+	Typography,
+	Backdrop,
+	CircularProgress,
+	Link,
+	InputLabel,
+	OutlinedInput,
+	InputAdornment,
+	IconButton,
 } from '@material-ui/core';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
@@ -22,99 +21,103 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 
 function CadastroPrimeiroPasso({ onSubmit }) {
-    const classes = useStyles();
+	const classes = useStyles();
 
-    const [values, setValues] = useState({
-        email: '',
-        password: '',
-        showPassword: false,
-        showRepeatPassword: false,
-    });
+	const [values, setValues] = useState({
+		nome: '',
+		email: '',
+		password: '',
+		showPassword: false,
+		showRepeatPassword: false,
+	});
 
-    const handleChange = (prop) => (event) => {
-        setValues({ ...values, [prop]: event.target.value });
-        console.log(values)
-    };
+	const handleChange = (event) => {
+		setValues({ ...values, [event.target.name]: event.target.value });
+	};
 
-    const handleClickShowPassword = () => {
-        setValues({ ...values, showPassword: !values.showPassword });
-    };
+	const handleClickShowPassword = () => {
+		setValues({ ...values, showPassword: !values.showPassword });
+	};
 
-    const handleClickShowRepeatPassword = () => {
-        setValues({ ...values, showRepeatPassword: !values.showRepeatPassword });
-    };
+	const handleClickShowRepeatPassword = () => {
+		setValues({ ...values, showRepeatPassword: !values.showRepeatPassword });
+	};
 
-    const handleMouseDownPassword = (event) => {
-        event.preventDefault();
-    };
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		onSubmit()
+		console.log(values)
+	}
 
 
+	return (
+		<div className={classes.root}>
+			<div className={classes.cardCadastro}>
+				<form action="" className={classes.formsCadastro} onSubmit={handleSubmit} >
+					<Typography className={classes.credentialsStyle}>Nome de usuário</Typography>
+					<TextField id="input-nome" type='text' name="nome" value={values.nome} onChange={handleChange} variant="outlined" />
 
-    return (
-        <div className={classes.root}>
-            <div className={classes.cardCadastro}>
-                <form action="" className={classes.formsCadastro} >
-                    <Typography className={classes.credentialsStyle}>Nome de usuário</Typography>
-                    <OutlinedInput id="input-nome-usuario" type='text' value={""} onChange={""} />
+					<Typography className={classes.credentialsStyle}>Email</Typography>
+					<TextField id="input-email" type='email' name="email" value={values.email} onChange={handleChange} variant="outlined" />
 
-                    <Typography className={classes.credentialsStyle}>Email</Typography>
-                    <OutlinedInput id="input-email" type='email' value={""} onChange={""} />
+					<Typography className={classes.credentialsStyle}>Senha</Typography>
+					<TextField
+						id="input-password"
+						type={values.showPassword ? 'text' : 'password'}
+						value={values.password}
+						name="password"
+						onChange={handleChange}
+						variant="outlined"
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowPassword}
+									edge="end"
+								>
+									{values.showPassword ? <Visibility /> : <VisibilityOff />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
 
-                    <Typography className={classes.credentialsStyle}>Senha</Typography>
-                    <OutlinedInput
-                        id="input-password"
-                        type={values.showPassword ? 'text' : 'password'}
-                        value={values.password}
-                        onChange={handleChange('password')}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {values.showPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
+					<Typography className={classes.credentialsStyle}>Repita sua senha</Typography>
+					<TextField
+						id="input-password"
+						type={values.showRepeatPassword ? 'text' : 'password'}
+						value={values.repeatPasswordpassword}
+						onChange={handleChange}
+						variant="outlined"
+						name="repeatPassword"
+						endAdornment={
+							<InputAdornment position="end">
+								<IconButton
+									aria-label="toggle password visibility"
+									onClick={handleClickShowRepeatPassword}
 
-                    <Typography className={classes.credentialsStyle}>Repita sua senha</Typography>
-                    <OutlinedInput
-                        id="input-password"
-                        type={values.showRepeatPassword ? 'text' : 'password'}
-                        value={values.repeatPasswordpassword}
-                        onChange={handleChange('repeatPassword')}
-                        endAdornment={
-                            <InputAdornment position="end">
-                                <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowRepeatPassword}
-                                    onMouseDown={handleMouseDownPassword}
-                                    edge="end"
-                                >
-                                    {values.showRepeatPassword ? <Visibility /> : <VisibilityOff />}
-                                </IconButton>
-                            </InputAdornment>
-                        }
-                    />
-                    <div className={classes.containerButtonCadastro}>
-                        <Button className={classes.buttonCadastro}>
-                            Anterior
-                        </Button>
-                        <Button className={classes.buttonCadastro} variant="contained" >
-                            Próximo
-                        </Button>
-                    </div>
-                </form>
-                <div className={classes.linkLogin}>
-                    <Typography>Já tem uma conta? <Link href="/cadastro" >Login </Link> </Typography>
+									edge="end"
+								>
+									{values.showRepeatPassword ? <Visibility /> : <VisibilityOff />}
+								</IconButton>
+							</InputAdornment>
+						}
+					/>
+					<div className={classes.containerButtonCadastro}>
+						<Button className={classes.buttonCadastro}>
+							Anterior
+						</Button>
+						<Button className={classes.buttonCadastro} variant="contained" type="submit">
+							Próximo
+						</Button>
+					</div>
+				</form>
+				<div className={classes.linkLogin}>
+					<Typography>Já tem uma conta? <Link href="/cadastro" >Login </Link> </Typography>
 
-                </div>
-            </div>
-        </div>
-    )
+				</div>
+			</div>
+		</div>
+	)
 }
 
 export default CadastroPrimeiroPasso

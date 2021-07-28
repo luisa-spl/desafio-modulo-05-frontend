@@ -13,9 +13,8 @@ import {
 
 
 
-function CadastroSegundoPasso() {
+function CadastroSegundoPasso({ onSubmit }) {
 	const classes = useStyles();
-	const [currency, setCurrency] = useState('');
 	const [values, setValues] = useState({
 		nomeRestaurante: '',
 		categoriaRestaurante: '',
@@ -41,15 +40,20 @@ function CadastroSegundoPasso() {
 		},
 	];
 
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
+	const handleChange = (event) => {
+		setValues({ ...values, [event.target.name]: event.target.value });
 		console.log(values)
 	};
+
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		onSubmit()
+	}
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form action="" className={classes.formsCadastro} >
+				<form action="" className={classes.formsCadastro} onSubmit={handleSubmit}>
 					<Typography className={classes.credentialsStyle}>Nome do restaurante</Typography>
 					<TextField
 						id="nome-restaurante"
@@ -64,8 +68,8 @@ function CadastroSegundoPasso() {
 					<Typography className={classes.credentialsStyle}>Categoria do restaurante</Typography>
 					<TextField
 						id="categoria-restaurante"
-						name="nomeRestaurante"
-						value={currency}
+						name="categoriaRestaurante"
+						value={values.categoriaRestaurante}
 						select
 						variant="outlined"
 						onChange={handleChange}
@@ -93,7 +97,7 @@ function CadastroSegundoPasso() {
 						<Button className={classes.buttonCadastro}>
 							Anterior
 						</Button>
-						<Button className={classes.buttonCadastro} variant="contained" >
+						<Button className={classes.buttonCadastro} variant="contained" type="submit">
 							Próximo
 						</Button>
 					</div>

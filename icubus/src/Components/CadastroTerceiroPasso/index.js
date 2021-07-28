@@ -1,61 +1,54 @@
 import { useState } from 'react'
-
 import useStyles from './styles';
+import { useHistory } from "react-router-dom";
 import {
-	Card,
-	CardContent,
 	TextField,
 	Button,
 	Typography,
-	Backdrop,
-	CircularProgress,
 	Link,
-	InputLabel,
 	OutlinedInput,
 	InputAdornment,
-	IconButton,
+
 } from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
-
 
 
 function CadastroSegundoPasso() {
 	const classes = useStyles();
+	const history = useHistory();
 
 	const [values, setValues] = useState({
-		email: '',
-		password: '',
-		showPassword: false,
-		showRepeatPassword: false,
-		amount: '',
+		taxaEntrega: '',
+		tempoEntregaEmMinutos: '',
+		valorMinimoPedido: '',
 	});
 
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-		console.log(values)
+	const handleChange = (event) => {
+		setValues({ ...values, [event.target.name]: event.target.value });
 	};
 
+
+	const handleClick = () => {
+		history.push("/");
+	}
 
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-
-				<form action="" className={classes.formsCadastro} >
+				<form className={classes.formsCadastro} >
 
 					<Typography className={classes.credentialsStyle}>Taxa de entrega</Typography>
-					<OutlinedInput id="input-taxa-entrega" type='text' value={""} onChange={""} />
+					<TextField id="input-taxa-entrega" type='text' name="taxaEntrega" value={values.taxaEntrega} onChange={handleChange} variant="outlined" />
 
 					<Typography className={classes.credentialsStyle}>Tempo estimado de entrega</Typography>
-					<OutlinedInput id="input-tempo-entrega" type='text' value={""} onChange={""} />
+					<TextField id="input-tempo-entrega" type='text' name="tempoEntregaEmMinutos" value={values.tempoEntregaEmMinutos} onChange={handleChange} variant="outlined" />
 
 					<Typography className={classes.credentialsStyle}>Valor mínimo do pedido</Typography>
 					<OutlinedInput
 						id="input-valor-minimo"
-						value={values.amount}
-						onChange={handleChange('amount')}
+						value={values.valorMinimoPedido}
+						onChange={handleChange}
+						name="valorMinimoPedido"
 						startAdornment={<InputAdornment position="start">$</InputAdornment>}
 					/>
 
@@ -64,7 +57,7 @@ function CadastroSegundoPasso() {
 						<Button className={classes.buttonCadastro}>
 							Anterior
 						</Button>
-						<Button className={classes.buttonCadastro} variant="contained" >
+						<Button className={classes.buttonCadastro} variant="contained" type="submit" onClick={handleClick} >
 							Próximo
 						</Button>
 					</div>

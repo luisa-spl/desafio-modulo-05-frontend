@@ -6,32 +6,33 @@ const useStyles = makeStyles({
     cadastroTitle: {
         color: "#D13201",
         fontSize: 32,
-        marginTop: 20
     },
     containerCadastro: {
         backgroundImage: `url(${bgcadastro})`,
         backgroundSize: "cover",
+        backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         justifyContent: "flex-start",
         alignItems: "center",
     },
-    cardCadastro: {
+    formsCadastro: {
         minHeight: "100vh",
-        width: "40%",
+        minWidth: 600,
         backgroundColor: "white",
         borderRadius: "0px 0px 88px 0px",
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
-        alignItems: "flex-start",
+        gap: 10
     },
-    stepper: {
-        padding: 15,
-        gap: 8,
-        marginTop: 20
+    cardStepper: {
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 50,
+        gap: 40
     }
 })
-
-
 export default useStyles;
