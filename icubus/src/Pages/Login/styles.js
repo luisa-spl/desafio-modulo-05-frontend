@@ -3,7 +3,7 @@ import bglogin from '../../Assets/bg-login.png'
 
 
 const useStyles = makeStyles({
-  root: {
+  container: {
     backgroundImage: `url(${bglogin})`,
     backgroundSize: "cover",
     backgroundPosition: "center",
@@ -12,6 +12,8 @@ const useStyles = makeStyles({
     justifyContent: "center",
     alignItems: "center",
   },
+
+
   cardLogin: {
     minWidth: "25%",
     transform: "translateX(-40%)",
@@ -25,23 +27,10 @@ const useStyles = makeStyles({
     width: 408,
     marginBottom: 48
   },
-  loginTitle: {
-    color: "#D13201",
-    fontSize: 32,
-    marginBottom: 88,
-  },
-  buttonLogin: {
-    backgroundColor: "#D13201",
-    color: "white",
-    borderRadius: "20px",
-    width: "126px",
-    margin: "0 auto",
-  },
   linkcadastrese: {
     marginTop: 48,
     textAlign: "center"
   },
-
 });
 
 export default useStyles;

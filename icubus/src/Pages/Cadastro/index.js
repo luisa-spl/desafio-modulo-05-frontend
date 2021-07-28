@@ -12,13 +12,17 @@ function Cadastro() {
 	const [etapaAtual, setEtapaAtual] = useState(0)
 
 	const formularios = [
-		<CadastroPrimeiroPasso onSubmit={nextPage} />,
+		<CadastroPrimeiroPasso onSubmit={nextPage} onClick={previousPage} />,
 		<CadastroSegundoPasso onSubmit={nextPage} />,
 		<CadastroTerceiroPasso onSubmit={nextPage} />,
 	]
 
 	function nextPage() {
 		setEtapaAtual(etapaAtual + 1)
+	}
+
+	function previousPage() {
+		setEtapaAtual(etapaAtual - 1)
 	}
 
 	return (

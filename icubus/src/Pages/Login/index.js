@@ -1,91 +1,82 @@
 import React from 'react';
 import useStyles from './styles';
-import { useState } from 'react';
+import './style.css'
+import { useState, useContext } from 'react';
+import InputSenha from '../../Components/InputSenha';
 import {
 	Card,
 	CardContent,
 	TextField,
-	Button,
 	Typography,
-	Backdrop,
-	CircularProgress,
-	Link,
-	InputLabel,
-	OutlinedInput,
-	InputAdornment,
-	IconButton,
 } from '@material-ui/core';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
-
+import Alert from '@material-ui/lab/Alert';
+import { useForm } from 'react-hook-form';
+import { Link, useHistory } from 'react-router-dom';
+import { AuthContext } from '../../Contexts/AuthContext';
 
 
 
 export default function Login() {
+	const { setToken } = useContext(AuthContext)
 	const classes = useStyles();
-	const [values, setValues] = useState({
-		email: '',
-		password: '',
-		showPassword: false,
-	});
+	const history = useHistory();
+	const [error, setError] = useState(false)
+	const { register, handleSubmit } = useForm()
 
-	const handleChange = (prop) => (event) => {
-		setValues({ ...values, [prop]: event.target.value });
-		console.log(values)
-	};
 
-	const handleClickShowPassword = () => {
-		setValues({ ...values, showPassword: !values.showPassword });
-	};
+	async function onSubmit(data) {
+		setError(false);
 
-	const handleMouseDownPassword = (event) => {
-		event.preventDefault();
-	};
+		const resposta = await fetch('http://localhost:3001/login', {
+			method: "POST",
+			body: JSON.stringify(data),
+			headers: {
+				'Content-type': 'application/json'
+			}
+		});
+
+		const dados = await resposta.json()
+
+		if (dados.error) {
+			setError(dados.error)
+			return;
+		}
+
+		setToken(dados.token)
+		history.push('/produtos')
+	}
 
 
 	return (
-		<div className={classes.root}>
+		<div className={classes.container}>
 			<Card className={classes.cardLogin}>
 				<CardContent>
-					<Typography className={classes.loginTitle}>Login</Typography>
-					<form className={classes.formsLogin}>
+					<h1 className='loginTitle'>Login</h1>
+					{Boolean(error) && (
+						<Alert severity="error">
+							{error}
+						</Alert>
+					)}
+					<form className={classes.formsLogin} onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off">
 						<div className={classes.formsLogin}>
 							<Typography className={classes.credentialsStyle}>E-mail</Typography>
-							<OutlinedInput
+							<TextField
 								id="input-email"
 								type='email'
-								value={values.email}
-								onChange={handleChange('email')}
+								variant="outlined"
+								{...register('email', { required: true })}
 							/>
 						</div>
 						<div className={classes.formsLogin}>
 							<Typography className={classes.credentialsStyle}>Senha</Typography>
-							<OutlinedInput
-								id="input-password"
-								type={values.showPassword ? 'text' : 'password'}
-								value={values.password}
-								onChange={handleChange('password')}
-								endAdornment={
-									<InputAdornment position="end">
-										<IconButton
-											aria-label="toggle password visibility"
-											onClick={handleClickShowPassword}
-											onMouseDown={handleMouseDownPassword}
-											edge="end"
-										>
-											{values.showPassword ? <Visibility /> : <VisibilityOff />}
-										</IconButton>
-									</InputAdornment>
-								}
-
-							/>
+							<InputSenha register={() => register('password', { required: true })} />
 						</div>
-						<Button className={classes.buttonLogin} variant="contained" >
+						<button className="buttonLogin" type="submit">
 							Entrar
-						</Button>
+						</button>
 					</form>
 					<div className={classes.linkcadastrese}>
-						<Typography>Ainda não tem uma conta? <Link href="/cadastro" >Cadastre-se </Link> </Typography>
+						<Typography>Ainda não tem uma conta <a href="/cadastro" >Cadastre-se </a> </Typography>
 
 					</div>
 				</CardContent>

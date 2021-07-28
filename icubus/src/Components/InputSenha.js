@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
+import OutlinedInput from '@material-ui/core/OutlinedInput';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -20,9 +20,8 @@ function InputSenha(props) {
 
   return (
     <FormControl>
-      <InputLabel htmlFor={props.label}>{props.label}</InputLabel>
-      <Input
-        id={props.label}
+      <OutlinedInput
+        id="passwordLogin"
         type={mostrarSenha ? 'text' : 'password'}
         {...props.register()}
         className={props.className}

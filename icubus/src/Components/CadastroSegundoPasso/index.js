@@ -42,7 +42,7 @@ function CadastroSegundoPasso({ onSubmit }) {
 
 	const handleChange = (event) => {
 		setValues({ ...values, [event.target.name]: event.target.value });
-		console.log(values)
+
 	};
 
 	const handleSubmit = (e) => {
@@ -53,7 +53,7 @@ function CadastroSegundoPasso({ onSubmit }) {
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form action="" className={classes.formsCadastro} onSubmit={handleSubmit}>
+				<form className={classes.formsCadastro} onSubmit={handleSubmit}>
 					<Typography className={classes.credentialsStyle}>Nome do restaurante</Typography>
 					<TextField
 						id="nome-restaurante"

@@ -20,7 +20,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 
 
-function CadastroPrimeiroPasso({ onSubmit }) {
+function CadastroPrimeiroPasso({ onSubmit, onClick }) {
 	const classes = useStyles();
 
 	const [values, setValues] = useState({
@@ -103,7 +103,7 @@ function CadastroPrimeiroPasso({ onSubmit }) {
 						}
 					/>
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro}>
+						<Button className={classes.buttonCadastro} disabled>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit">
