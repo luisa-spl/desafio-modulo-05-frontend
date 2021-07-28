@@ -44,6 +44,7 @@ export default makeStyles((theme) => ({
 
     dialogTitle: {
       color: '#D13201',
+      fontWeight: 'bold',
       fontFamily: font
     },
 
@@ -51,4 +52,3 @@ export default makeStyles((theme) => ({
       textColor:'#D13201', 
     }
   }));
-

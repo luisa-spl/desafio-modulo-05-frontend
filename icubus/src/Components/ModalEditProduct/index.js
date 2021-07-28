@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { 
+        Button,
         Dialog,
         DialogActions,
         DialogContent,
@@ -40,7 +41,7 @@ export default function ModalAddProduct({open, setOpen}) {
     return (
         <div className={classes.dialog}>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xl'>
-                <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Novo Produto</DialogTitle>
+                <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Editar Produto</DialogTitle>
                 <DialogContent className={classes.dialogContent}>
                         <form  noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                             <div className={classes.formDiv}>
@@ -105,14 +106,13 @@ export default function ModalAddProduct({open, setOpen}) {
                                 </div>
 
                                 <DialogActions>
-                                <button 
-                                    className='transparent-btn font-montserrat font-color-orange font-bold' 
-                                    onClick={handleClose} 
-                                >
+                                    <button className='transparent-btn font-montserrat font-color-orange font-bold'>
                                         Cancelar
-                                </button>
+                                    </button>
                                     
-                                <ActionButtonSubmit /> 
+                                    <button className='btn-orange-small font-montserrat font-color-white'>
+                                        Salvar alterações
+                                    </button> 
                                 </DialogActions>
                             </div>
                         </form>

@@ -18,3 +18,13 @@
 .items-flex-end {
     align-items: flex-end;
 }
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(2, 400px); 
+    column-gap: 40px;
+    row-gap: 2rem;
+    margin-bottom: 40px;
+    margin-left: 3rem;
+    width: 950px;
+}

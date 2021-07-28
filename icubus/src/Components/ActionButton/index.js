@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import ModalAddProduct from '../ModalAddProduct';
-import './style.css';
 
 
 function ActionButton(){

@@ -52,3 +52,14 @@
     text-align: center;
     line-height: 1.8rem;
 }
+
+.container-main {
+    gap: 2rem;
+    width: 60rem;
+    height: auto;
+    margin-top: 2rem;
+}
+
+.actBtn {
+    margin-left: auto;
+}
