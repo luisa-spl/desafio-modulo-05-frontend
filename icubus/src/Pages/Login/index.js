@@ -11,7 +11,7 @@ import {
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useForm } from 'react-hook-form';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthContext';
 
 
@@ -51,7 +51,7 @@ export default function Login() {
 		<div className={classes.container}>
 			<Card className={classes.cardLogin}>
 				<CardContent>
-					<h1 className='loginTitle'>Login</h1>
+					<h1 className='loginTitle font-baloo'>Login</h1>
 					{Boolean(error) && (
 						<Alert severity="error">
 							{error}
@@ -59,7 +59,7 @@ export default function Login() {
 					)}
 					<form className={classes.formsLogin} onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off">
 						<div className={classes.formsLogin}>
-							<Typography className={classes.credentialsStyle}>E-mail</Typography>
+							<Typography className='placeholderLogin font-montserrat'>E-mail</Typography>
 							<TextField
 								id="input-email"
 								type='email'
@@ -68,7 +68,7 @@ export default function Login() {
 							/>
 						</div>
 						<div className={classes.formsLogin}>
-							<Typography className={classes.credentialsStyle}>Senha</Typography>
+							<Typography className='placeholderLogin font-montserrat'>Senha</Typography>
 							<InputSenha register={() => register('password', { required: true })} />
 						</div>
 						<button className="buttonLogin" type="submit">
@@ -76,7 +76,7 @@ export default function Login() {
 						</button>
 					</form>
 					<div className={classes.linkcadastrese}>
-						<Typography>Ainda não tem uma conta <a href="/cadastro" >Cadastre-se </a> </Typography>
+						<Typography>Ainda não tem uma conta? <a href="/cadastro" >Cadastre-se </a> </Typography>
 
 					</div>
 				</CardContent>

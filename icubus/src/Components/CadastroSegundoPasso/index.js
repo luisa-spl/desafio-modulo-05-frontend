@@ -13,7 +13,7 @@ import {
 
 
 
-function CadastroSegundoPasso({ onSubmit }) {
+function CadastroSegundoPasso({ onSubmit, previousPage }) {
 	const classes = useStyles();
 	const [values, setValues] = useState({
 		nomeRestaurante: '',
@@ -94,7 +94,7 @@ function CadastroSegundoPasso({ onSubmit }) {
 					/>
 
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro}>
+						<Button className={classes.buttonCadastro} onClick={previousPage}>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit">

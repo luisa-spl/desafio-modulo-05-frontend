@@ -1,5 +1,5 @@
 import React from 'react'
-import useStyles from './styles';
+import { useStyles } from './styles';
 import CadastroPrimeiroPasso from '../../Components/CadastroPrimeiroPasso'
 import CadastroSegundoPasso from '../../Components/CadastroSegundoPasso'
 import CadastroTerceiroPasso from '../../Components/CadastroTerceiroPasso'
@@ -12,9 +12,9 @@ function Cadastro() {
 	const [etapaAtual, setEtapaAtual] = useState(0)
 
 	const formularios = [
-		<CadastroPrimeiroPasso onSubmit={nextPage} onClick={previousPage} />,
-		<CadastroSegundoPasso onSubmit={nextPage} />,
-		<CadastroTerceiroPasso onSubmit={nextPage} />,
+		<CadastroPrimeiroPasso onSubmit={nextPage} />,
+		<CadastroSegundoPasso onSubmit={nextPage} previousPage={previousPage} />,
+		<CadastroTerceiroPasso onSubmit={nextPage} previousPage={previousPage} />,
 	]
 
 	function nextPage() {
@@ -30,11 +30,13 @@ function Cadastro() {
 			<div className={classes.formsCadastro}>
 				<div className={classes.cardStepper}>
 					<Typography className={classes.cadastroTitle}>Cadastro</Typography>
-					<Stepper className={classes.stepper} activeStep={etapaAtual}>
-						<Step> <StepLabel>   </StepLabel> </Step>
-						<Step> <StepLabel>  </StepLabel> </Step>
-						<Step> <StepLabel>  </StepLabel> </Step>
-					</Stepper>
+					<div>
+						<Stepper className={classes.stepper} activeStep={etapaAtual} >
+							<Step> <StepLabel /> </Step>
+							<Step> <StepLabel /> </Step>
+							<Step> <StepLabel /> </Step>
+						</Stepper>
+					</div>
 				</div>
 				{formularios[etapaAtual]}
 			</div>

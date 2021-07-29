@@ -1,8 +1,9 @@
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, } from '@material-ui/core/styles';
 import bgcadastro from '../../Assets/bg-cadastro.png'
 
 
-const useStyles = makeStyles({
+
+export const useStyles = makeStyles({
     cadastroTitle: {
         color: "#D13201",
         fontSize: 32,
@@ -33,6 +34,5 @@ const useStyles = makeStyles({
         alignItems: "center",
         marginTop: 50,
         gap: 40
-    }
+    },
 })
-export default useStyles;

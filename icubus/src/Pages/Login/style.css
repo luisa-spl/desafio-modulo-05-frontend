@@ -4,6 +4,7 @@
     border-radius: 20px;
     width: 126px;
     font-size: 14px;
+    font-weight: 600;
     height: 40px;
     margin: 0 auto;
     cursor: pointer;
@@ -14,5 +15,11 @@
   .loginTitle {
     color: #D13201;
     font-size: 32;
+    font-weight: 600;
     margin-bottom: 88;
+  }
+
+  .placeholderLogin {
+    color: #393C40;
+    font-size: 16px;
   }

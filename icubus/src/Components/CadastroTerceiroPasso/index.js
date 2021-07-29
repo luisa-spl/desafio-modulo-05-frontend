@@ -12,7 +12,7 @@ import {
 } from '@material-ui/core';
 
 
-function CadastroSegundoPasso() {
+function CadastroSegundoPasso({ previousPage }) {
 	const classes = useStyles();
 	const history = useHistory();
 
@@ -54,7 +54,7 @@ function CadastroSegundoPasso() {
 
 
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro}>
+						<Button className={classes.buttonCadastro} onClick={previousPage}>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit" onClick={handleClick} >
