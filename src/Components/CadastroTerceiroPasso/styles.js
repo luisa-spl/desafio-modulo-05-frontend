@@ -27,16 +27,17 @@ const useStyles = makeStyles({
         backgroundColor: "#D13201",
         color: "white",
         borderRadius: "20px",
-        width: "126px",
+        minWidth: "126px",
     },
     formsCadastro: {
         display: "flex",
         flexDirection: "column",
-        width: "60%",
+        minWidth: 408,
         gap: 20,
     },
     linkLogin: {
         marginTop: 20,
+        marginBottom: 20,
         textAlign: "center"
     },
 

@@ -33,6 +33,7 @@ export const useStyles = makeStyles({
         justifyContent: "center",
         alignItems: "center",
         marginTop: 50,
-        gap: 40
+        gap: 40,
     },
+
 })

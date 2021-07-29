@@ -2,7 +2,7 @@ import React from 'react';
 import useStyles from './styles';
 import './style.css'
 import { useState, useContext } from 'react';
-import InputSenha from '../../Components/InputSenha';
+import InputSenha from '../../Components/InputSenha/inputSenha';
 import {
 	Card,
 	CardContent,
@@ -25,25 +25,26 @@ export default function Login() {
 
 
 	async function onSubmit(data) {
+		console.log(data)
 		setError(false);
 
-		const resposta = await fetch('http://localhost:3001/login', {
+		fetch('https://icubus.herokuapp.com/login', {
 			method: "POST",
 			body: JSON.stringify(data),
 			headers: {
 				'Content-type': 'application/json'
 			}
+		}).then(async (res) => {
+			const data = await res.json()
+
+			if (res.status > 299) {
+				console.log(data)
+				setError(data)
+			} else {
+				setToken(data.token)
+				history.push('/produtos')
+			}
 		});
-
-		const dados = await resposta.json()
-
-		if (dados.error) {
-			setError(dados.error)
-			return;
-		}
-
-		setToken(dados.token)
-		history.push('/produtos')
 	}
 
 
@@ -69,7 +70,7 @@ export default function Login() {
 						</div>
 						<div className={classes.formsLogin}>
 							<Typography className='placeholderLogin font-montserrat'>Senha</Typography>
-							<InputSenha register={() => register('password', { required: true })} />
+							<InputSenha register={() => register('senha', { required: true })} />
 						</div>
 						<button className="buttonLogin" type="submit">
 							Entrar

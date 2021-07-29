@@ -1,5 +1,5 @@
 import { useState } from 'react'
-
+import './styles.css'
 import useStyles from './styles';
 import {
 	TextField,
@@ -13,7 +13,7 @@ import {
 
 
 
-function CadastroSegundoPasso({ onSubmit, previousPage }) {
+function CadastroSegundoPasso({ onSubmit, previousPage, setPayload }) {
 	const classes = useStyles();
 	const [values, setValues] = useState({
 		nomeRestaurante: '',
@@ -47,6 +47,9 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
 
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		setPayload(((currentPayload) => ({
+			...currentPayload, ...values
+		})))
 		onSubmit()
 	}
 
@@ -54,7 +57,7 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
 				<form className={classes.formsCadastro} onSubmit={handleSubmit}>
-					<Typography className={classes.credentialsStyle}>Nome do restaurante</Typography>
+					<Typography className='credentialsStyle' >Nome do restaurante</Typography>
 					<TextField
 						id="nome-restaurante"
 						name="nomeRestaurante"
@@ -65,7 +68,7 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
 						onChange={handleChange}
 					/>
 
-					<Typography className={classes.credentialsStyle}>Categoria do restaurante</Typography>
+					<Typography className='credentialsStyle' >Categoria do restaurante</Typography>
 					<TextField
 						id="categoria-restaurante"
 						name="categoriaRestaurante"
@@ -81,7 +84,7 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
 						))}
 					</TextField>
 
-					<Typography className={classes.credentialsStyle}>Descrição</Typography>
+					<Typography className='credentialsStyle'>Descrição</Typography>
 					<TextField
 						id="outlined-margin-normal"
 						name="descricao"
@@ -94,7 +97,7 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
 					/>
 
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro} onClick={previousPage}>
+						<Button color="secondary" onClick={previousPage}>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit">

@@ -1,16 +1,11 @@
 import { useState } from 'react'
 import useStyles from './styles';
+import './styles.css'
 import {
-	Card,
-	CardContent,
 	TextField,
 	Button,
 	Typography,
-	Backdrop,
-	CircularProgress,
 	Link,
-	InputLabel,
-	OutlinedInput,
 	InputAdornment,
 	IconButton,
 } from '@material-ui/core';
@@ -20,7 +15,7 @@ import VisibilityOff from '@material-ui/icons/VisibilityOff';
 
 
 
-function CadastroPrimeiroPasso({ onSubmit, onClick }) {
+function CadastroPrimeiroPasso({ onSubmit, setPayload }) {
 	const classes = useStyles();
 
 	const [values, setValues] = useState({
@@ -46,6 +41,9 @@ function CadastroPrimeiroPasso({ onSubmit, onClick }) {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		onSubmit()
+		setPayload((currentPayload) => ({
+			...currentPayload, ...values
+		}))
 		console.log(values)
 	}
 
@@ -53,14 +51,14 @@ function CadastroPrimeiroPasso({ onSubmit, onClick }) {
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form action="" className={classes.formsCadastro} onSubmit={handleSubmit} >
-					<Typography className={classes.credentialsStyle}>Nome de usuário</Typography>
+				<form className={classes.formsCadastro} onSubmit={handleSubmit} >
+					<Typography className='credentialsStyle font-montserrat'>Nome de usuário</Typography>
 					<TextField id="input-nome" type='text' name="nome" value={values.nome} onChange={handleChange} variant="outlined" />
 
-					<Typography className={classes.credentialsStyle}>Email</Typography>
+					<Typography className='credentialsStyle font-montserrat'>Email</Typography>
 					<TextField id="input-email" type='email' name="email" value={values.email} onChange={handleChange} variant="outlined" />
 
-					<Typography className={classes.credentialsStyle}>Senha</Typography>
+					<Typography className='credentialsStyle font-montserrat'>Senha</Typography>
 					<TextField
 						id="input-password"
 						type={values.showPassword ? 'text' : 'password'}
@@ -81,7 +79,7 @@ function CadastroPrimeiroPasso({ onSubmit, onClick }) {
 						}
 					/>
 
-					<Typography className={classes.credentialsStyle}>Repita sua senha</Typography>
+					<Typography className='credentialsStyle font-montserrat'>Repita sua senha</Typography>
 					<TextField
 						id="input-password"
 						type={values.showRepeatPassword ? 'text' : 'password'}
@@ -103,7 +101,7 @@ function CadastroPrimeiroPasso({ onSubmit, onClick }) {
 						}
 					/>
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro} disabled>
+						<Button disabled>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit">

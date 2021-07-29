@@ -1,5 +1,6 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import useStyles from './styles';
+import './styles.css'
 import { useHistory } from "react-router-dom";
 import {
 	TextField,
@@ -12,9 +13,15 @@ import {
 } from '@material-ui/core';
 
 
-function CadastroSegundoPasso({ previousPage }) {
+function CadastroSegundoPasso({ previousPage, payload }) {
 	const classes = useStyles();
 	const history = useHistory();
+
+
+
+	// useEffect(() => {
+	// 	console.log(payload)
+	// }, [payload])
 
 	const [values, setValues] = useState({
 		taxaEntrega: '',
@@ -27,23 +34,25 @@ function CadastroSegundoPasso({ previousPage }) {
 	};
 
 
-	const handleClick = () => {
-		history.push("/");
+	const handleSubmit = (e) => {
+		e.preventDefault()
+		console.log(payload)
+		//history.push("/");
 	}
 
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form className={classes.formsCadastro} >
+				<form className={classes.formsCadastro} onSubmit={handleSubmit} >
 
-					<Typography className={classes.credentialsStyle}>Taxa de entrega</Typography>
+					<Typography className='credentialsStyle'>Taxa de entrega</Typography>
 					<TextField id="input-taxa-entrega" type='text' name="taxaEntrega" value={values.taxaEntrega} onChange={handleChange} variant="outlined" />
 
-					<Typography className={classes.credentialsStyle}>Tempo estimado de entrega</Typography>
+					<Typography className='credentialsStyle'>Tempo estimado de entrega</Typography>
 					<TextField id="input-tempo-entrega" type='text' name="tempoEntregaEmMinutos" value={values.tempoEntregaEmMinutos} onChange={handleChange} variant="outlined" />
 
-					<Typography className={classes.credentialsStyle}>Valor mínimo do pedido</Typography>
+					<Typography className='credentialsStyle'>Valor mínimo do pedido</Typography>
 					<OutlinedInput
 						id="input-valor-minimo"
 						value={values.valorMinimoPedido}
@@ -54,11 +63,11 @@ function CadastroSegundoPasso({ previousPage }) {
 
 
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro} onClick={previousPage}>
+						<Button color="secondary" onClick={previousPage}>
 							Anterior
 						</Button>
-						<Button className={classes.buttonCadastro} variant="contained" type="submit" onClick={handleClick} >
-							Próximo
+						<Button className={classes.buttonCadastro} variant="contained" type="submit" >
+							Criar conta
 						</Button>
 					</div>
 				</form>

@@ -27,7 +27,7 @@ const useStyles = makeStyles({
         backgroundColor: "#D13201",
         color: "white",
         borderRadius: "20px",
-        width: "126px",
+        minWidth: "126px",
     },
     formsCadastro: {
         display: "flex",
