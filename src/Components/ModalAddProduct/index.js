@@ -34,7 +34,7 @@ export default function ModalAddProduct({open, setOpen}) {
     };
 
     function onSubmit(data) {
-        console.log(data)
+        
     };
 
     return (
