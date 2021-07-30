@@ -28,23 +28,27 @@ function CadastroPrimeiroPasso({ nextPage, setPayload }) {
 						id="input-nome"
 						type='text'
 						variant="outlined"
+						autoComplete="off"
+						error={Boolean(errors.nome)}
+						helperText={errors.nome ? "Campo Obrigatório" : false}
 						{...register('nome', { required: true })} />
 
 					<Typography className='credentialsStyle font-montserrat'>Email</Typography>
 					<TextField
-						error={Boolean(errors.email)}
 						id="input-email"
 						type='email'
 						variant="outlined"
+						autoComplete="off"
+						error={Boolean(errors.email)}
 						helperText={errors.email ? "Campo Obrigatório" : false}
-						{...register('email', {
-							required: true,
-						})} />
+						{...register('email', { required: true })} />
 
 					<Typography className='credentialsStyle font-montserrat'>Senha</Typography>
 					<InputSenha
 						register={() => register('senha', { required: true })}
-						id="inputSenhaCadastro" />
+						id="inputSenhaCadastro"
+						error={Boolean(errors.senha)}
+						helperText={errors.senha ? "Campo Obrigatório" : false} />
 
 					<Typography className='credentialsStyle font-montserrat'>Repita sua senha</Typography>
 					<InputSenha
