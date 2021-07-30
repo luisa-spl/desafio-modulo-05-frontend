@@ -17,7 +17,7 @@ function Produtos() {
 
     useEffect( () => {
         async function listarProdutos() {
-            
+                
             try {
                 const resposta = await fetch('https://icubus.herokuapp.com/produtos', {
                     headers: {
@@ -27,33 +27,22 @@ function Produtos() {
                 });
             
                 const  dadosResp = await resposta.json();
-
-                setProdutos(dadosResp);
+                console.log(dadosResp, "/produtos, method: GET")
+                return setProdutos(dadosResp);
             } 
             catch(error) {
-                setErro(error.message);
-                return;
+                return setErro(error.message);
             }
         };
-        
+    
         listarProdutos();
-    }, [token, produtos]);
+    }, []);
 
     return(
         <div className='flex-column items-center container-products'>
             <Header />
 
-            {produtos.length === 0 ? 
-                    <div className='flex-column content-center items-center main-products'>
-                        <div className='flex-row items-center content-center font-montserrat font-color-gray text-products'>
-                            Você ainda não tem nenhum produto no seu cardápio. Gostaria de adicionar um novo produto?
-                        </div>
-                        <ActionButton />
-                        {erro && <Alert severity="error">{erro}</Alert>}
-                    </div> 
-
-                    :
-
+            {produtos.length > 0 ? 
                     <div className='flex-column items-center container-main'>
                         <div className='actBtn'>
                             <ActionButton />
@@ -76,6 +65,18 @@ function Produtos() {
                             })} 
                         </div>
                     </div>
+
+                    :
+                    
+                    <div className='flex-column content-center items-center main-products'>
+                        <div className='flex-row items-center content-center font-montserrat font-color-gray text-products'>
+                            Você ainda não tem nenhum produto no seu cardápio. Gostaria de adicionar um novo produto?
+                        </div>
+                        <ActionButton />
+                        {erro && <Alert severity="error">{erro}</Alert>}
+                    </div>
+
+
             }
         </div>
     )

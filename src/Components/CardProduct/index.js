@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import ModalEditProduct from '../ModalEditProduct';
 import PenIcon from '../../Assets/pen-icon.svg';
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -40,7 +41,8 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
 
   async function handleDelete() {
     setCarregando(true);
-
+   
+    console.log(id);
         try {
             const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id} `, {
                 method: 'DELETE',
@@ -49,14 +51,19 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
                 }
             });
 
-            if(!resposta.ok) {
-                setErro("Não foi possível excluir");
+            const  dadosResp = await resposta.json();
+            setCarregando(false)
+            console.log(dadosResp)
+            
+            if(!dadosResp.ok) {
+               setErro(dadosResp)
             }
-
-            setOpenModal(false);
         }
         catch(error) {
+          console.log('entrou aqui')
+            setCarregando(false);
             setErro(error.message);
+            return 
         }
   }
 
@@ -90,7 +97,7 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
             >
               Excluir Produto
             </button>
-
+            
             <button className='btn-orange-small font-montserrat font-color-white' onClick={() => handleClick()}>
                 <div style={{marginRight: '10px'}}>Editar Produto</div>
                 <img src={PenIcon} alt='' />
@@ -103,10 +110,9 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
               ativo={ativo}
               permite_observacoes={permite_observacoes}
               />
-              
-              {carregando && <CircularProgress />}
-              {erro && <Alert severity="error">{erro}</Alert>}
       </div>
+              {carregando && <CircularProgress />}
+              
     </Card>
   );
 }

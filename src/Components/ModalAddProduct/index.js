@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -28,8 +28,8 @@ export default function ModalAddProduct({open, setOpen}) {
     const history = useHistory();
     const { token } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const [carregando, setCarregando] = useState(false);
-    const [erro, setErro] = useState('');
+    const [ carregando, setCarregando ] = useState(false);
+    const [ erro, setErro ] = useState('');
     const [ active, setActive ] = useState({
             ativo: true,
             permite_observacoes: false,
@@ -52,8 +52,7 @@ export default function ModalAddProduct({open, setOpen}) {
             nome: data.name,
             descricao: data.description,
             preco: precoFormatado,
-            ativo: active.ativo,
-            permite_observacoes: active.permite_observacoes,
+            permiteObservacoes: active.permite_observacoes,
         };
         
         try {
@@ -67,19 +66,21 @@ export default function ModalAddProduct({open, setOpen}) {
             });
 
             const dados = await resposta.json();
+            setCarregando(false);
 
-            if(resposta.status === 200) {
-                setOpen(false);
-                //  history.push('/produtos');
+            if(resposta.status && resposta.status === 201) {
+                
+                return setOpen(false)
+                
             } else{
-                setErro(dados.erro);
-                return;
+                setCarregando(false);
+                return setErro(dados.erro);
             }
         }
         catch(error) {
-            setErro(error.message);
+            setCarregando(false);
+            return setErro(error.message);
         }
-        setCarregando(false);
     };
 
     return (
@@ -154,22 +155,22 @@ export default function ModalAddProduct({open, setOpen}) {
                                 <div className={classes.profilePicture}>
                                     <img src={UploadIcon} />
                                 </div>
-
-                                <DialogActions>
-                                <button 
-                                    className='transparent-btn font-montserrat font-color-orange font-bold' 
-                                    onClick={handleClose} 
-                                >
-                                        Cancelar
-                                </button>
-                                    
-                                <ActionButtonSubmit /> 
-
-                                </DialogActions>
-
-                                {carregando && <CircularProgress />}
-                                {erro && <Alert severity="error">{erro}</Alert>}
                                 
+                                <div className='flex-row'>
+                                    <DialogActions>
+                                    <button 
+                                        className='transparent-btn font-montserrat font-color-orange font-bold' 
+                                        onClick={handleClose} 
+                                    >
+                                            Cancelar
+                                    </button>
+
+                                    </DialogActions>
+                                    <ActionButtonSubmit /> 
+
+                                    {carregando && <CircularProgress />}
+                                    {erro && <Alert severity="error">{erro}</Alert>}
+                                </div>
                             </div>
                         </form>
                 </DialogContent>  

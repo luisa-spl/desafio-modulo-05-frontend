@@ -46,7 +46,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
     };
 
     const handleClose = () => {
-            setOpen(false);
+           return setOpen(false);
     };
 
     async function onSubmit(data) {
@@ -58,7 +58,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                 nome: data.name || product.nome,
                 descricao: data.description || product.descricao,
                 preco: precoFormatado || product.preco,
-                permite_observacoes: active.permite_observacoes
+                permiteObservacoes: active.permite_observacoes
             };
 
             try{
@@ -203,22 +203,24 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                 <div className={classes.profilePicture}>
                                     <img className='imgProduct' src={img}  alt=""/>
                                 </div>
-
-                                <DialogActions>
+                            
+                                <div className='flex-row'>
                                     <button 
                                         className='transparent-btn font-montserrat font-color-orange font-bold'
                                         onClick={handleClose}
-                                    >
+                                        >
                                         Cancelar
                                     </button>
-                                    
-                                    <button type='submit' className='btn-orange-small font-montserrat font-color-white'>
-                                        Salvar alterações
-                                    </button> 
-                                </DialogActions>
 
-                                {carregando && <CircularProgress />}
-                                {erro && <Alert severity="error">{erro}</Alert>}
+                                    <DialogActions>
+                                        <button type='submit' className='btn-orange-small font-montserrat font-color-white'>
+                                            Salvar alterações
+                                        </button> 
+                                    </DialogActions>
+
+                                    {carregando && <CircularProgress />}
+                                    {erro && <Alert severity="error">{erro}</Alert>}
+                                </div>
                             </div>
                         </form>
                 </DialogContent>  
