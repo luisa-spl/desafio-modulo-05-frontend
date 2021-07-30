@@ -7,16 +7,21 @@ export async function getProducts(token){
             }
         });
     
-        const  dados = await resposta.json();
-        console.log(dados, "/produtos, method: GET")
-        return { dados, erro: !resposta.ok }
+        const  lista = await resposta.json();
+        
+        if(resposta.status >= 400) {
+            return {error: lista}
+        }
+
+        return {lista} 
     } 
     catch(error) {
         return error.message;
     }
 };
 
-export async function getSingleProduct({id, token}){
+export async function getSingleProduct({id, token}) {
+    console.log('entrou aqui')
     try {
         const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id}`, {
             headers: {
@@ -25,17 +30,43 @@ export async function getSingleProduct({id, token}){
         });
     
         const  dados = await resposta.json();
-        console.log(dados, 'singleProduct');
-        return {dados, erro: !resposta.ok};
+        console.log(dados)
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
     } 
     catch(error) {
         return error.message;
     }
-
-
 }
 
-export async function editProduct({produtoFormatado, id, token}){
+export async function registerProduct({produtoFormatado, token}) {
+    try {
+        const resposta = await fetch('https://icubus.herokuapp.com/produtos', {
+            method: 'POST',
+            body: JSON.stringify(produtoFormatado),
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+
+        const dados = await resposta.json();
+
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
+    }
+    catch(error) {
+        return error.message;
+    }
+}
+
+export async function editProduct({produtoFormatado, id, token}) {
     try{
         const resposta = await fetch(` https://icubus.herokuapp.com/produtos/${id}`, {
             method: 'PUT',
@@ -48,7 +79,11 @@ export async function editProduct({produtoFormatado, id, token}){
 
         const dados = await resposta.json();
 
-        return {dados, erro: !resposta.ok};
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
     }
     catch(error) {
         return error.message;
@@ -66,7 +101,11 @@ export async function activateProduct({id, token}){
 
         const dados = await resposta.json();
 
-        return {dados, erro: !resposta.ok};
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
 
     } catch(error) {
         
@@ -85,10 +124,37 @@ export async function disableProduct({id, token}){
 
         const dados = await resposta.json();
 
-        return {dados, erro: !resposta.ok};
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
 
     } catch(error) {
         
         return error.message;
+    }
+}
+
+export async function deleteProduct({id, token}) {
+    try {
+        const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id} `, {
+            method: 'DELETE',
+            headers: {
+                'Authorization': `Bearer ${token}`,  
+            }
+        });
+        
+        const dados =  await resposta.json();
+
+        if(resposta.status >= 400) {
+            return {erro: dados}
+        }
+
+        return dados 
+        
+    }
+    catch(error) {
+      return console.log(error.message)
     }
 }
