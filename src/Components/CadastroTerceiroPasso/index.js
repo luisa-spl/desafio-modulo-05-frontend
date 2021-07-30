@@ -10,25 +10,22 @@ import {
 import { useForm } from "react-hook-form";
 
 
-function CadastroSegundoPasso({ previousPage }) {
+function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 	const classes = useStyles();
-	const { register } = useForm();
-
-	// const handleChange = (event) => {
-	// 	setValues({ ...values, [event.target.name]: event.target.value });
-	// };
+	const { register, getValues, handleSubmit } = useForm();
 
 
-	const handleSubmit = (e) => {
-		e.preventDefault()
 
+	const onSubmit = async () => {
+
+		await salvarCadastro({ ...payload, ...getValues() })
 	}
 
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form className={classes.formsCadastro} onSubmit={handleSubmit} >
+				<form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)} >
 
 					<Typography className='credentialsStyle'>Taxa de entrega</Typography>
 					<TextField

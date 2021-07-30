@@ -1,6 +1,5 @@
 import './styles.css'
 import useStyles from './styles';
-import { useState } from 'react'
 import {
   TextField,
   MenuItem,
@@ -13,41 +12,68 @@ import { useForm } from "react-hook-form";
 
 
 
-function CadastroSegundoPasso({ onSubmit, previousPage }) {
+function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
   const classes = useStyles();
-  const { register } = useForm();
+  const { register, getValues, handleSubmit } = useForm();
 
-  const currencies = [
+  const categorias = [
     {
-      value: 'diversos',
+      id: 1,
       label: 'Diversos'
     },
     {
-      value: 'lanches',
+      id: 2,
       label: 'Lanches',
     },
     {
-      value: 'carnes',
+      id: 3,
       label: 'Carnes',
     },
     {
-      value: 'Massas',
-      label: 'massas',
+      id: 4,
+      label: 'Massas',
+    },
+    {
+      id: 5,
+      label: 'Pizzas',
+    },
+    {
+      id: 6,
+      label: 'Japonesa',
+    },
+    {
+      id: 7,
+      label: 'Chinesa',
+    },
+    {
+      id: 8,
+      label: 'Mexicano',
+    },
+    {
+      id: 9,
+      label: 'Brasileira',
+    },
+    {
+      id: 10,
+      label: 'Italiana',
+    },
+    {
+      id: 11,
+      label: 'Árabe',
     },
   ];
 
 
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    onSubmit()
+  const onSubmit = () => {
+    setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }));
+    nextPage();
   }
 
   return (
     <div className={classes.root}>
       <div className={classes.cardCadastro}>
-        <form className={classes.formsCadastro} onSubmit={handleSubmit}>
-          <Typography className='credentialsStyle' >Nome do restaurante</Typography>
+        <form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)}>
+          <Typography className='credentialsStyle'>Nome do restaurante</Typography>
           <TextField
             id="nome-restaurante"
             className={classes.textField}
@@ -61,11 +87,11 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
             id="categoria-restaurante"
             select
             variant="outlined"
-            {...register('categoriaRestaurante', { required: true })}
+            {...register('idCategoria', { required: true })}
           >
-            {currencies.map((option) => (
-              <MenuItem key={option.value} value={option.value}>
-                {option.label}
+            {categorias.map((categoria) => (
+              <MenuItem key={categoria.id} value={categoria.id}>
+                {categoria.label}
               </MenuItem>
             ))}
           </TextField>
@@ -77,7 +103,7 @@ function CadastroSegundoPasso({ onSubmit, previousPage }) {
             helperText="Máx. 100 caracteres"
             margin="normal"
             variant="outlined"
-            {...register('categoriaRestaurante', { maxLength: 100 })}
+            {...register('descricao', { maxLength: 100 })}
           />
 
           <div className={classes.containerButtonCadastro}>

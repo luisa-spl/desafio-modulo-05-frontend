@@ -5,6 +5,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import FormControl from '@material-ui/core/FormControl';
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import FormHelperText from '@material-ui/core/FormHelperText';
 
 function InputSenha(props) {
   const [mostrarSenha, setMostrarSenha] = useState(false);
@@ -20,6 +21,7 @@ function InputSenha(props) {
   return (
     <FormControl>
       <OutlinedInput
+        error={Boolean(props.error)}
         id={props.id}
         type={mostrarSenha ? 'text' : 'password'}
         {...props.register()}
@@ -36,6 +38,7 @@ function InputSenha(props) {
           </InputAdornment>
         }
       />
+      {Boolean(props.error) && <FormHelperText error>{props.error} </FormHelperText>}
     </FormControl>
   )
 }

@@ -10,22 +10,19 @@ import InputSenha from '../InputSenha/inputSenha'
 import { useForm } from "react-hook-form";
 
 
-
-
-
-function CadastroPrimeiroPasso({ onSubmit }) {
+function CadastroPrimeiroPasso({ nextPage, setPayload }) {
 	const classes = useStyles();
-	const { register } = useForm();
+	const { register, getValues, handleSubmit, watch, formState: { errors } } = useForm();
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		onSubmit()
+	const onSubmit = () => {
+		setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }))
+		nextPage();
 	}
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form className={classes.formsCadastro} onSubmit={handleSubmit} >
+				<form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)} >
 					<Typography className='credentialsStyle font-montserrat'>Nome de usuário</Typography>
 					<TextField
 						id="input-nome"
@@ -35,10 +32,14 @@ function CadastroPrimeiroPasso({ onSubmit }) {
 
 					<Typography className='credentialsStyle font-montserrat'>Email</Typography>
 					<TextField
+						error={Boolean(errors.email)}
 						id="input-email"
 						type='email'
 						variant="outlined"
-						{...register('email', { required: true })} />
+						helperText={errors.email ? "Campo Obrigatório" : false}
+						{...register('email', {
+							required: true,
+						})} />
 
 					<Typography className='credentialsStyle font-montserrat'>Senha</Typography>
 					<InputSenha
@@ -47,7 +48,11 @@ function CadastroPrimeiroPasso({ onSubmit }) {
 
 					<Typography className='credentialsStyle font-montserrat'>Repita sua senha</Typography>
 					<InputSenha
-						register={() => register('senhaRepetida', { required: true })}
+						error={errors.senhaRepetida ? errors.senhaRepetida.message : false}
+						register={() => register('senhaRepetida', {
+							required: true,
+							validate: (value) => value === watch('senha') || "Senhas não conferem"
+						})}
 						id="inputSenhaRepetidaCadastro" />
 
 					<div className={classes.containerButtonCadastro}>

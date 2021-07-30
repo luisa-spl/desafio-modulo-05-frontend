@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useStyles } from './styles';
 import "./styles.css"
 import CadastroPrimeiroPasso from '../../Components/CadastroPrimeiroPasso'
@@ -9,6 +9,7 @@ import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
+
 function Cadastro() {
 	const classes = useStyles();
 	const [payload, setPayload] = useState({})
@@ -16,10 +17,11 @@ function Cadastro() {
 	const [etapaAtual, setEtapaAtual] = useState(0)
 	const history = useHistory()
 
+
 	const formularios = [
-		<CadastroPrimeiroPasso onSubmit={nextPage} setPayload={setPayload} />,
-		<CadastroSegundoPasso onSubmit={nextPage} previousPage={previousPage} setPayload={setPayload} />,
-		<CadastroTerceiroPasso onSubmit={nextPage} previousPage={previousPage} payload={payload} />,
+		<CadastroPrimeiroPasso nextPage={nextPage} setPayload={setPayload} />,
+		<CadastroSegundoPasso nextPage={nextPage} previousPage={previousPage} setPayload={setPayload} />,
+		<CadastroTerceiroPasso salvarCadastro={salvarCadastro} previousPage={previousPage} payload={payload} />,
 	]
 
 	function nextPage() {
@@ -30,8 +32,13 @@ function Cadastro() {
 		setEtapaAtual(etapaAtual - 1)
 	}
 
+	useEffect(() => {
+		console.log(payload)
+	}, [payload])
 
-	async function onSubmit(data) {
+
+	async function salvarCadastro(data) {
+		console.log(data)
 		setError(false);
 
 		if (data.senha !== data.senhaRepetida) {
@@ -41,16 +48,16 @@ function Cadastro() {
 		fetch('https://icubus.herokuapp.com/usuarios', {
 			method: "POST",
 			body: JSON.stringify({
-				"nome": "",
-				"email": "",
-				"senha": "",
+				"nome": data.nome,
+				"email": data.email,
+				"senha": data.senha,
 				"restaurante": {
-					"nome": "",
-					"descricao": "",
-					"idCategoria": "",
-					"taxaEntrega": "",
-					"tempoEntregaEmMinutos": "",
-					"valorMinimoPedido": "",
+					"nome": data.nomeRestaurante,
+					"descricao": data.descricao,
+					"idCategoria": data.idCategoria,
+					"taxaEntrega": data.taxaEntrega,
+					"tempoEntregaEmMinutos": data.tempoEntregaEmMinutos,
+					"valorMinimoPedido": data.valorMinimoPedido,
 				}
 			}),
 			headers: {
@@ -62,7 +69,9 @@ function Cadastro() {
 			if (res.status > 299) {
 				setError(data)
 			} else {
-				history.push('/')
+				history.push('/', {
+					registerSuccess: true
+				})
 			}
 		});
 	}
@@ -70,13 +79,15 @@ function Cadastro() {
 	return (
 		<div className={classes.containerCadastro}>
 			<div className={classes.formsCadastro}>
+
+				{Boolean(error) && (
+					<Alert severity="error">
+						{error}
+					</Alert>
+				)}
+
 				<div className={classes.cardStepper}>
 					<Typography className={classes.cadastroTitle}>Cadastro</Typography>
-					{Boolean(error) && (
-						<Alert severity="error">
-							{error}
-						</Alert>
-					)}
 					<div>
 						<Stepper activeStep={etapaAtual} >
 							{formularios.map(() => <Step ><StepLabel /></Step>)}

@@ -20,8 +20,10 @@ export default function Login() {
 	const { setToken } = useContext(AuthContext)
 	const classes = useStyles();
 	const history = useHistory();
+	console.log(history)
 	const [error, setError] = useState(false)
 	const { register, handleSubmit } = useForm()
+	const showRegisterSuccess = history.location.state && history.location.state.registerSuccess
 
 
 	async function onSubmit(data) {
@@ -50,6 +52,11 @@ export default function Login() {
 
 	return (
 		<div className={classes.container}>
+			{showRegisterSuccess && (
+				<Alert severity="error">
+					Cadastro efetuado com sucesso
+				</Alert>
+			)}
 			<Card className={classes.cardLogin}>
 				<CardContent>
 					<h1 className='loginTitle font-baloo'>Login</h1>
