@@ -1,0 +1,32 @@
+h2.MuiTypography-h6 {
+    font-family: 'Baloo 2', sans-serif;
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+span.MuiTypography-body1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.8rem;
+    color: #525459;
+}
+
+label.MuiFormLabel-root {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    color: #525459;
+}
+
+div.makeStyles-profilePicture-5 {
+    border: none;
+}
+
+div.MuiPaper-rounded {
+    border-radius: 1rem;
+}
+
+.imgProduct {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+}

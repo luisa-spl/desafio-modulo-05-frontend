@@ -23,7 +23,8 @@ export default makeStyles((theme) => ({
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
-      gap: '32px'
+      gap: '32px',
+      borderRadius: '16px'
     },
 
     profilePicture: {

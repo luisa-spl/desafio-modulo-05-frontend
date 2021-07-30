@@ -27,7 +27,7 @@ export default function Login() {
 	async function onSubmit(data) {
 		setError(false);
 
-		const resposta = await fetch('http://localhost:3001/login', {
+		const resposta = await fetch('https://icubus.herokuapp.com/login', {
 			method: "POST",
 			body: JSON.stringify(data),
 			headers: {
