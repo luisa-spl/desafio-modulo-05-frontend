@@ -5,7 +5,7 @@ import { AuthContext } from '../../Contexts/AuthContext';
 import UploadIcon from '../../Assets/upload-icon.svg';
 import useStyles from './style';
 import './style.css';
-
+import { getProducts } from '../../Services/functions';
 
 import Alert from '@material-ui/lab/Alert';
 import ActionButtonSubmit from '../ActionButtonSubmit';
@@ -43,6 +43,7 @@ export default function ModalAddProduct({open, setOpen}) {
             setOpen(false);
     };
 
+
     async function onSubmit(data) {
         setCarregando(true);
        
@@ -68,10 +69,9 @@ export default function ModalAddProduct({open, setOpen}) {
             const dados = await resposta.json();
             setCarregando(false);
 
-            if(resposta.status && resposta.status === 201) {
-                
-                return setOpen(false)
-                
+            if(dados.ok) {
+                return setOpen(false);
+              
             } else{
                 setCarregando(false);
                 return setErro(dados.erro);
@@ -81,7 +81,11 @@ export default function ModalAddProduct({open, setOpen}) {
             setCarregando(false);
             return setErro(error.message);
         }
+
     };
+
+
+   
 
     return (
         <div className={classes.dialog}>

@@ -16,8 +16,7 @@ import {
 } from '@material-ui/core'; 
 
 
-
-export default function CardProduct({ id, nome, preco, descricao, img, ativo, permite_observacoes }) {
+export default function CardProduct({ id, nome, preco, descricao, img, ativo }) {
   const classes = useStyles();
   const history = useHistory();
   const { token } = useContext(AuthContext);
@@ -41,7 +40,7 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
 
   async function handleDelete() {
     setCarregando(true);
-   
+    console.log(ativo)
     console.log(id);
         try {
             const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id} `, {
@@ -107,8 +106,6 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
               setOpen={setOpen} 
               id={id} 
               img={img}
-              ativo={ativo}
-              permite_observacoes={permite_observacoes}
               />
       </div>
               {carregando && <CircularProgress />}
