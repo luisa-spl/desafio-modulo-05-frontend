@@ -109,8 +109,20 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                     return 
                 }
             }
-            const precoFormatado = Number(data.value).toFixed(2)*100;
+            
+            
+            let precoFormatado = 0;
+            const virg = ',';
 
+            if(data.value.includes('.')){
+                precoFormatado = Number(data.value).toFixed(2)*100;
+            } else if(data.value.includes(',')){
+                precoFormatado = Number(data.value.replace(virg, '.' )).toFixed(2)*100;
+            } 
+            else {
+                precoFormatado = Number(data.value);
+            }
+            
             
             const produtoFormatado = {
                 nome: data.name || item.nome,
@@ -173,6 +185,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                 <InputLabel htmlFor="value">Valor</InputLabel>    
                                 <TextField
                                     size='small' 
+                                    type='text'
                                     variant='outlined'
                                     id='value'
                                     placeholder={item.preco/100}
