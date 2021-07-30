@@ -27,7 +27,7 @@ const useStyles = makeStyles({
         backgroundColor: "#D13201",
         color: "white",
         borderRadius: "20px",
-        width: "126px",
+        minWidth: "126px",
     },
     formsCadastro: {
         display: "flex",
@@ -35,12 +35,6 @@ const useStyles = makeStyles({
         minWidth: 408,
         gap: 20,
     },
-    linkLogin: {
-        marginTop: 20,
-        marginBottom: 20,
-        textAlign: "center"
-    },
-
 });
 
 export default useStyles;

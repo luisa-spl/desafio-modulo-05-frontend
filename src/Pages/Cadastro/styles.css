@@ -1,0 +1,14 @@
+svg.MuiStepIcon-root.MuiStepIcon-active{
+    color: rgba(209, 50, 1, 0.2)
+   
+}
+
+svg.MuiStepIcon-root {
+    color: rgba(13, 138, 79, 0.2)
+}
+
+svg.MuiStepIcon-root.MuiStepIcon-completed {
+    color: rgba(13, 138, 79, 0.2)
+}
+
+

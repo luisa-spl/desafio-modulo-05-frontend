@@ -2,7 +2,7 @@ import React from 'react';
 import useStyles from './styles';
 import './style.css'
 import { useState, useContext } from 'react';
-import InputSenha from '../../Components/InputSenha';
+import InputSenha from '../../Components/InputSenha/inputSenha';
 import {
 	Card,
 	CardContent,
@@ -20,37 +20,55 @@ export default function Login() {
 	const { setToken } = useContext(AuthContext)
 	const classes = useStyles();
 	const history = useHistory();
+	console.log(history)
 	const [error, setError] = useState(false)
 	const { register, handleSubmit } = useForm()
+	const [showRegisterSuccess, setShowRegisterSuccess] = useState(() =>
+		history.location.state && history.location.state.registerSuccess
+	)
 
 
 	async function onSubmit(data) {
+		console.log(data)
 		setError(false);
 
-		const resposta = await fetch('https://icubus.herokuapp.com/login', {
+
+
+		fetch('https://icubus.herokuapp.com/login', {
 			method: "POST",
 			body: JSON.stringify(data),
 			headers: {
 				'Content-type': 'application/json'
 			}
+		}).then(async (res) => {
+			const data = await res.json()
+
+			if (res.status > 299) {
+				console.log(data)
+				setError(data)
+			} else {
+				setToken(data.token)
+				history.push('/produtos')
+			}
 		});
+	}
 
-		const dados = await resposta.json()
-
-		if (dados.error) {
-			setError(dados.error)
-			return;
-		}
-
-		setToken(dados.token)
-		history.push('/produtos')
+	const handleCloseAlert = () => {
+		history.replace('/')
+		setShowRegisterSuccess(false)
 	}
 
 
 	return (
 		<div className={classes.container}>
+
 			<Card className={classes.cardLogin}>
 				<CardContent>
+					{showRegisterSuccess && (
+						<Alert severity="success" onClose={handleCloseAlert}>
+							Cadastro efetuado com sucesso
+						</Alert>
+					)}
 					<h1 className='loginTitle font-baloo'>Login</h1>
 					{Boolean(error) && (
 						<Alert severity="error">
@@ -69,7 +87,9 @@ export default function Login() {
 						</div>
 						<div className={classes.formsLogin}>
 							<Typography className='placeholderLogin font-montserrat'>Senha</Typography>
-							<InputSenha register={() => register('password', { required: true })} />
+							<InputSenha
+								register={() => register('senha', { required: true })}
+								id="inputSenhaLogin" />
 						</div>
 						<button className="buttonLogin" type="submit">
 							Entrar
