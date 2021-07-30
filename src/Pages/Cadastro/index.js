@@ -5,6 +5,7 @@ import CadastroPrimeiroPasso from '../../Components/CadastroPrimeiroPasso'
 import CadastroSegundoPasso from '../../Components/CadastroSegundoPasso'
 import CadastroTerceiroPasso from '../../Components/CadastroTerceiroPasso'
 import { Stepper, Step, StepLabel, Typography } from '@material-ui/core';
+import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
 
@@ -33,9 +34,25 @@ function Cadastro() {
 	async function onSubmit(data) {
 		setError(false);
 
-		fetch('https://icubus.herokuapp.com/cadastro', {
+		if (data.senha !== data.senhaRepetida) {
+			return
+		}
+
+		fetch('https://icubus.herokuapp.com/usuarios', {
 			method: "POST",
-			body: JSON.stringify(data),
+			body: JSON.stringify({
+				"nome": "",
+				"email": "",
+				"senha": "",
+				"restaurante": {
+					"nome": "",
+					"descricao": "",
+					"idCategoria": "",
+					"taxaEntrega": "",
+					"tempoEntregaEmMinutos": "",
+					"valorMinimoPedido": "",
+				}
+			}),
 			headers: {
 				'Content-type': 'application/json'
 			}
@@ -55,6 +72,11 @@ function Cadastro() {
 			<div className={classes.formsCadastro}>
 				<div className={classes.cardStepper}>
 					<Typography className={classes.cadastroTitle}>Cadastro</Typography>
+					{Boolean(error) && (
+						<Alert severity="error">
+							{error}
+						</Alert>
+					)}
 					<div>
 						<Stepper activeStep={etapaAtual} >
 							{formularios.map(() => <Step ><StepLabel /></Step>)}
@@ -62,7 +84,9 @@ function Cadastro() {
 					</div>
 				</div>
 				{formularios[etapaAtual]}
+				<Typography className={classes.linkCadastro}>Já tem uma conta? <a href="/" >Login </a> </Typography>
 			</div>
+
 		</div>
 	)
 }

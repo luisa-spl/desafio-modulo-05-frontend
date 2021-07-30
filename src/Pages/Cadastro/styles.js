@@ -26,7 +26,6 @@ export const useStyles = makeStyles({
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        gap: 10
     },
     cardStepper: {
         display: "flex",
@@ -34,6 +33,10 @@ export const useStyles = makeStyles({
         alignItems: "center",
         marginTop: 50,
         gap: 40,
+    },
+    linkCadastro: {
+        marginBottom: 20,
+        textAlign: "center"
     },
 
 })

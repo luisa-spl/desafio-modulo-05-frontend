@@ -1,43 +1,27 @@
-import { useState, useEffect } from 'react'
 import useStyles from './styles';
 import './styles.css'
-import { useHistory } from "react-router-dom";
 import {
 	TextField,
 	Button,
 	Typography,
-	Link,
 	OutlinedInput,
 	InputAdornment,
-
 } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 
 
-function CadastroSegundoPasso({ previousPage, payload }) {
+function CadastroSegundoPasso({ previousPage }) {
 	const classes = useStyles();
-	const history = useHistory();
+	const { register } = useForm();
 
-
-
-	// useEffect(() => {
-	// 	console.log(payload)
-	// }, [payload])
-
-	const [values, setValues] = useState({
-		taxaEntrega: '',
-		tempoEntregaEmMinutos: '',
-		valorMinimoPedido: '',
-	});
-
-	const handleChange = (event) => {
-		setValues({ ...values, [event.target.name]: event.target.value });
-	};
+	// const handleChange = (event) => {
+	// 	setValues({ ...values, [event.target.name]: event.target.value });
+	// };
 
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
-		console.log(payload)
-		//history.push("/");
+
 	}
 
 
@@ -47,17 +31,24 @@ function CadastroSegundoPasso({ previousPage, payload }) {
 				<form className={classes.formsCadastro} onSubmit={handleSubmit} >
 
 					<Typography className='credentialsStyle'>Taxa de entrega</Typography>
-					<TextField id="input-taxa-entrega" type='text' name="taxaEntrega" value={values.taxaEntrega} onChange={handleChange} variant="outlined" />
+					<TextField
+						id="input-taxa-entrega"
+						type='text'
+						variant="outlined"
+						{...register('taxaEntrega', { required: true })} />
 
 					<Typography className='credentialsStyle'>Tempo estimado de entrega</Typography>
-					<TextField id="input-tempo-entrega" type='text' name="tempoEntregaEmMinutos" value={values.tempoEntregaEmMinutos} onChange={handleChange} variant="outlined" />
+					<TextField
+						id="input-tempo-entrega"
+						type='text'
+						variant="outlined"
+						{...register('tempoEntregaEmMinutos', { required: true })} />
 
 					<Typography className='credentialsStyle'>Valor mínimo do pedido</Typography>
 					<OutlinedInput
 						id="input-valor-minimo"
-						value={values.valorMinimoPedido}
-						onChange={handleChange}
-						name="valorMinimoPedido"
+						{...register('valorMinimoPedido', { required: true })}
+
 						startAdornment={<InputAdornment position="start">$</InputAdornment>}
 					/>
 
@@ -71,10 +62,6 @@ function CadastroSegundoPasso({ previousPage, payload }) {
 						</Button>
 					</div>
 				</form>
-				<div className={classes.linkLogin}>
-					<Typography>Já tem uma conta? <Link href="/" >Login </Link> </Typography>
-
-				</div>
 			</div>
 		</div>
 	)

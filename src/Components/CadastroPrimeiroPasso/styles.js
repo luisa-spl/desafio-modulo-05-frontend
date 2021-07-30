@@ -35,12 +35,6 @@ const useStyles = makeStyles({
         minWidth: 408,
         gap: 20,
     },
-    linkLogin: {
-        marginTop: 20,
-        marginBottom: 20,
-        textAlign: "center"
-    },
-
 });
 
 export default useStyles;

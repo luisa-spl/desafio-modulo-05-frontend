@@ -70,7 +70,9 @@ export default function Login() {
 						</div>
 						<div className={classes.formsLogin}>
 							<Typography className='placeholderLogin font-montserrat'>Senha</Typography>
-							<InputSenha register={() => register('senha', { required: true })} />
+							<InputSenha
+								register={() => register('senha', { required: true })}
+								id="inputSenhaLogin" />
 						</div>
 						<button className="buttonLogin" type="submit">
 							Entrar
