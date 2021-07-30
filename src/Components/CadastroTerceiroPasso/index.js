@@ -1,71 +1,64 @@
-import { useState } from 'react'
 import useStyles from './styles';
-import { useHistory } from "react-router-dom";
+import './styles.css'
 import {
 	TextField,
 	Button,
 	Typography,
-	Link,
 	OutlinedInput,
 	InputAdornment,
-
 } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 
 
-function CadastroSegundoPasso({ previousPage }) {
+function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 	const classes = useStyles();
-	const history = useHistory();
-
-	const [values, setValues] = useState({
-		taxaEntrega: '',
-		tempoEntregaEmMinutos: '',
-		valorMinimoPedido: '',
-	});
-
-	const handleChange = (event) => {
-		setValues({ ...values, [event.target.name]: event.target.value });
-	};
+	const { register, getValues, handleSubmit } = useForm();
 
 
-	const handleClick = () => {
-		history.push("/");
+
+	const onSubmit = async () => {
+
+		await salvarCadastro({ ...payload, ...getValues() })
 	}
 
 
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
-				<form className={classes.formsCadastro} >
+				<form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)} >
 
-					<Typography className={classes.credentialsStyle}>Taxa de entrega</Typography>
-					<TextField id="input-taxa-entrega" type='text' name="taxaEntrega" value={values.taxaEntrega} onChange={handleChange} variant="outlined" />
+					<Typography className='credentialsStyle'>Taxa de entrega</Typography>
+					<TextField
+						id="input-taxa-entrega"
+						type='text'
+						variant="outlined"
+						{...register('taxaEntrega', { required: true })} />
 
-					<Typography className={classes.credentialsStyle}>Tempo estimado de entrega</Typography>
-					<TextField id="input-tempo-entrega" type='text' name="tempoEntregaEmMinutos" value={values.tempoEntregaEmMinutos} onChange={handleChange} variant="outlined" />
+					<Typography className='credentialsStyle'>Tempo estimado de entrega</Typography>
+					<TextField
+						id="input-tempo-entrega"
+						type='text'
+						variant="outlined"
+						{...register('tempoEntregaEmMinutos', { required: true })} />
 
-					<Typography className={classes.credentialsStyle}>Valor mínimo do pedido</Typography>
+					<Typography className='credentialsStyle'>Valor mínimo do pedido</Typography>
 					<OutlinedInput
 						id="input-valor-minimo"
-						value={values.valorMinimoPedido}
-						onChange={handleChange}
-						name="valorMinimoPedido"
+						{...register('valorMinimoPedido', { required: true })}
+
 						startAdornment={<InputAdornment position="start">$</InputAdornment>}
 					/>
 
 
 					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro} onClick={previousPage}>
+						<Button color="secondary" onClick={previousPage}>
 							Anterior
 						</Button>
-						<Button className={classes.buttonCadastro} variant="contained" type="submit" onClick={handleClick} >
-							Próximo
+						<Button className={classes.buttonCadastro} variant="contained" type="submit" >
+							Criar conta
 						</Button>
 					</div>
 				</form>
-				<div className={classes.linkLogin}>
-					<Typography>Já tem uma conta? <Link href="/" >Login </Link> </Typography>
-
-				</div>
 			</div>
 		</div>
 	)

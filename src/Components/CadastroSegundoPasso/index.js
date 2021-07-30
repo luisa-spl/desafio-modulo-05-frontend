@@ -1,113 +1,124 @@
-import { useState } from 'react'
-
+import './styles.css'
 import useStyles from './styles';
 import {
-	TextField,
-	MenuItem,
-	Button,
-	Typography,
-	Link,
+  TextField,
+  MenuItem,
+  Button,
+  Typography,
 } from '@material-ui/core';
+import { useForm } from "react-hook-form";
 
 
 
 
 
-function CadastroSegundoPasso({ onSubmit, previousPage }) {
-	const classes = useStyles();
-	const [values, setValues] = useState({
-		nomeRestaurante: '',
-		categoriaRestaurante: '',
-		descricao: '',
-	});
+function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
+  const classes = useStyles();
+  const { register, getValues, handleSubmit } = useForm();
 
-	const currencies = [
-		{
-			value: 'diversos',
-			label: 'Diversos'
-		},
-		{
-			value: 'lanches',
-			label: 'Lanches',
-		},
-		{
-			value: 'carnes',
-			label: 'Carnes',
-		},
-		{
-			value: 'Massas',
-			label: 'massas',
-		},
-	];
+  const categorias = [
+    {
+      id: 1,
+      label: 'Diversos'
+    },
+    {
+      id: 2,
+      label: 'Lanches',
+    },
+    {
+      id: 3,
+      label: 'Carnes',
+    },
+    {
+      id: 4,
+      label: 'Massas',
+    },
+    {
+      id: 5,
+      label: 'Pizzas',
+    },
+    {
+      id: 6,
+      label: 'Japonesa',
+    },
+    {
+      id: 7,
+      label: 'Chinesa',
+    },
+    {
+      id: 8,
+      label: 'Mexicano',
+    },
+    {
+      id: 9,
+      label: 'Brasileira',
+    },
+    {
+      id: 10,
+      label: 'Italiana',
+    },
+    {
+      id: 11,
+      label: 'Árabe',
+    },
+  ];
 
-	const handleChange = (event) => {
-		setValues({ ...values, [event.target.name]: event.target.value });
 
-	};
+  const onSubmit = () => {
+    setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }));
+    nextPage();
+  }
 
-	const handleSubmit = (e) => {
-		e.preventDefault();
-		onSubmit()
-	}
+  return (
+    <div className={classes.root}>
+      <div className={classes.cardCadastro}>
+        <form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)}>
+          <Typography className='credentialsStyle'>Nome do restaurante</Typography>
+          <TextField
+            id="nome-restaurante"
+            className={classes.textField}
+            margin="normal"
+            variant="outlined"
+            {...register('nomeRestaurante', { required: true })}
+          />
 
-	return (
-		<div className={classes.root}>
-			<div className={classes.cardCadastro}>
-				<form className={classes.formsCadastro} onSubmit={handleSubmit}>
-					<Typography className={classes.credentialsStyle}>Nome do restaurante</Typography>
-					<TextField
-						id="nome-restaurante"
-						name="nomeRestaurante"
-						value={values.nomeRestaurante}
-						className={classes.textField}
-						margin="normal"
-						variant="outlined"
-						onChange={handleChange}
-					/>
+          <Typography className='credentialsStyle' >Categoria do restaurante</Typography>
+          <TextField
+            id="categoria-restaurante"
+            select
+            variant="outlined"
+            {...register('idCategoria', { required: true })}
+          >
+            {categorias.map((categoria) => (
+              <MenuItem key={categoria.id} value={categoria.id}>
+                {categoria.label}
+              </MenuItem>
+            ))}
+          </TextField>
 
-					<Typography className={classes.credentialsStyle}>Categoria do restaurante</Typography>
-					<TextField
-						id="categoria-restaurante"
-						name="categoriaRestaurante"
-						value={values.categoriaRestaurante}
-						select
-						variant="outlined"
-						onChange={handleChange}
-					>
-						{currencies.map((option) => (
-							<MenuItem key={option.value} value={option.value}>
-								{option.label}
-							</MenuItem>
-						))}
-					</TextField>
+          <Typography className='credentialsStyle'>Descrição</Typography>
+          <TextField
+            id="outlined-margin-normal"
+            className={classes.textField}
+            helperText="Máx. 100 caracteres"
+            margin="normal"
+            variant="outlined"
+            {...register('descricao', { maxLength: 100 })}
+          />
 
-					<Typography className={classes.credentialsStyle}>Descrição</Typography>
-					<TextField
-						id="outlined-margin-normal"
-						name="descricao"
-						value={values.descricao}
-						className={classes.textField}
-						helperText="Máx. 50 caracteres"
-						margin="normal"
-						variant="outlined"
-						onChange={handleChange}
-					/>
+          <div className={classes.containerButtonCadastro}>
+            <Button color="secondary" onClick={previousPage}>
+              Anterior
+            </Button>
+            <Button className={classes.buttonCadastro} variant="contained" type="submit">
+              Próximo
+            </Button>
+          </div>
+        </form>
 
-					<div className={classes.containerButtonCadastro}>
-						<Button className={classes.buttonCadastro} onClick={previousPage}>
-							Anterior
-						</Button>
-						<Button className={classes.buttonCadastro} variant="contained" type="submit">
-							Próximo
-						</Button>
-					</div>
-				</form>
-				<div className={classes.linkLogin}>
-					<Typography>Já tem uma conta? <Link href="/cadastro" >Login </Link> </Typography>
-				</div>
-			</div>
-		</div>
-	)
+      </div>
+    </div >
+  )
 }
 
 export default CadastroSegundoPasso
