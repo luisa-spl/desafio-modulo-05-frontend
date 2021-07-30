@@ -23,7 +23,9 @@ export default function Login() {
 	console.log(history)
 	const [error, setError] = useState(false)
 	const { register, handleSubmit } = useForm()
-	const showRegisterSuccess = history.location.state && history.location.state.registerSuccess
+	const [showRegisterSuccess, setShowRegisterSuccess] = useState(() =>
+		history.location.state && history.location.state.registerSuccess
+	)
 
 
 	async function onSubmit(data) {
@@ -49,16 +51,22 @@ export default function Login() {
 		});
 	}
 
+	const handleCloseAlert = () => {
+		history.replace('/')
+		setShowRegisterSuccess(false)
+	}
+
 
 	return (
 		<div className={classes.container}>
-			{showRegisterSuccess && (
-				<Alert severity="error">
-					Cadastro efetuado com sucesso
-				</Alert>
-			)}
+
 			<Card className={classes.cardLogin}>
 				<CardContent>
+					{showRegisterSuccess && (
+						<Alert severity="success" onClose={handleCloseAlert}>
+							Cadastro efetuado com sucesso
+						</Alert>
+					)}
 					<h1 className='loginTitle font-baloo'>Login</h1>
 					{Boolean(error) && (
 						<Alert severity="error">

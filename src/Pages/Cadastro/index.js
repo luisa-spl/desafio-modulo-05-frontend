@@ -32,18 +32,16 @@ function Cadastro() {
 		setEtapaAtual(etapaAtual - 1)
 	}
 
-	useEffect(() => {
-		console.log(payload)
-	}, [payload])
-
 
 	async function salvarCadastro(data) {
-		console.log(data)
 		setError(false);
 
 		if (data.senha !== data.senhaRepetida) {
 			return
 		}
+
+		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
+
 
 		fetch('https://icubus.herokuapp.com/usuarios', {
 			method: "POST",
@@ -55,9 +53,9 @@ function Cadastro() {
 					"nome": data.nomeRestaurante,
 					"descricao": data.descricao,
 					"idCategoria": data.idCategoria,
-					"taxaEntrega": data.taxaEntrega,
-					"tempoEntregaEmMinutos": data.tempoEntregaEmMinutos,
-					"valorMinimoPedido": data.valorMinimoPedido,
+					"taxaEntrega": getCents(data.taxaEntrega),
+					"tempoEntregaEmMinutos": parseInt(data.tempoEntregaEmMinutos),
+					"valorMinimoPedido": getCents(data.valorMinimoPedido),
 				}
 			}),
 			headers: {
