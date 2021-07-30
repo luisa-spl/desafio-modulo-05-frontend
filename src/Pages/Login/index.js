@@ -32,6 +32,8 @@ export default function Login() {
 		console.log(data)
 		setError(false);
 
+
+
 		fetch('https://icubus.herokuapp.com/login', {
 			method: "POST",
 			body: JSON.stringify(data),

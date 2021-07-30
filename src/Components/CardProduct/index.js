@@ -1,89 +1,33 @@
-import React, { useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import Button from '@material-ui/core/Button';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import React, { useState, useContext } from 'react';
+import { useHistory } from 'react-router-dom';
 import ModalEditProduct from '../ModalEditProduct';
 import PenIcon from '../../Assets/pen-icon.svg';
+import { AuthContext } from '../../Contexts/AuthContext';
+import useStyles from './style';
+import './style.css';
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth:  400,
-    minHeight: 'min-content',
-    padding: '0.5rem',
-    boxShadow: '0px 4px 6px rgba(50, 50, 50, 0.24)',
-    borderRadius: '24px'
-  },
+import Alert from '@material-ui/lab/Alert';
+import {
+    Card,
+    CardMedia,
+    CardContent,
+    CircularProgress
+} from '@material-ui/core'; 
 
-  divContent: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-start',
-      gap: '0.5rem',
-      width: '10rem',
-      height: '8.7rem',
-  },
 
-  cardContent: {
-      display: 'flex',
-      gap: '2rem',
-      height: '9rem',
-      position: 'relative'
-  },
 
-  cardImg: {
-    borderRadius: '16px',
-  },
-
-  priceDiv: {
-      background: 'linear-gradient(0deg, rgba(13, 138, 79, 0.1), rgba(13, 138, 79, 0.1)), #FFFFFF',
-      borderRadius: '4px',
-      width: 'min-content',
-      color: '#006335',
-      fontWeight: 'bold'
-  },
-
-  h2: {
-      margin: 0,
-      color: 'rgba(82, 84, 89, 1)'
-  },
-
-  spanDesc: {
-      flexGrow: 1,
-      marginTop: '0.3rem',
-      color: 'rgba(34, 34, 34, 0,87)'
-  },
-
-  modalAberto: {
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'center',
-      alignItems: 'center',
-      gap: '1rem',
-      position: 'absolute',
-      background: 'rgba(255, 255, 255, 0.6)',
-      backdropFilter: 'blur(6px)',
-      borderRadius: '24px',
-      width: '24rem',
-      height: '10.8rem',
-      zIndex: 2,
-      marginTop: '-10.8rem',
-  },
-
-  modalFechado: {
-      display: 'none'
-  }
-});
-
-export default function CardProduct({nome, preco, descricao, img}) {
+export default function CardProduct({ id, nome, preco, descricao, img, ativo, permite_observacoes }) {
   const classes = useStyles();
-  const [openModal, setOpenModal] = useState(false);
-  const [open, setOpen] = useState(false);
-    
+  const history = useHistory();
+  const { token } = useContext(AuthContext);
+  const [ openModal, setOpenModal ] = useState(false);
+  const [ open, setOpen ] = useState(false);
+  const [ carregando, setCarregando ] = useState(false);
+  const [ erro, setErro ] = useState('');
+  const precoFormatado = (preco/100).toFixed(2); 
+  
   function handleClick() {
-      setOpen(true)
+    setOpen(true)
   }
 
   const handleClickOpenModal = () => {
@@ -94,7 +38,27 @@ export default function CardProduct({nome, preco, descricao, img}) {
     setOpenModal(false);
   };
 
-  
+  async function handleDelete() {
+    setCarregando(true);
+
+        try {
+            const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id} `, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`,  
+                }
+            });
+
+            if(!resposta.ok) {
+                setErro("Não foi possível excluir");
+            }
+
+            setOpenModal(false);
+        }
+        catch(error) {
+            setErro(error.message);
+        }
+  }
 
   return (
     <Card id='card' className={classes.root}>
@@ -103,7 +67,7 @@ export default function CardProduct({nome, preco, descricao, img}) {
             <h2 className={classes.h2}>{nome}</h2>
             <span className={classes.spanDesc}>{descricao}</span>
             <div className={classes.priceDiv}>
-                {`R$${preco}`}
+                {`R$${precoFormatado}`}
             </div>
         </div>
         
@@ -120,12 +84,28 @@ export default function CardProduct({nome, preco, descricao, img}) {
       </CardContent>
 
       <div className={ openModal ? classes.modalAberto : classes.modalFechado} onClick={handleClose}>
-            <button className='transparent-btn font-montserrat font-color-orange font-bold'>Excluir Produto</button>
+            <button 
+              className='transparent-btn font-montserrat font-color-orange font-bold'
+              onClick={handleDelete}  
+            >
+              Excluir Produto
+            </button>
+
             <button className='btn-orange-small font-montserrat font-color-white' onClick={() => handleClick()}>
                 <div style={{marginRight: '10px'}}>Editar Produto</div>
                 <img src={PenIcon} alt='' />
             </button> 
-            <ModalEditProduct open={open} setOpen={setOpen} />
+            <ModalEditProduct 
+              open={open} 
+              setOpen={setOpen} 
+              id={id} 
+              img={img}
+              ativo={ativo}
+              permite_observacoes={permite_observacoes}
+              />
+              
+              {carregando && <CircularProgress />}
+              {erro && <Alert severity="error">{erro}</Alert>}
       </div>
     </Card>
   );

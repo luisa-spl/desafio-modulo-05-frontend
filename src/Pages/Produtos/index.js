@@ -1,21 +1,55 @@
 import React from 'react';
-import './style.css';
+import { useEffect, useState, useContext } from 'react';
 import ActionButton from '../../Components/ActionButton';
 import Header from '../../Components/Header';
 import CardProduct from '../../Components/CardProduct';
-import data from '../../Utils/data';
+import { AuthContext } from '../../Contexts/AuthContext';
+import PizzaImg from '../../Assets/pizza.png';
+import './style.css';
+
+import Alert from '@material-ui/lab/Alert';
+
 
 function Produtos() {
+    const { token } = useContext(AuthContext);
+    const [ erro, setErro ] = useState('');
+    const [ produtos, setProdutos ] = useState([]);
+
+    useEffect( () => {
+        async function listarProdutos() {
+            
+            try {
+                const resposta = await fetch('https://icubus.herokuapp.com/produtos', {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                        'Content-Type': 'application/json' 
+                    }
+                });
+            
+                const  dadosResp = await resposta.json();
+
+                setProdutos(dadosResp);
+            } 
+            catch(error) {
+                setErro(error.message);
+                return;
+            }
+        };
+        
+        listarProdutos();
+    }, [token, produtos]);
+
     return(
         <div className='flex-column items-center container-products'>
             <Header />
 
-            {data.length == 0 ? 
+            {produtos.length === 0 ? 
                     <div className='flex-column content-center items-center main-products'>
                         <div className='flex-row items-center content-center font-montserrat font-color-gray text-products'>
                             Você ainda não tem nenhum produto no seu cardápio. Gostaria de adicionar um novo produto?
                         </div>
                         <ActionButton />
+                        {erro && <Alert severity="error">{erro}</Alert>}
                     </div> 
 
                     :
@@ -25,13 +59,18 @@ function Produtos() {
                             <ActionButton />
                         </div>
                         <div className='grid'>
-                            {data.map((x) => {
+                            {produtos.map((x) => {
                                 return (
                                     <CardProduct 
+                                        key={x.id}
+                                        id={x.id}
+                                        id_restaurante={x.id_restaurante}
                                         nome={x.nome}
                                         descricao={x.descricao}
-                                        img={x.img}
+                                        img={PizzaImg}
                                         preco={x.preco} 
+                                        ativo={x.ativo}
+                                        permite_observacoes={x.permite_observacoes}
                                     />
                                 )
                             })} 
