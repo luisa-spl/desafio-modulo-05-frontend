@@ -20,7 +20,6 @@ export default function Login() {
 	const { setToken } = useContext(AuthContext)
 	const classes = useStyles();
 	const history = useHistory();
-	console.log(history)
 	const [error, setError] = useState(false)
 	const { register, handleSubmit } = useForm()
 	const [showRegisterSuccess, setShowRegisterSuccess] = useState(() =>
@@ -29,7 +28,7 @@ export default function Login() {
 
 
 	async function onSubmit(data) {
-		console.log(data)
+
 		setError(false);
 
 
@@ -44,7 +43,7 @@ export default function Login() {
 			const data = await res.json()
 
 			if (res.status > 299) {
-				console.log(data)
+				
 				setError(data)
 			} else {
 				setToken(data.token)

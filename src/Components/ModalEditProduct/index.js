@@ -33,8 +33,8 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const [ erro, setErro ] = useState('');
     const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
-            ativo: false,
-            permite_observacoes: false,
+        produto_ativo: Boolean(item.ativo),
+        permite_observacoes: Boolean(item.permite_observacoes),
     });
     
     const handlecloseAlert = () => {
@@ -43,6 +43,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
 
     useEffect(() => {
         async function listarProduto(){
+            setErro('');
             try {
                 const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id}`, {
                     headers: {
@@ -51,10 +52,15 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 });
             
                 const  dados = await resposta.json();
-               console.log(dados);
+              
                 if(resposta.status >= 400) {
                     return setErro(dados)
                 }
+
+                setActive({
+                    produto_ativo: Boolean(dados.ativo),
+                    permite_observacoes: Boolean(dados.permite_observacoes),
+                })
         
                 return setItem(dados) 
             } 
@@ -65,6 +71,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
         listarProduto()
     }, [token])
 
+    
 
     const handleChange= (event) => {
             setActive({ ...active, [event.target.name]: event.target.checked});
@@ -79,7 +86,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     async function onSubmit(data) {
             setCarregando(true)
 
-            if(item.ativo === true && active.ativo !== item.ativo ) {   
+            if(item.ativo === true && active.produto_ativo !== item.ativo ) {   
                 const { erro } = await disableProduct({id, token})
               
                 if(erro){
@@ -91,7 +98,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                
             }
 
-            if(item.ativo === false && active.ativo !== item.ativo) {
+            if(item.ativo === false && active.produto_ativo !== item.ativo) {
                 
                 const { erro } = await activateProduct({id, token})
             ;
@@ -102,15 +109,16 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                     return 
                 }
             }
+            const precoFormatado = Number(data.value).toFixed(2)*100;
+
             
-            console.log(data);
             const produtoFormatado = {
                 nome: data.name || item.nome,
                 descricao: data.description || item.descricao,
-                preco: data.value || item.preco,
+                preco: precoFormatado || item.preco,
                 permiteObservacoes: active.permite_observacoes
             }
-                console.log(produtoFormatado);
+                
                 const { erro } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
@@ -177,9 +185,9 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                 <FormControlLabel
                                     control={
                                     <Switch
-                                        checked={item.ativo ? true : active.ativo}
+                                    checked={active.produto_ativo}
                                         onChange={handleChange}
-                                        name="ativo"
+                                        name="produto_ativo"
                                         color="primary"
                                     />
                                     }
@@ -189,7 +197,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                 <FormControlLabel
                                     control={
                                     <Switch
-                                        checked={item.permite_observacoes ? true : active.permite_observacoes}
+                                        checked={active.permite_observacoes}
                                         onChange={handleChange}
                                         name="permite_observacoes"
                                         color="primary"
