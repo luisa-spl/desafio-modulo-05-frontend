@@ -1,6 +1,6 @@
 svg.MuiStepIcon-root.MuiStepIcon-active{
     color: rgba(209, 50, 1, 0.2)
-   
+
 }
 
 svg.MuiStepIcon-root {
@@ -9,6 +9,13 @@ svg.MuiStepIcon-root {
 
 svg.MuiStepIcon-root.MuiStepIcon-completed {
     color: rgba(13, 138, 79, 0.2)
+}
+
+span.linkCadastro {
+	text-align: center;
+	font-size: 12px;
+	font-family: 'Montserrat', sans-serif;
+	margin-bottom: 20px;
 }
 
 
