@@ -63,7 +63,7 @@ export default function Login() {
 		<div className={classes.container}>
 
 			<Card className={classes.cardLogin}>
-				<CardContent>
+				<CardContent >
 					{showRegisterSuccess && (
 						<Alert severity="success" onClose={handleCloseAlert}>
 							Cadastro efetuado com sucesso
@@ -77,7 +77,7 @@ export default function Login() {
 					)}
 					<form className={classes.formsLogin} onSubmit={handleSubmit(onSubmit)} noValidate autoComplete="off">
 						<div className={classes.formsLogin}>
-							<Typography className='placeholderLogin font-montserrat'>E-mail</Typography>
+							<h2 className='placeholderLogin font-montserrat'>Email</h2>
 							<TextField
 								id="input-email"
 								type='email'
@@ -86,7 +86,7 @@ export default function Login() {
 							/>
 						</div>
 						<div className={classes.formsLogin}>
-							<Typography className='placeholderLogin font-montserrat'>Senha</Typography>
+							<h2 className='placeholderLogin font-montserrat'>Senha</h2>
 							<InputSenha
 								register={() => register('senha', { required: true })}
 								id="inputSenhaLogin" />
@@ -96,7 +96,7 @@ export default function Login() {
 						</button>
 					</form>
 					<div className={classes.linkcadastrese}>
-						<Typography>Ainda não tem uma conta? <a href="/cadastro" >Cadastre-se </a> </Typography>
+						<span className='linkLogin'>Ainda não tem uma conta? <a href="/cadastro" >Cadastre-se </a> </span>
 
 					</div>
 				</CardContent>
