@@ -14,7 +14,7 @@ Prévia da aplicação:
 
 ## Login:
 
-<img src="./preview/loginIcubos.png" alt="imagem-tela-login" />
+<img src="./preview/loginICubos.png" alt="imagem-tela-login" />
 
 ## Cadastro:
 
