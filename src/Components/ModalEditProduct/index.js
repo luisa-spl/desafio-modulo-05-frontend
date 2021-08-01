@@ -1,136 +1,136 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
 import { AuthContext } from '../../Contexts/AuthContext';
+import useProductsContext from '../../Hooks/useContextProducts';
 import useStyles from './style';
+import { disableProduct, activateProduct, editProduct, getProducts } from '../../Services/functions';
 import './style.css';
 
 import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 import { 
         Dialog,
         DialogActions,
         DialogContent,
         DialogTitle,
         FormControlLabel,
-        InputAdornment,
         InputLabel,
+        InputAdornment,
         Switch,
         TextField,
-        CircularProgress
+        CircularProgress,
+        IconButton
     } from '@material-ui/core';
 
 
 
-export default function ModalEditProduct({ open, setOpen, id, nome, descricao, preco, ativo, permite_observacoes, img }) {
-    const classes = useStyles(); 
-    const history = useHistory();
+export default function ModalEditProduct({ open, setOpen, id, img }) {
+    const classes = useStyles();
     const { token } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
+    const { setProdutos } = useProductsContext();
     const [ erro, setErro ] = useState('');
+    const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
-            ativo: ativo,
-            permite_observacoes: permite_observacoes,
+            ativo: false,
+            permite_observacoes: false,
     });
     
-    
-    const product = {
-            nome: nome,
-            descricao: descricao,
-            preco: Number(preco).toFixed(2)*100,
-    };
-    
+    const handlecloseAlert = () => {
+        setErro('');
+    }
+
+    useEffect(() => {
+        async function listarProduto(){
+            try {
+                const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id}`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                    }
+                });
+            
+                const  dados = await resposta.json();
+               console.log(dados);
+                if(resposta.status >= 400) {
+                    return setErro(dados)
+                }
+        
+                return setItem(dados) 
+            } 
+            catch(error) {
+                return setErro(error.message);
+            }
+        }   
+        listarProduto()
+    }, [token])
+
 
     const handleChange= (event) => {
-            setActive({ ...active, [event.target.name]: event.target.checked });
+            setActive({ ...active, [event.target.name]: event.target.checked});
     };
 
     const handleClose = () => {
-            setOpen(false);
+           return setOpen(false);
     };
+
+
 
     async function onSubmit(data) {
             setCarregando(true)
 
-            const precoFormatado = Number(data.value).toFixed(2)*100;
+            if(item.ativo === true && active.ativo !== item.ativo ) {   
+                const { erro } = await disableProduct({id, token})
+              
+                if(erro){
+                    setErro(erro);
+                    setCarregando(false);
+                    handleClose();
+                    return 
+                }
+               
+            }
+
+            if(item.ativo === false && active.ativo !== item.ativo) {
+                
+                const { erro } = await activateProduct({id, token})
+            ;
+                if(erro){
+                    setErro(erro)
+                    setCarregando(false);
+                    handleClose();
+                    return 
+                }
+            }
             
+            console.log(data);
             const produtoFormatado = {
-                nome: data.name || product.nome,
-                descricao: data.description || product.descricao,
-                preco: precoFormatado || product.preco,
-                permite_observacoes: active.permite_observacoes
-            };
-
-            try{
-                const resposta = await fetch(` https://icubus.herokuapp.com/produtos/${id}`, {
-                    method: 'PUT',
-                    body: JSON.stringify(produtoFormatado),
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }
-                });
-
-                const dados = await resposta.json();
-
-                if(resposta.status !== 200) {
-                   setErro(dados.erro);
-                   return;
+                nome: data.name || item.nome,
+                descricao: data.description || item.descricao,
+                preco: data.value || item.preco,
+                permiteObservacoes: active.permite_observacoes
+            }
+                console.log(produtoFormatado);
+                const { erro } = await editProduct({produtoFormatado, id, token})
+                
+                if(erro) {
+                    setErro(erro);
+                    setCarregando(false);
+                    handleClose();
+                    return 
                 };
-            }
-            catch(error) {
-                setErro(error.message);
-                return;
-            }
+                
             
-            if(ativo === true && active.ativo !== ativo ) {   
-
-                try {
-                    const resposta = await fetch(` https://icubus.herokuapp.com/produtos/${id}/desativar`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    const dados = await resposta.json();
-
-                    if(resposta.status !== 200) {
-                        setErro(dados.erro);
-                        return;
-                    };
-
-                } catch(error) {
-                    setErro(error.message);
-                    return;
+                const { lista, error } = await getProducts(token);
+                
+                if(error){
+                    return setErro(error)
                 }
-            }
-
-            if(ativo === false && active.ativo !== ativo) {
-                try {
-                    const resposta = await fetch(` https://icubus.herokuapp.com/produtos/${id}/ativar`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Authorization': `Bearer ${token}`
-                        }
-                    });
-
-                    const dados = await resposta.json();
-
-                    if(resposta.status !== 200) {
-                       setErro(dados.erro);
-                       return;
-                    };
-
-                } catch(error) {
-                    setErro(error.message);
-                    return;
-                }
-            }
+                
+                setProdutos(lista) 
+        
             setCarregando(false);
-            history.push('/produtos');
+            handleClose();
     };
 
     return (
@@ -146,7 +146,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                     type='text'
                                     variant='outlined'
                                     id='name' 
-                                    placeholder={nome}
+                                    placeholder={item.nome}
                                     {...register('name', {maxLength: 50})} 
                                 />  
                                     {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}  
@@ -156,7 +156,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                     size='small' 
                                     variant='outlined'
                                     id='description'  
-                                    placeholder={descricao}
+                                    placeholder={item.descricao}
                                     helperText="Max: 80 caracteres"
                                     {...register('description', { maxLength: 100 })} 
                                 />               
@@ -167,7 +167,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                     size='small' 
                                     variant='outlined'
                                     id='value'
-                                    placeholder={preco}
+                                    placeholder={item.preco/100}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                                     }}
@@ -177,7 +177,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                 <FormControlLabel
                                     control={
                                     <Switch
-                                        checked={ativo ? active.ativo : false}
+                                        checked={item.ativo ? true : active.ativo}
                                         onChange={handleChange}
                                         name="ativo"
                                         color="primary"
@@ -189,7 +189,7 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                 <FormControlLabel
                                     control={
                                     <Switch
-                                        checked={permite_observacoes ? active.permite_observacoes : false}
+                                        checked={item.permite_observacoes ? true : active.permite_observacoes}
                                         onChange={handleChange}
                                         name="permite_observacoes"
                                         color="primary"
@@ -203,22 +203,31 @@ export default function ModalEditProduct({ open, setOpen, id, nome, descricao, p
                                 <div className={classes.profilePicture}>
                                     <img className='imgProduct' src={img}  alt=""/>
                                 </div>
-
-                                <DialogActions>
+                            
+                                <div className='flex-row'>
                                     <button 
                                         className='transparent-btn font-montserrat font-color-orange font-bold'
                                         onClick={handleClose}
-                                    >
+                                        >
                                         Cancelar
                                     </button>
-                                    
-                                    <button type='submit' className='btn-orange-small font-montserrat font-color-white'>
-                                        Salvar alterações
-                                    </button> 
-                                </DialogActions>
 
-                                {carregando && <CircularProgress />}
-                                {erro && <Alert severity="error">{erro}</Alert>}
+                                    <DialogActions>
+                                        <button type='submit' className='btn-orange-small font-montserrat font-color-white'>
+                                            Salvar alterações
+                                        </button> 
+                                    </DialogActions>
+
+                                    {carregando && <CircularProgress />}
+                                    
+                                </div>
+                                {erro &&
+                                    <Alert severity="error" onClick={handlecloseAlert}>{erro} 
+                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                                        <CloseIcon fontSize="small" />
+                                        </IconButton>
+                                    </Alert> 
+                                } 
                             </div>
                         </form>
                 </DialogContent>  

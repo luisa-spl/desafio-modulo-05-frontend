@@ -1,63 +1,71 @@
 import React, { useState, useContext } from 'react';
-import { useHistory } from 'react-router-dom';
 import ModalEditProduct from '../ModalEditProduct';
 import PenIcon from '../../Assets/pen-icon.svg';
 import { AuthContext } from '../../Contexts/AuthContext';
+import useProductsContext from '../../Hooks/useContextProducts';
+import { getProducts, deleteProduct } from '../../Services/functions';
 import useStyles from './style';
 import './style.css';
 
 import Alert from '@material-ui/lab/Alert';
+import CloseIcon from '@material-ui/icons/Close';
 import {
     Card,
     CardMedia,
     CardContent,
-    CircularProgress
+    CircularProgress,
+    IconButton,
 } from '@material-ui/core'; 
 
 
 
-export default function CardProduct({ id, nome, preco, descricao, img, ativo, permite_observacoes }) {
+export default function CardProduct({ id, nome, preco, descricao, img }) {
   const classes = useStyles();
-  const history = useHistory();
   const { token } = useContext(AuthContext);
   const [ openModal, setOpenModal ] = useState(false);
   const [ open, setOpen ] = useState(false);
   const [ carregando, setCarregando ] = useState(false);
+  const { setProdutos } = useProductsContext();
   const [ erro, setErro ] = useState('');
   const precoFormatado = (preco/100).toFixed(2); 
   
   function handleClick() {
-    setOpen(true)
+      setOpen(true)
   }
 
   const handleClickOpenModal = () => {
-    setOpenModal(true);
+      setOpenModal(true);
   };
 
   const handleClose = () => {
-    setOpenModal(false);
+      setOpenModal(false);
   };
 
+  const handlecloseAlert = () => {
+      setErro('');
+  }
+
   async function handleDelete() {
-    setCarregando(true);
+      setCarregando(true);
 
-        try {
-            const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id} `, {
-                method: 'DELETE',
-                headers: {
-                    'Authorization': `Bearer ${token}`,  
-                }
-            });
+      const { erro } = await deleteProduct({id, token});
+     
+      if(erro){
+        setErro(erro)
+        setCarregando(false);
+        handleClose();
+        return 
+      }
 
-            if(!resposta.ok) {
-                setErro("Não foi possível excluir");
-            }
-
-            setOpenModal(false);
+      const { lista, error } = await getProducts(token);
+                
+        if(error){
+          return setErro(error)
         }
-        catch(error) {
-            setErro(error.message);
-        }
+        
+      setProdutos(lista) 
+
+      setCarregando(false)    
   }
 
   return (
@@ -90,7 +98,7 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
             >
               Excluir Produto
             </button>
-
+            
             <button className='btn-orange-small font-montserrat font-color-white' onClick={() => handleClick()}>
                 <div style={{marginRight: '10px'}}>Editar Produto</div>
                 <img src={PenIcon} alt='' />
@@ -100,13 +108,16 @@ export default function CardProduct({ id, nome, preco, descricao, img, ativo, pe
               setOpen={setOpen} 
               id={id} 
               img={img}
-              ativo={ativo}
-              permite_observacoes={permite_observacoes}
               />
-              
-              {carregando && <CircularProgress />}
-              {erro && <Alert severity="error">{erro}</Alert>}
       </div>
+              {carregando && <CircularProgress />}
+              {erro &&
+                  <Alert severity="error" onClick={handlecloseAlert}>{erro} 
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                    <CloseIcon fontSize="small" />
+                    </IconButton>
+                  </Alert> 
+              }      
     </Card>
   );
 }

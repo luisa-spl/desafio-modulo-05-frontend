@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { useHistory } from 'react-router-dom';
+import formatCurrency from "format-currency"
 import { AuthContext } from '../../Contexts/AuthContext';
 import UploadIcon from '../../Assets/upload-icon.svg';
 import useStyles from './style';
 import './style.css';
-
+import { registerProduct, getProducts } from '../../Services/functions';
 
 import Alert from '@material-ui/lab/Alert';
 import ActionButtonSubmit from '../ActionButtonSubmit';
@@ -15,7 +15,6 @@ import {
         DialogContent,
         DialogTitle,
         FormControlLabel,
-        InputAdornment,
         InputLabel,
         Switch,
         TextField,
@@ -23,18 +22,32 @@ import {
     } from '@material-ui/core';
 
 
-export default function ModalAddProduct({open, setOpen}) {
+export default function ModalAddProduct({open, setOpen, produtos, setProdutos}) {
     const classes = useStyles(); 
-    const history = useHistory();
     const { token } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [carregando, setCarregando] = useState(false);
-    const [erro, setErro] = useState('');
+    const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+    const [ carregando, setCarregando ] = useState(false);
+    const [ erro, setErro ] = useState('');
     const [ active, setActive ] = useState({
             ativo: true,
             permite_observacoes: false,
     });
-    
+
+    const setCurrencyMask = (e) => {
+		const value = e.target.value.toString().replace(/\D/g, "");
+		const money = parseFloat(value) / 100;
+
+		e.target.value = formatCurrency(money, {
+			maxFraction: 2,
+			locale: "pt-BR",
+			format: "%s %v",
+			symbol: "R$",
+		});
+		return e
+	}
+
+    const valor = register('valor', { required: true });
+
     const handleChange= (event) => {
             setActive({ ...active, [event.target.name]: event.target.checked });
     };
@@ -43,44 +56,43 @@ export default function ModalAddProduct({open, setOpen}) {
             setOpen(false);
     };
 
+
     async function onSubmit(data) {
         setCarregando(true);
+        setErro('');
        
-        const precoFormatado = Number(data.value).toFixed(2)*100;
         
+        const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
+
         const produtoFormatado = {
-            nome: data.name,
-            descricao: data.description,
-            preco: precoFormatado,
-            ativo: active.ativo,
-            permite_observacoes: active.permite_observacoes,
+                nome: data.name,
+                descricao: data.description,
+                preco: getCents(data.valor),
+                permiteObservacoes: active.permite_observacoes,
         };
+
         
-        try {
-            const resposta = await fetch('https://icubus.herokuapp.com/produtos', {
-                method: 'POST',
-                body: JSON.stringify(produtoFormatado),
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            });
+        const { erro } = await registerProduct({produtoFormatado, token})
+                
+                if(erro) {
+                    setErro(erro);
+                    setCarregando(false);
+                    setOpen(false);
+                    return;
+                };  
 
-            const dados = await resposta.json();
-
-            if(resposta.status === 200) {
-                setOpen(false);
-                //  history.push('/produtos');
-            } else{
-                setErro(dados.erro);
-                return;
+        
+            const { lista, error } = await getProducts(token);
+           
+            if(error){
+                return setErro(error)
             }
-        }
-        catch(error) {
-            setErro(error.message);
-        }
+       
+        setProdutos(lista)
         setCarregando(false);
+        setOpen(false);
     };
+
 
     return (
         <div className={classes.dialog}>
@@ -113,17 +125,17 @@ export default function ModalAddProduct({open, setOpen}) {
 
                                 <InputLabel htmlFor="value">Valor</InputLabel>    
                                 <TextField
-                                    size='small' 
-                                    type='text'
-                                    variant='outlined'
-                                    id='value'
-                                    placeholder='00.00'
-                                    InputProps={{
-                                        startAdornment: <InputAdornment position="start">R$</InputAdornment>,
+                                    variant="outlined"
+                                    id="valor"
+                                    autoComplete="off"
+                                    error={Boolean(errors.valor)}
+                                    helperText={errors.valor ? "Campo Obrigatório" : false}
+                                    {...valor}
+                                    onChange={(e) => {
+                                        valor.onChange(setCurrencyMask(e))
                                     }}
-                                    {...register('value', { required: true })}
                                 />
-                                    {errors.value?.type === 'required' && <Alert severity="error">{'O campo preço é obrigatório'}</Alert>}
+                                    {errors.valor?.type === 'required' && <Alert severity="error">{'O campo preço é obrigatório'}</Alert>}
 
                                 <FormControlLabel
                                     control={
@@ -152,24 +164,24 @@ export default function ModalAddProduct({open, setOpen}) {
 
                             <div className={classes.uploadDiv}>
                                 <div className={classes.profilePicture}>
-                                    <img src={UploadIcon} />
+                                    <img src={UploadIcon} alt='imagem'/>
                                 </div>
-
-                                <DialogActions>
-                                <button 
-                                    className='transparent-btn font-montserrat font-color-orange font-bold' 
-                                    onClick={handleClose} 
-                                >
-                                        Cancelar
-                                </button>
-                                    
-                                <ActionButtonSubmit /> 
-
-                                </DialogActions>
-
-                                {carregando && <CircularProgress />}
-                                {erro && <Alert severity="error">{erro}</Alert>}
                                 
+                                <div className='flex-row'>
+                                    <DialogActions>
+                                    <button 
+                                        className='transparent-btn font-montserrat font-color-orange font-bold' 
+                                        onClick={handleClose} 
+                                    >
+                                            Cancelar
+                                    </button>
+
+                                    </DialogActions>
+                                    <ActionButtonSubmit /> 
+
+                                    {carregando && <CircularProgress />}
+                                    {erro && <Alert severity="error">{erro}</Alert>}
+                                </div>
                             </div>
                         </form>
                 </DialogContent>  
