@@ -27,7 +27,8 @@ export default function Login() {
 
 
 	async function onSubmit(data) {
-		
+
+
 		setError(false);
 
 
@@ -42,7 +43,7 @@ export default function Login() {
 			const data = await res.json()
 
 			if (res.status > 299) {
-			
+
 				setError(data)
 			} else {
 				setToken(data.token)
