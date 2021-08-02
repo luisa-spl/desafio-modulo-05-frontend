@@ -24,4 +24,12 @@ Prévia da aplicação:
 
 <img src="./preview/cadastroThirdStep.png" alt="imagem-tela-cadastro-terceiro-passo" />
 
+<img src="./preview/listaProdutos.png" alt="imagem-tela-lista-de-produtos" />
+
+<img src="./preview/editDelete.png" alt="imagem-tela-editar-ou-deletar-produto" />
+
+<img src="./preview/editProduct.png" alt="imagem-tela-editar-produto" />
+
+<img src="./preview/newProduct.png" alt="imagem-tela-novo-produto" />
+
 
