@@ -93,7 +93,7 @@ function Cadastro() {
 					</div>
 				</div>
 				{formularios[etapaAtual]}
-				<Typography className={classes.linkCadastro}>Já tem uma conta? <a href="/" >Login </a> </Typography>
+				<span className='linkCadastro'>Já tem uma conta? <a href="/" >Login </a> </span>
 			</div>
 
 		</div>
