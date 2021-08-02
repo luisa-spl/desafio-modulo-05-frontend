@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import formatCurrency from "format-currency"
 import { AuthContext } from '../../Contexts/AuthContext';
+import useProductsContext from '../../Hooks/useContextProducts';
 import UploadIcon from '../../Assets/upload-icon.svg';
 import useStyles from './style';
 import './style.css';
@@ -22,9 +23,10 @@ import {
     } from '@material-ui/core';
 
 
-export default function ModalAddProduct({open, setOpen, produtos, setProdutos}) {
+export default function ModalAddProduct({open, setOpen}) {
     const classes = useStyles(); 
     const { token } = useContext(AuthContext);
+    const { setProdutos } = useProductsContext();
     const { register, getValues, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
     const [ erro, setErro ] = useState('');

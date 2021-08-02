@@ -1,8 +1,8 @@
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
-//import ActionButton from '../../Components/ActionButton';
 import Header from '../../Components/Header';
 import CardProduct from '../../Components/CardProduct';
+import ModalAddProduct from '../../Components/ModalAddProduct';
 import { AuthContext } from '../../Contexts/AuthContext';
 import useProductsContext from '../../Hooks/useContextProducts';
 import PizzaImg from '../../Assets/pizza.png';
@@ -10,13 +10,12 @@ import './style.css';
 import {getProducts} from '../../Services/functions';
 import Alert from '@material-ui/lab/Alert';
 
-import ModalAddProduct from '../../Components/ModalAddProduct';
+
 
 function Produtos() {
     const { token } = useContext(AuthContext);
     const [ erro, setErro ] = useState('');
     const { produtos, setProdutos } = useProductsContext();
-    // const [ produtos, setProdutos ] = useState([]);
     const [ open, setOpen ] = useState(false);
         
     function handleClick() {
@@ -35,7 +34,7 @@ function Produtos() {
         };
 
         listarProdutos();
-    }, [token]);
+    }, [token, produtos]);
 
     return(
         <div className='flex-column items-center container-products'>
@@ -45,7 +44,7 @@ function Produtos() {
                     <div className='flex-column items-center container-main'>
                         <div className='actBtn'>
                             <div>
-                                <ModalAddProduct open={open} setOpen={setOpen} produtos={produtos} setProdutos={setProdutos}/>
+                                <ModalAddProduct open={open} setOpen={setOpen} />
                                 <button 
                                     className='btn-orange-big font-montserrat font-color-white'
                                     onClick={() => handleClick()} 
