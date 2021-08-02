@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useStyles } from './styles';
 import "./styles.css"
 import CadastroPrimeiroPasso from '../../Components/CadastroPrimeiroPasso'
