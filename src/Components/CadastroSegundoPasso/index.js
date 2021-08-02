@@ -7,6 +7,8 @@ import {
 	Typography,
 } from '@material-ui/core';
 import { useForm } from "react-hook-form";
+import { useState, useEffect } from 'react';
+
 
 
 
@@ -15,53 +17,20 @@ import { useForm } from "react-hook-form";
 function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 	const classes = useStyles();
 	const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+	const [categorias, setCategorias] = useState([])
 
-	const categorias = [
-		{
-			id: 1,
-			label: 'Diversos'
-		},
-		{
-			id: 2,
-			label: 'Lanches',
-		},
-		{
-			id: 3,
-			label: 'Carnes',
-		},
-		{
-			id: 4,
-			label: 'Massas',
-		},
-		{
-			id: 5,
-			label: 'Pizzas',
-		},
-		{
-			id: 6,
-			label: 'Japonesa',
-		},
-		{
-			id: 7,
-			label: 'Chinesa',
-		},
-		{
-			id: 8,
-			label: 'Mexicano',
-		},
-		{
-			id: 9,
-			label: 'Brasileira',
-		},
-		{
-			id: 10,
-			label: 'Italiana',
-		},
-		{
-			id: 11,
-			label: 'Árabe',
-		},
-	];
+
+	async function getCategorias() {
+		await fetch('https://icubus.herokuapp.com/categorias')
+			.then(async (res) => {
+				const data = await res.json()
+				setCategorias(data)
+			})
+	}
+
+	useEffect(() => {
+		getCategorias()
+	}, [])
 
 
 	const onSubmit = () => {
@@ -96,7 +65,7 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 					>
 						{categorias.map((categoria) => (
 							<MenuItem key={categoria.id} value={categoria.id}>
-								{categoria.label}
+								{categoria.nome}
 							</MenuItem>
 						))}
 					</TextField>
