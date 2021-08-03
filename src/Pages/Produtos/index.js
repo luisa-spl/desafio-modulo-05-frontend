@@ -37,7 +37,7 @@ function Produtos() {
 			if(errorGet){
 				setErro(errorGet)
 			}
-			setAtualizaProduto(true)
+			setAtualizaProduto(false)
 			return setProdutos(lista)
 		};
 

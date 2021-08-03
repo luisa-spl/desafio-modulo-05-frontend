@@ -29,9 +29,9 @@ import { AirlineSeatIndividualSuite } from '@material-ui/icons';
 export default function ModalEditProduct({ open, setOpen, id, img }) {
     const classes = useStyles();
     const { token } = useContext(AuthContext);
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, unregister } = useForm();
     const [ carregando, setCarregando ] = useState(false);
-    const { setProdutos, setAtualizaProduto } = useProductsContext();
+    const { setProdutos, setAtualizaProduto, atualizaProduto } = useProductsContext();
     const [ atualiza, setAtualiza ] = useState(false);
     const [ baseImage, setBaseImage ] = useState("");
     const [ file, setFile ] = useState('');
@@ -43,7 +43,14 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     });
     
 
-   
+   useEffect(() =>{
+        return () => {
+            unregister("name")
+            unregister("description")
+            unregister("value")
+        }
+   }, [atualizaProduto])
+
     const handlecloseAlert = () => {
         setErro('');
     }
@@ -82,7 +89,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
         }   
         listarProduto()
        
-    }, [token, atualiza, open])
+    }, [token, atualiza, atualizaProduto])
 
     const handleChange= (event) => {
             setActive({ ...active, [event.target.name]: event.target.checked});
@@ -116,7 +123,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
 
 
     async function onSubmit(data) {
-           console.log(data)
+       
             setCarregando(true)
         
 
@@ -173,7 +180,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 nomeImagem : file,
                 imagem: baseImage
             }
-                console.log(produtoFormatado)
+               
                 const { erro, error } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
@@ -225,8 +232,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     variant='outlined'
                                     id='name' 
                                     defaultValue={item.nome}
-                                    // onChange={(e) => setNome(e.target.value)}
-                                    // defaultValue={defaultValues.name}
                                     {...register('name', {maxLength: 50})} 
                                 />
                                 {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}
@@ -238,7 +243,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     variant='outlined'
                                     id='description'  
                                     defaultValue={item.descricao}
-                                    // placeholder={item.descricao}
                                     helperText="Max: 100 caracteres"
                                     {...register('description', { maxLength: 100 })} 
                                 />               
@@ -292,7 +296,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                         onChange={(e) => {uploadImage(e)}}
                                     />
                                     <img className='imgProduct' src={img}  alt=""/>
-                                    {/* <img className='iconUpload' src={UploadIcon} alt='imagem'/> */}
                                     <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                     
                                     
