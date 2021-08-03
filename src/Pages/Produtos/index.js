@@ -23,6 +23,8 @@ function Produtos() {
     }
 
     useEffect( () => {
+       
+
         async function listarProdutos() {
             setErro('');
             const { lista, error } = await getProducts(token);
@@ -34,7 +36,7 @@ function Produtos() {
         };
 
         listarProdutos();
-    }, [token, produtos]);
+    }, [token]);
 
     return(
         <div className='flex-column items-center container-products'>
