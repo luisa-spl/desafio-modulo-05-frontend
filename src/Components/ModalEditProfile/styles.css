@@ -1,0 +1,54 @@
+.containerEditProfile{
+	max-width: 850px;
+	max-height: 1563px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin: 0 auto;
+	box-shadow: 0px 4px 16px rgba(50, 50, 50, 0.4);
+	border-radius: 16px;
+}
+
+.containerEditProfile h1 {
+	font-family: 'Baloo 2', sans-serif;
+	color: #D13201;
+	font-size: 32px;
+	transform: translateX(-260px);
+}
+
+.formsEditProfile{
+	gap: 20px;
+	display: flex;
+	margin-bottom: 40px;
+}
+
+.uploadDivEditProfile{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 32px;
+}
+
+.profilePicture{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(177.64deg, rgba(18, 18, 18, 0.2) 1.98%, rgba(18, 18, 18, 0.8) 98.3%);
+	box-sizing: border-box;
+	border-radius: 16px;
+	width: 250px;
+	height: 250px;
+}
+
+.inputEditProfile{
+	min-width: 408px;
+	gap: 20px;
+	font-family: 'Montserrat', sans-serif;
+	font-weight: 600;
+	color: #393C40;
+}
+
+.actionButtons button{
+	margin-bottom: 30px;
+	display: flex;
+}
