@@ -29,23 +29,37 @@ div.MuiPaper-rounded {
     width: 100%;
     height: 100%;
     border-radius: 16px;
-    z-index:0;
+    z-index:0
 }
 
 .input-img {
-    opacity: 0;
-    position:absolute;
-    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background: linear-gradient(177.64deg, rgba(18, 18, 18, 0.2) 1.98%, rgba(18, 18, 18, 0.8) 98.3%); */
+    box-sizing: border-box;
+    border-radius: 16px;
     width: 250px;
     height: 250px;
- }
+    border-color: transparent;
+    position: absolute;
+    z-index: 2;
+    opacity: 0;
+}
 
- .labelInputImage {
+.iconUpload {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    z-index:1;
+}
+
+.labelInputImg {
     color: white;;
     font-weight: 600;
-    font-size: 14px;
-    text-align: center;
-    position: relative;
+    font-size: 16px;
+    text-align:center;
+    position: absolute;
     bottom: 20px;
-    z-index: 1;
- }
+    z-index: 3;
+}

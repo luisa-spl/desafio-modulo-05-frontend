@@ -27,16 +27,20 @@ function Produtos() {
 
 		async function listarProdutos() {
 			setErro('');
-			const { lista, error } = await getProducts(token);
+			const { lista, erros, errorGet } = await getProducts(token);
 
-			if (error) {
-				return setErro(error)
+			if (erros) {
+				return setErro(erros)
+			}
+
+			if(errorGet){
+				setErro(errorGet)
 			}
 			return setProdutos(lista)
 		};
 
 		listarProdutos();
-	}, []);
+	}, [token]);
 
 	return (
 		<div className='flex-column items-center container-products'>

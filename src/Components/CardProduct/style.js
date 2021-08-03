@@ -67,4 +67,6 @@ export default makeStyles((theme) => ({
       modalFechado: {
           display: 'none'
       }
+
+      
 }));

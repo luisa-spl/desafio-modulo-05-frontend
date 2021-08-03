@@ -10,13 +10,13 @@ export async function getProducts(token){
         const  lista = await resposta.json();
         
         if(resposta.status >= 400) {
-            return {error: lista}
+            return {erros: lista}
         }
 
         return {lista} 
     } 
     catch(error) {
-        return error.message;
+        return {errorGet: error.message};
     }
 };
 
@@ -86,7 +86,7 @@ export async function editProduct({produtoFormatado, id, token}) {
         return dados 
     }
     catch(error) {
-        return error.message;
+        return {error: error.message};
     }
 }
 

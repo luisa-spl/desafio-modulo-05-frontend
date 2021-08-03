@@ -35,7 +35,8 @@ export default makeStyles((theme) => ({
       boxSizing: 'border-box',
       borderRadius: '16px',
       width: 250,
-      height: 250
+      height: 250,
+      position: 'relative'
     },
 
     switchBase: {

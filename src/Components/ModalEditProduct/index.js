@@ -2,6 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { AuthContext } from '../../Contexts/AuthContext';
 import useProductsContext from '../../Hooks/useContextProducts';
+import UploadIcon from '../../Assets/mini-upload-icon.svg';
 import useStyles from './style';
 import { disableProduct, activateProduct, editProduct, getProducts } from '../../Services/functions';
 import './style.css';
@@ -45,6 +46,11 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
         setErro('');
     }
 
+    const handleClose = () => {
+        setErro('')
+        return setOpen(false);
+    }
+
     useEffect(() => {
         async function listarProduto(){
            
@@ -82,10 +88,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             setActive({ ...active, [event.target.name]: event.target.checked});
     };
 
-    const handleClose = () => {
-            setErro('')
-            return setOpen(false);
-    };
 
     const uploadImage = async (e) => {
             const file = e.target.files[0];
@@ -171,20 +173,32 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 imagem: baseImage
             }
                 console.log(produtoFormatado)
-                const { erro } = await editProduct({produtoFormatado, id, token})
+                const { erro, error } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
                     setErro(erro);
                     setCarregando(false);
                     return 
                 };
+
+                if(error){
+                    setErro(error);
+                    setCarregando(false);
+                    return
+                }
                 
             
-                const { lista, error } = await getProducts(token);
+                const { lista, erros, errorGet } = await getProducts(token);
                 
-                if(error){
+                if(erros){
                     setCarregando(false);
-                    return setErro(error);
+                    return setErro(erros);
+                }
+
+                if(errorGet) {
+                    setErro(errorGet);
+                    setCarregando(false);
+                    return
                 }
                 
             setProdutos(lista) 
@@ -272,6 +286,8 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                         onChange={(e) => {uploadImage(e)}}
                                     />
                                     <img className='imgProduct' src={img}  alt=""/>
+                                    <img className='iconUpload' src={UploadIcon} alt='imagem'/>
+                                    <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                     
                                     
                                 </div>
