@@ -54,21 +54,22 @@ export default function EditProfile({ setOpenModal }) {
 	const onSubmit = () => {
 		console.log('vim aqui')
 		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
-
+		console.log(values.nome)
+		console.log(values.nome_restaurante)
 		fetch('https://icubus.herokuapp.com/perfil', {
 			method: 'PUT',
 			body: JSON.stringify({
-				"nome": values.nome,
-				"email": values.email,
-				"senha": values.senha,
-				"restaurante": {
-					"nome": values.nome_restaurante,
-					"descricao": values.descricao,
-					"idCategoria": values.idCategoria,
-					"taxaEntrega": getCents(values.taxa_entrega),
-					"tempoEntregaEmMinutos": parseInt(values.tempo_entrega_minutos),
-					"valorMinimoPedido": getCents(values.valor_minimo_pedido),
-					"imagem": baseImage,
+				nome: values.nome,
+				email: values.email,
+				senha: values.senha,
+				restaurante: {
+					nome: values.nome_restaurante,
+					descricao: values.descricao,
+					idCategoria: values.idCategoria,
+					taxaEntrega: getCents(values.taxa_entrega),
+					tempoEntregaEmMinutos: parseInt(values.tempo_entrega_minutos),
+					valorMinimoPedido: getCents(values.valor_minimo_pedido),
+					imagem: baseImage
 				}
 			}),
 			headers: {
@@ -214,7 +215,7 @@ export default function EditProfile({ setOpenModal }) {
 					<div className='flex-column inputEditProfile'>
 						<span>Nome de usuário</span>
 						<TextField
-							id="input-edit-nome"
+							id="nome"
 							type='text'
 							variant="outlined"
 							autoComplete="off"

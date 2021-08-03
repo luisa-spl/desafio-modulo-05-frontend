@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import formatCurrency from "format-currency"
 import { AuthContext } from '../../Contexts/AuthContext';
 import useProductsContext from '../../Hooks/useContextProducts';
-import UploadIcon from '../../Assets/upload-icon.svg';
+import UploadIcon from '../../Assets/mini-upload-icon.svg';
 import useStyles from './style';
 import './style.css';
 import { registerProduct, getProducts } from '../../Services/functions';
@@ -211,7 +211,8 @@ export default function ModalAddProduct({open, setOpen}) {
                                         onChange={(e) => {uploadImage(e)}}
                                        
                                     />
-                                    <img className='imgProduct' src='https://i.ibb.co/yRt6Y55/addFoto.jpg' alt='imagem'/>
+                                    <img className='iconUpload' src={UploadIcon} alt='imagem'/>
+                                    <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                 </div>
                                 
                                 <div className='flex-row'>
