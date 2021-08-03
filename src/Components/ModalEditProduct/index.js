@@ -22,6 +22,7 @@ import {
         CircularProgress,
         IconButton
     } from '@material-ui/core';
+import { AirlineSeatIndividualSuite } from '@material-ui/icons';
 
 
 
@@ -30,7 +31,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const { token } = useContext(AuthContext);
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
-    const { setProdutos } = useProductsContext();
+    const { setProdutos, setAtualizaProduto } = useProductsContext();
     const [ atualiza, setAtualiza ] = useState(false);
     const [ baseImage, setBaseImage ] = useState("");
     const [ file, setFile ] = useState('');
@@ -40,6 +41,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
         produto_ativo: Boolean(item.ativo),
         permite_observacoes: Boolean(item.permite_observacoes),
     });
+    
 
    
     const handlecloseAlert = () => {
@@ -80,9 +82,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
         }   
         listarProduto()
        
-    }, [token, atualiza])
-
-    
+    }, [token, atualiza, open])
 
     const handleChange= (event) => {
             setActive({ ...active, [event.target.name]: event.target.checked});
@@ -113,6 +113,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             };
         });
     }
+
 
     async function onSubmit(data) {
            console.log(data)
@@ -157,7 +158,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             }
              
         
-            if(data.name === "" || data.name === undefined){
+            if(data.name === ""){
                 setCarregando(false)
                 setErro("O campo nome não pode ficar em branco")
                 return
@@ -202,10 +203,13 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 }
                 
             setProdutos(lista) 
+            setAtualizaProduto(true);
             setCarregando(false);
             setAtualiza(true);
             handleClose();
     };
+
+    
 
     return (
         <div className={classes.dialog}>
@@ -221,6 +225,8 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     variant='outlined'
                                     id='name' 
                                     defaultValue={item.nome}
+                                    // onChange={(e) => setNome(e.target.value)}
+                                    // defaultValue={defaultValues.name}
                                     {...register('name', {maxLength: 50})} 
                                 />
                                 {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}
@@ -286,7 +292,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                         onChange={(e) => {uploadImage(e)}}
                                     />
                                     <img className='imgProduct' src={img}  alt=""/>
-                                    <img className='iconUpload' src={UploadIcon} alt='imagem'/>
+                                    {/* <img className='iconUpload' src={UploadIcon} alt='imagem'/> */}
                                     <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                     
                                     

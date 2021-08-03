@@ -15,13 +15,14 @@ import Alert from '@material-ui/lab/Alert';
 function Produtos() {
 	const { token } = useContext(AuthContext);
 	const [erro, setErro] = useState('');
-	const { produtos, setProdutos } = useProductsContext();
+	const { produtos, setProdutos, atualizaProduto, setAtualizaProduto } = useProductsContext();
 	const [open, setOpen] = useState(false);
 
 	function handleClick() {
 		setOpen(true)
 	}
 
+	
 	useEffect(() => {
 
 
@@ -36,11 +37,12 @@ function Produtos() {
 			if(errorGet){
 				setErro(errorGet)
 			}
+			setAtualizaProduto(true)
 			return setProdutos(lista)
 		};
 
 		listarProdutos();
-	}, [token]);
+	}, [token, atualizaProduto]);
 
 	return (
 		<div className='flex-column items-center container-products'>
