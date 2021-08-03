@@ -64,7 +64,7 @@ function Produtos() {
                                         id_restaurante={x.id_restaurante}
                                         nome={x.nome}
                                         descricao={x.descricao}
-                                        img={PizzaImg}
+                                        img={x.imagem}
                                         preco={x.preco} 
                                         ativo={x.ativo}
                                         permite_observacoes={x.permite_observacoes}

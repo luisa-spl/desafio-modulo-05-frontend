@@ -32,7 +32,6 @@ export default makeStyles((theme) => ({
       justifyContent: 'center',
       alignItems: 'center',
       background: 'linear-gradient(177.64deg, rgba(18, 18, 18, 0.2) 1.98%, rgba(18, 18, 18, 0.8) 98.3%)',
-      border: '2px solid rgba(251, 59, 0, 0.2)',
       boxSizing: 'border-box',
       borderRadius: '16px',
       width: 250,

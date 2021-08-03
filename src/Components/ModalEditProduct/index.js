@@ -30,7 +30,9 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
     const { setProdutos } = useProductsContext();
-    const [atualiza, setAtualiza] = useState(false);
+    const [ atualiza, setAtualiza ] = useState(false);
+    const [ baseImage, setBaseImage ] = useState("");
+    const [ file, setFile ] = useState('');
     const [ erro, setErro ] = useState('');
     const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
@@ -85,10 +87,33 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             return setOpen(false);
     };
 
+    const uploadImage = async (e) => {
+            const file = e.target.files[0];
+            setFile(file.name);
 
+            const base64 = await convertBase64(file);
+            const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
+            
+            setBaseImage(formatImg);
+      };
+    
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+            resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+            reject(error);
+            };
+        });
+    }
 
     async function onSubmit(data) {
-           
+           console.log(data)
             setCarregando(true)
         
 
@@ -129,19 +154,23 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 }
             }
              
-            if(data.name === ""){
+        
+            if(data.name === "" || data.name === undefined){
                 setCarregando(false)
                 setErro("O campo nome não pode ficar em branco")
                 return
             }
+            
           
             const produtoFormatado = {
                 nome: data.name || item.nome,              
                 descricao: data.description,
                 preco: precoFormatado || item.preco,
-                permiteObservacoes: active.permite_observacoes
+                permiteObservacoes: active.permite_observacoes,
+                nomeImagem : file,
+                imagem: baseImage
             }
-                
+                console.log(produtoFormatado)
                 const { erro } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
@@ -201,7 +230,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     type='text'
                                     variant='outlined'
                                     id='value'
-                                    placeholder={(item.preco/100).toString()}
+                                    placeholder={(item.preco/100).toFixed(2).toString()}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                                     }}
@@ -235,7 +264,16 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
 
                             <div className={classes.uploadDiv}>
                                 <div className={classes.profilePicture}>
+                                    <input 
+                                        className='input-img'
+                                        id='img' 
+                                        type='file' 
+                                        accept='.jpg,.jpeg,.png'
+                                        onChange={(e) => {uploadImage(e)}}
+                                    />
                                     <img className='imgProduct' src={img}  alt=""/>
+                                    
+                                    
                                 </div>
                             
                                 <div className='flex-row'>
@@ -257,7 +295,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                 </div>
                                 {erro &&
                                     <Alert severity="error" onClick={handlecloseAlert}>{erro} 
-                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handlecloseAlert}>
                                         <CloseIcon fontSize="small" />
                                         </IconButton>
                                     </Alert> 
