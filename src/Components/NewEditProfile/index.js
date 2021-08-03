@@ -1,4 +1,4 @@
-import './styles.css'
+import React from 'react';
 import {
 	TextField,
 	MenuItem,
@@ -9,8 +9,9 @@ import InputSenha from '../InputSenha/inputSenha'
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
-import formatCurrency from "format-currency"
+import formatCurrency from "format-currency";
 import { getCategorias, getProfileDetails, putEditProfile } from '../../Services/functions';
+import './styles.css';
 
 
 function EditarPerfil({ setOpenModal, setImagemPerfil }) {
