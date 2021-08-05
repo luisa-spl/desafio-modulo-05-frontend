@@ -13,8 +13,9 @@ function Header() {
 	const { token } = useContext(AuthContext);
 	const [error, setError] = useState('');
 	const [idCategoria, setIdCategoria] = useState('')
-
 	const [imagemCategoria, setImagemCategoria] = useState()
+	const [imagemPerfil, setImagemPerfil] = useState()
+	const [nomeRestaurante, setNomeRestaurante] = useState()
 
 	function handleOpenModal() {
 		setOpenModal(true)
@@ -37,6 +38,8 @@ function Header() {
 				setError(data)
 			} else {
 				setIdCategoria(data.restaurante.categoria_id)
+				setImagemPerfil(data.restaurante.imagem)
+				setNomeRestaurante(data.restaurante.nome)
 			}
 		})
 	}
@@ -65,9 +68,9 @@ function Header() {
 
 	return (
 		<div className='flex-row items-flex-end headerProducts' style={{ backgroundImage: `url(${imagemCategoria})` }}>
-			<img className='imgProfile' src={Logo} alt='background pizzaria' onClick={handleOpenModal} />
+			<img className='imgProfile' src={imagemPerfil} alt='background pizzaria' onClick={handleOpenModal} />
 			{openModal && <ModalEditProfile setOpenModal={setOpenModal} />}
-			<h1 className='font-baloo font-color-white title-header'>Pizza Pizzaria & Delivery</h1>
+			<h1 className='font-baloo font-color-white title-header'>{nomeRestaurante}</h1>
 			<button className='font-montserrat font-color-white btn-logout' onClick={() => logout()}>Logout</button>
 		</div>
 	)
