@@ -30,6 +30,8 @@ export default function ModalAddProduct({open, setOpen}) {
     const { register, getValues, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
     const [ erro, setErro ] = useState('');
+    const [ baseImage, setBaseImage ] = useState("");
+    const [ file, setFile ] = useState('');
     const [ active, setActive ] = useState({
             ativo: true,
             permite_observacoes: false,
@@ -59,21 +61,57 @@ export default function ModalAddProduct({open, setOpen}) {
     };
 
 
+    const uploadImage = async (e) => {
+        const file = e.target.files[0];
+        setFile(file.name);
+
+        const base64 = await convertBase64(file);
+        const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
+        
+        setBaseImage(formatImg);
+       
+      };
+    
+      const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+    
+          fileReader.onload = () => {
+            resolve(fileReader.result);
+          };
+    
+          fileReader.onerror = (error) => {
+            reject(error);
+          };
+        });
+    }
+
+    const imagemProduto = {
+        nome : file,
+        imagem: baseImage
+    }
+
+   
+
     async function onSubmit(data) {
         setCarregando(true);
         setErro('');
        
         
         const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
-
+      
         const produtoFormatado = {
                 nome: data.name,
                 descricao: data.description,
                 preco: getCents(data.valor),
+                ativo: active.ativo,
                 permiteObservacoes: active.permite_observacoes,
+                nomeImagem: file,
+                imagem: baseImage
         };
-
         
+        console.log(produtoFormatado, baseImage)
         const { erro } = await registerProduct({produtoFormatado, token})
                 
                 if(erro) {
@@ -81,14 +119,13 @@ export default function ModalAddProduct({open, setOpen}) {
                     setCarregando(false);
                     setOpen(false);
                     return;
-                };  
+                }; 
 
+        const { lista, error } = await getProducts(token);
         
-            const { lista, error } = await getProducts(token);
-           
-            if(error){
-                return setErro(error)
-            }
+        if(error){
+            return setErro(error)
+        }
        
         setProdutos(lista)
         setCarregando(false);
@@ -166,7 +203,15 @@ export default function ModalAddProduct({open, setOpen}) {
 
                             <div className={classes.uploadDiv}>
                                 <div className={classes.profilePicture}>
-                                    <img src={UploadIcon} alt='imagem'/>
+                                    <input 
+                                        className='input-img'
+                                        id='img' 
+                                        type='file' 
+                                        accept='.jpg,.jpeg,.png'
+                                        onChange={(e) => {uploadImage(e)}}
+                                       
+                                    />
+                                    <img className='imgProduct' src='https://i.ibb.co/yRt6Y55/addFoto.jpg' alt='imagem'/>
                                 </div>
                                 
                                 <div className='flex-row'>
