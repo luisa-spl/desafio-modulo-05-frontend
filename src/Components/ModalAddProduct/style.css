@@ -24,3 +24,16 @@ div.makeStyles-profilePicture-5 {
 div.MuiPaper-rounded {
     border-radius: 1rem;
 }
+
+.imgProduct {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    z-index:0;
+}
+
+.input-img {
+   opacity: 0;
+   width: 250px;
+   height: 250px;
+}

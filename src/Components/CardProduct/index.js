@@ -85,6 +85,7 @@ export default function CardProduct({ id, nome, preco, descricao, img }) {
           component="img"
           alt="Contemplative Reptile"
           height="140"
+          width="140"
           image={img}
           title="Contemplative Reptile"
         />

@@ -23,6 +23,8 @@ function Produtos() {
 	}
 
 	useEffect(() => {
+
+
 		async function listarProdutos() {
 			setErro('');
 			const { lista, error } = await getProducts(token);
@@ -34,7 +36,7 @@ function Produtos() {
 		};
 
 		listarProdutos();
-	}, [token]);
+	}, []);
 
 	return (
 		<div className='flex-column items-center container-products'>
@@ -62,7 +64,7 @@ function Produtos() {
 									id_restaurante={x.id_restaurante}
 									nome={x.nome}
 									descricao={x.descricao}
-									img={PizzaImg}
+									img={x.imagem}
 									preco={x.preco}
 									ativo={x.ativo}
 									permite_observacoes={x.permite_observacoes}

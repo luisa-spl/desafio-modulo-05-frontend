@@ -30,20 +30,24 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [ carregando, setCarregando ] = useState(false);
     const { setProdutos } = useProductsContext();
+    const [ atualiza, setAtualiza ] = useState(false);
+    const [ baseImage, setBaseImage ] = useState("");
+    const [ file, setFile ] = useState('');
     const [ erro, setErro ] = useState('');
     const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
         produto_ativo: Boolean(item.ativo),
         permite_observacoes: Boolean(item.permite_observacoes),
     });
-    
+
+   
     const handlecloseAlert = () => {
         setErro('');
     }
 
     useEffect(() => {
         async function listarProduto(){
-            setErro('');
+           
             try {
                 const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id}`, {
                     headers: {
@@ -69,7 +73,8 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             }
         }   
         listarProduto()
-    }, [token])
+       
+    }, [token, atualiza])
 
     
 
@@ -78,13 +83,39 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     };
 
     const handleClose = () => {
-           return setOpen(false);
+            setErro('')
+            return setOpen(false);
     };
 
+    const uploadImage = async (e) => {
+            const file = e.target.files[0];
+            setFile(file.name);
 
+            const base64 = await convertBase64(file);
+            const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
+            
+            setBaseImage(formatImg);
+      };
+    
+    const convertBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+
+            fileReader.onload = () => {
+            resolve(fileReader.result);
+            };
+
+            fileReader.onerror = (error) => {
+            reject(error);
+            };
+        });
+    }
 
     async function onSubmit(data) {
+           console.log(data)
             setCarregando(true)
+        
 
             if(item.ativo === true && active.produto_ativo !== item.ativo ) {   
                 const { erro } = await disableProduct({id, token})
@@ -92,7 +123,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 if(erro){
                     setErro(erro);
                     setCarregando(false);
-                    handleClose();
                     return 
                 }
                
@@ -105,7 +135,6 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 if(erro){
                     setErro(erro)
                     setCarregando(false);
-                    handleClose();
                     return 
                 }
             }
@@ -114,29 +143,39 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
             let precoFormatado = 0;
             const virg = ',';
 
-            if(data.value.includes('.')){
-                precoFormatado = Number(data.value).toFixed(2)*100;
-            } else if(data.value.includes(',')){
-                precoFormatado = Number(data.value.replace(virg, '.' )).toFixed(2)*100;
-            } 
-            else {
-                precoFormatado = Number(data.value);
+            if(data.value) {
+                if(data.value.includes('.')){
+                    precoFormatado = Number(data.value).toFixed(2)*100;
+                } else if(data.value.includes(',')){
+                    precoFormatado = Number(data.value.replace(virg, '.' )).toFixed(2)*100;
+                } 
+                else {
+                    precoFormatado = Number(data.value);
+                }
+            }
+             
+        
+            if(data.name === "" || data.name === undefined){
+                setCarregando(false)
+                setErro("O campo nome não pode ficar em branco")
+                return
             }
             
-            
+          
             const produtoFormatado = {
-                nome: data.name || item.nome,
-                descricao: data.description || item.descricao,
+                nome: data.name || item.nome,              
+                descricao: data.description,
                 preco: precoFormatado || item.preco,
-                permiteObservacoes: active.permite_observacoes
+                permiteObservacoes: active.permite_observacoes,
+                nomeImagem : file,
+                imagem: baseImage
             }
-                
+                console.log(produtoFormatado)
                 const { erro } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
                     setErro(erro);
                     setCarregando(false);
-                    handleClose();
                     return 
                 };
                 
@@ -144,12 +183,13 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 const { lista, error } = await getProducts(token);
                 
                 if(error){
-                    return setErro(error)
+                    setCarregando(false);
+                    return setErro(error);
                 }
                 
-                setProdutos(lista) 
-        
+            setProdutos(lista) 
             setCarregando(false);
+            setAtualiza(true);
             handleClose();
     };
 
@@ -166,18 +206,20 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     type='text'
                                     variant='outlined'
                                     id='name' 
-                                    placeholder={item.nome}
+                                    defaultValue={item.nome}
                                     {...register('name', {maxLength: 50})} 
-                                />  
-                                    {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}  
+                                />
+                                {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}
+                                  
 
                                 <InputLabel htmlFor="description">Descrição</InputLabel>
                                 <TextField  
                                     size='small' 
                                     variant='outlined'
                                     id='description'  
-                                    placeholder={item.descricao}
-                                    helperText="Max: 80 caracteres"
+                                    defaultValue={item.descricao}
+                                    // placeholder={item.descricao}
+                                    helperText="Max: 100 caracteres"
                                     {...register('description', { maxLength: 100 })} 
                                 />               
                                     {errors.description?.type === 'maxLength' && <Alert severity="error">{'A descrição deve ter até 100 caracteres'}</Alert>}   
@@ -188,7 +230,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     type='text'
                                     variant='outlined'
                                     id='value'
-                                    placeholder={item.preco/100}
+                                    placeholder={(item.preco/100).toFixed(2).toString()}
                                     InputProps={{
                                         startAdornment: <InputAdornment position="start">R$</InputAdornment>,
                                     }}
@@ -222,7 +264,16 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
 
                             <div className={classes.uploadDiv}>
                                 <div className={classes.profilePicture}>
+                                    <input 
+                                        className='input-img'
+                                        id='img' 
+                                        type='file' 
+                                        accept='.jpg,.jpeg,.png'
+                                        onChange={(e) => {uploadImage(e)}}
+                                    />
                                     <img className='imgProduct' src={img}  alt=""/>
+                                    
+                                    
                                 </div>
                             
                                 <div className='flex-row'>
@@ -244,7 +295,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                 </div>
                                 {erro &&
                                     <Alert severity="error" onClick={handlecloseAlert}>{erro} 
-                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handlecloseAlert}>
                                         <CloseIcon fontSize="small" />
                                         </IconButton>
                                     </Alert> 
