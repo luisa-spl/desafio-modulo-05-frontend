@@ -52,7 +52,6 @@ function CadastroPrimeiroPasso({ nextPage, setPayload }) {
 
 					<Typography className='credentialsStyle font-montserrat'>Repita sua senha</Typography>
 					<InputSenha
-						error={errors.senhaRepetida ? errors.senhaRepetida.message : false}
 						register={() => register('senhaRepetida', {
 							required: true,
 							validate: (value) => value === watch('senha') || "Senhas não conferem"
