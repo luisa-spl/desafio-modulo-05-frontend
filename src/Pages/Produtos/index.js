@@ -34,7 +34,7 @@ function Produtos() {
 		};
 
 		listarProdutos();
-	}, [token, produtos]);
+	}, [token]);
 
 	return (
 		<div className='flex-column items-center container-products'>
