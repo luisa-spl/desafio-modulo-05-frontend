@@ -13,6 +13,7 @@ import { AuthContext } from '../../Contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 import formatCurrency from "format-currency"
 import { getCategorias, getProfileDetails, putEditProfile } from '../../Services/functions';
+import { Watch } from '@material-ui/icons';
 
 function EditarPerfil({ setOpenModal }) {
 	const { token } = useContext(AuthContext);
@@ -21,7 +22,7 @@ function EditarPerfil({ setOpenModal }) {
 		usuario: {}, restaurante: {}
 	})
 	const [isLoadingDetails, setIsloadingDetails] = useState(true)
-	const { register, handleSubmit, getValues, setValue, control, formState: { errors } } = useForm();
+	const { register, handleSubmit, getValues, setValue, watch, control, formState: { errors } } = useForm();
 	const [baseImage, setBaseImage] = useState("");
 	const [file, setFile] = useState('');
 	const handleClose = () => {
@@ -68,9 +69,9 @@ function EditarPerfil({ setOpenModal }) {
 			setValue("restaurante_nome", result.restaurante.nome)
 			setValue("descricao", result.restaurante.descricao)
 			setValue("categoria_id", result.restaurante.categoria_id)
-			setValue("taxa_entrega", result.restaurante.taxa_entrega)
+			setValue("taxa_entrega", currencyFormatter(result.restaurante.taxa_entrega))
 			setValue("tempo_entrega_minutos", result.restaurante.tempo_entrega_minutos)
-			setValue("valor_minimo_pedido", result.restaurante.valor_minimo_pedido)
+			setValue("valor_minimo_pedido", currencyFormatter(result.restaurante.valor_minimo_pedido))
 		}
 
 		setIsloadingDetails(false)
@@ -122,10 +123,12 @@ function EditarPerfil({ setOpenModal }) {
 				taxaEntrega: getCents(values.taxa_entrega),
 				tempoEntregaEmMinutos: parseInt(values.tempo_entrega_minutos),
 				valorMinimoPedido: getCents(values.valor_minimo_pedido),
+				senha: values.senha,
 				nomeImagem: file,
 				imagem: baseImage,
 			}
 		}
+		console.log(perfilEditado)
 
 		await putEditProfile(token, perfilEditado);
 	}
@@ -152,101 +155,174 @@ function EditarPerfil({ setOpenModal }) {
 			/>
 
 			<span>Email</span>
-			<TextField
-				id="input-edit-email"
-				type='email'
-				variant="outlined"
-				autoComplete="off"
-				defaultValue={details.usuario.email}
-				{...register('email')}
+			<Controller
+				name="email"
+				control={control}
+				rules={{ required: true }}
+				maxLength={50}
+				render={({ field }) => (
+					<TextField
+						id="input-edit-email"
+						type='email'
+						variant="outlined"
+						autoComplete="off"
+						error={Boolean(errors.email)}
+						helperText={errors.email ? "Campo Obrigatório" : false}
+						{...field}
+
+					/>
+				)}
 			/>
 
 			<span>Nome do restaurante</span>
-			<TextField
-				id="input-edit-nome-restaurante"
-				type='text'
-				variant="outlined"
-				autoComplete="off"
-				defaultValue={details.restaurante.nome}
+			<Controller
+				name="restaurante_nome"
+				control={control}
+				rules={{ required: true }}
 				maxLength={50}
-				{...register('restaurante_nome', { maxLength: 50 })}
+				render={({ field }) => (
+					<TextField
+						id="input-edit-nome-restaurante"
+						type='text'
+						variant="outlined"
+						autoComplete="off"
+						maxLength={50}
+						error={Boolean(errors.restaurante_nome)}
+						helperText={errors.restaurante_nome ? "Campo Obrigatório" : false}
+						{...field}
+
+					/>
+				)}
 			/>
 
 			<span>Categoria do restaurante</span>
-			<TextField
-				id="categoria-restaurante"
-				select
-				variant="outlined"
-				defaultValue={details.restaurante.categoria_id}
-				{...register('categoria_id')}
-			>
-				{categorias.map((categoria) => (
-					<MenuItem key={categoria.id} value={categoria.id}>
-						{categoria.nome}
-					</MenuItem>
-				))}
-			</TextField>
+			<Controller
+				name="categoria_id"
+				control={control}
+				rules={{ required: true }}
+				maxLength={50}
+				render={({ field }) => (
+					<TextField
+						id="categoria-restaurante"
+						select
+						variant="outlined"
+						error={Boolean(errors.categoria_id)}
+						helperText={errors.categoria_id ? "Campo Obrigatório" : false}
+						{...field}
+					>
+						{categorias.map((categoria) => (
+							<MenuItem key={categoria.id} value={categoria.id}>
+								{categoria.nome}
+							</MenuItem>
+						))}
+					</TextField>
+				)}
+			/>
 
 			<span>Descrição</span>
-			<TextField
-				id="input-edit-descricao"
-				type='text'
-				variant="outlined"
-				defaultValue={details.restaurante.descricao}
-				autoComplete="off"
-				helperText='Max. 50 caracteres'
-				maxLength={50}
-				{...register('descricao', { maxLength: 50 })}
+			<Controller
+				name="descricao"
+				control={control}
+				rules={{ required: true }}
+				maxLength={100}
+				render={({ field }) => (
+					<TextField
+						id="input-edit-descricao"
+						type='text'
+						variant="outlined"
+						autoComplete="off"
+						helperText='Max. 50 caracteres'
+						{...field}
+					/>
+				)}
 			/>
 
 			<span>Taxa de entrega</span>
-			<TextField
-				id="input-taxa-entrega"
-				type='text'
-				variant="outlined"
-				defaultValue={currencyFormatter(details.restaurante.taxa_entrega)}
-				autoComplete="off"
-				{...taxa_entrega}
+			<Controller
+				name="taxa_entrega"
+				control={control}
+				rules={{ required: true }}
 				onChange={(e) => {
 					taxa_entrega.onChange(setCurrencyMask(e))
 				}}
+				render={({ field }) => (
+					<TextField
+						id="input-taxa-entrega"
+						type='text'
+						variant="outlined"
+						autoComplete="off"
+						error={Boolean(errors.taxa_entrega)}
+						helperText={errors.taxa_entrega ? "Campo Obrigatório" : false}
+						{...field}
+					/>
+				)}
 			/>
 
 			<span>Tempo estimado de entrega</span>
-			<TextField
-				id="input-tempo-entrega"
-				type='text'
-				variant="outlined"
-				defaultValue={details.restaurante.tempo_entrega_minutos}
-				placeholder="Tempo de entrega em minutos"
-				autoComplete="off"
-				{...register('tempo_entrega_minutos', { valueAsNumber: true })}
+			<Controller
+				name="tempo_entrega_minutos"
+				control={control}
+				rules={{ required: true, valueAsNumber: true }}
+				render={({ field }) => (
+					<TextField
+						id="input-tempo-entrega"
+						type='text'
+						variant="outlined"
+						defaultValue={details.restaurante.tempo_entrega_minutos}
+						placeholder="Tempo de entrega em minutos"
+						autoComplete="off"
+						{...field}
+					/>
+				)}
 			/>
 
 			<span>Valor mínimo do pedido</span>
-			<TextField
-				variant="outlined"
-				id="input-valor-minimo"
-				autoComplete="off"
-				defaultValue={currencyFormatter(details.restaurante.valor_minimo_pedido)}
-				{...valor_minimo_pedido}
+			<Controller
+				name="valor_minimo_pedido"
+				control={control}
+				rules={{ required: true }}
 				onChange={(e) => {
 					valor_minimo_pedido.onChange(setCurrencyMask(e))
 				}}
+				render={({ field }) => (
+					<TextField
+						variant="outlined"
+						type='text'
+						id="input-valor-minimo"
+						autoComplete="off"
+						error={Boolean(errors.valor_minimo_pedido)}
+						helperText={errors.valor_minimo_pedido ? "Campo Obrigatório" : false}
+						{...field}
+					/>
+				)}
 			/>
 
 			<span className='credentialsStyle font-montserrat'>Senha</span>
-			<InputSenha
-				error={''}
-				id="input_senha_editar_perfil"
-				register={() => register('senha')}
+			<Controller
+				name="senha"
+				control={control}
+				render={({ field }) => (
+					<InputSenha
+						error={''}
+						id="input_senha_editar_perfil"
+						{...field}
+					/>
+				)}
 			/>
 
 			<span className='credentialsStyle font-montserrat'>Repita sua senha</span>
-			<InputSenha
-				error={''}
-				id="input_repetir_senha_editar_perfil"
-				register={() => register('senha_repetida')} />
+			<Controller
+				name="senha_repetida"
+				control={control}
+				rules={{ required: Boolean(watch('senha')) }}
+				render={({ field }) => (
+					<InputSenha
+						id="input_repetir_senha_editar_perfil"
+						error={errors.senha_repetida ? "Campo Obrigatório" : false}
+						{...field}
+					/>
+				)}
+			/>
 		</div>
 	)
 
