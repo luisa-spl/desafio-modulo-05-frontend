@@ -1,4 +1,3 @@
-import useStyles from './styles';
 import './styles.css'
 import {
 	TextField,
@@ -18,7 +17,6 @@ import formatCurrency from "format-currency"
 
 export default function EditProfile({ setOpenModal }) {
 	const { token } = useContext(AuthContext);
-	const classes = useStyles();
 	const { register, getValues, handleSubmit, watch, setValue, formState: { errors } } = useForm();
 	const [error, setError] = useState('');
 	const [isLoadingDetails, setIsLoadingDetails] = useState(true);
@@ -28,12 +26,11 @@ export default function EditProfile({ setOpenModal }) {
 		restaurante: {}
 	})
 	const history = useHistory();
-	const [showRegisterSuccess, setShowRegisterSuccess] = useState(() =>
-		history.location.state && history.location.state.registerSuccess
-	)
+	const [showRegisterSuccess, setShowRegisterSuccess] = useState()
 	const [detailsSuccess, setDetailsSuccess] = useState(false)
 	const [categorias, setCategorias] = useState([])
 	const [isLoadingCategorias, setIsLoadingCategorias] = useState(true);
+	const [file, setFile] = useState()
 
 	const values = getValues()
 
@@ -54,21 +51,23 @@ export default function EditProfile({ setOpenModal }) {
 	const onSubmit = () => {
 		console.log('vim aqui')
 		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
-
+		console.log(values)
 		fetch('https://icubus.herokuapp.com/perfil', {
 			method: 'PUT',
 			body: JSON.stringify({
-				"nome": values.nome,
-				"email": values.email,
-				"senha": values.senha,
-				"restaurante": {
-					"nome": values.nome_restaurante,
-					"descricao": values.descricao,
-					"idCategoria": values.idCategoria,
-					"taxaEntrega": getCents(values.taxa_entrega),
-					"tempoEntregaEmMinutos": parseInt(values.tempo_entrega_minutos),
-					"valorMinimoPedido": getCents(values.valor_minimo_pedido),
-					"imagem": baseImage,
+				nome: values.nome,
+				email: values.email,
+				senha: values.senha,
+				restaurante: {
+					nome: values.nome_restaurante,
+					descricao: values.descricao,
+					idCategoria: values.idCategoria,
+					taxaEntrega: getCents(values.taxa_entrega),
+					tempoEntregaEmMinutos: parseInt(values.tempo_entrega_minutos),
+					valorMinimoPedido: getCents(values.valor_minimo_pedido),
+					senha: values.senha,
+					nomeImagem: file,
+					imagem: baseImage,
 				}
 			}),
 			headers: {
@@ -105,14 +104,14 @@ export default function EditProfile({ setOpenModal }) {
 				console.log(data)
 				setDetailsSuccess(true)
 				setDetails(data)
-				setValue("nome", data.usuario.nome)
-				setValue("email", data.usuario.email)
-				setValue("nome_restaurante", data.restaurante.nome)
-				setValue("descricao", data.restaurante.descricao)
-				setValue("idCategoria", data.restaurante.categoria_id)
-				setValue("taxa_entrega", data.restaurante.taxa_entrega)
-				setValue("tempo_entrega_minutos", data.restaurante.tempo_entrega_minutos)
-				setValue("valor_minimo_pedido", data.restaurante.valor_minimo_pedido)
+				// setValue("nome", data.usuario.nome)
+				// setValue("email", data.usuario.email)
+				// setValue("nome_restaurante", data.restaurante.nome)
+				// setValue("descricao", data.restaurante.descricao)
+				// setValue("idCategoria", data.restaurante.categoria_id)
+				// setValue("taxa_entrega", data.restaurante.taxa_entrega)
+				// setValue("tempo_entrega_minutos", data.restaurante.tempo_entrega_minutos)
+				// setValue("valor_minimo_pedido", data.restaurante.valor_minimo_pedido)
 			}
 
 			setIsLoadingDetails(false)
@@ -143,6 +142,7 @@ export default function EditProfile({ setOpenModal }) {
 
 	const uploadImage = async (e) => {
 		const file = e.target.files[0];
+		setFile(file.name);
 		const base64 = await convertBase64(file);
 		const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
 		setBaseImage(formatImg);
@@ -213,22 +213,27 @@ export default function EditProfile({ setOpenModal }) {
 				<form className='formsEditProfile' id='forms-edit-profile' onSubmit={handleSubmit(onSubmit)}>
 					<div className='flex-column inputEditProfile'>
 						<span>Nome de usuário</span>
-						<TextField
+						{/* <TextField
 							id="input-edit-nome"
 							type='text'
 							variant="outlined"
 							autoComplete="off"
-							{...details.usuario.nome && {
-								value: details.usuario.nome
-							}}
+							defaultValue={details.usuario.nome}
 							error={Boolean(errors.nome)}
 							helperText={errors.nome ? "Campo Obrigatório" : false}
 							disabled={isLoadingDetails}
 							{...inputNome}
 							onChange={(e) => {
-								removeDetails('usuario', 'nome');
 								inputNome.onChange(e);
 							}}
+						/> */}
+						<TextField
+							size='small'
+							type='text'
+							variant='outlined'
+							id='name'
+							vakue={details.usuario.nome}
+							{...register('nome', { maxLength: 50 })}
 						/>
 
 						<span>Email</span>

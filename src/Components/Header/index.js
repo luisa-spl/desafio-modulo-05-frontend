@@ -1,8 +1,8 @@
 import { useHistory } from 'react-router-dom';
 import { useState, useContext, useEffect } from 'react'
 import './style.css';
-import Logo from '../../Assets/pizarria.png';
-import ModalEditProfile from '../ModalEditProfile'
+import NewEditProfile from '../NewEditProfile'
+
 import { AuthContext } from '../../Contexts/AuthContext';
 
 
@@ -69,7 +69,7 @@ function Header() {
 	return (
 		<div className='flex-row items-flex-end headerProducts' style={{ backgroundImage: `url(${imagemCategoria})` }}>
 			<img className='imgProfile' src={imagemPerfil} alt='background pizzaria' onClick={handleOpenModal} />
-			{openModal && <ModalEditProfile setOpenModal={setOpenModal} />}
+			{openModal && <NewEditProfile setOpenModal={setOpenModal} />}
 			<h1 className='font-baloo font-color-white title-header'>{nomeRestaurante}</h1>
 			<button className='font-montserrat font-color-white btn-logout' onClick={() => logout()}>Logout</button>
 		</div>
