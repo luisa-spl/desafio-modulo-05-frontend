@@ -9,7 +9,6 @@ import InputSenha from '../InputSenha/inputSenha'
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
-import { useHistory } from 'react-router-dom';
 import formatCurrency from "format-currency"
 import { getCategorias, getProfileDetails, putEditProfile } from '../../Services/functions';
 
@@ -28,6 +27,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 	const handleClose = () => {
 		setOpenModal(false)
 	}
+	const [erroSubmit, setErroSubmit] = useState(false)
 
 	const taxa_entrega = register('taxa_entrega', { required: true })
 	const valor_minimo_pedido = register('valor_minimo_pedido', { required: true })
@@ -131,9 +131,12 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 
 		const result = await putEditProfile(token, perfilEditado);
 
-		if (!result.error) {
+		if (result.error) {
+			setErroSubmit(result.error)
+		} else {
 			setShowEditSuccess(true)
 			baseImage && setImagemPerfil(`data:image/jpeg;base64,${baseImage}`)
+
 		}
 	}
 
@@ -338,6 +341,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 				<div className='headerEditPerfil'>
 					<h1>Editar Perfil</h1>
 					{showEditSuccess && <Alert onClose={handleClose}>Cadastro editado com sucesso!</Alert>}
+					{erroSubmit && <Alert severity="error" onClose={handleClose}>{erroSubmit}</Alert>}
 
 				</div>
 				<form className='formsEditProfile' id='forms-edit-profile' onSubmit={handleSubmit(onSubmit)} method='post'>
