@@ -6,18 +6,18 @@ import {
 } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import InputSenha from '../InputSenha/inputSenha'
-import profilePic from '../../Assets/pizarria.png'
 import { useForm, Controller } from "react-hook-form";
 import { useState, useEffect, useContext } from 'react';
 import { AuthContext } from '../../Contexts/AuthContext';
 import { useHistory } from 'react-router-dom';
 import formatCurrency from "format-currency"
 import { getCategorias, getProfileDetails, putEditProfile } from '../../Services/functions';
-import { Watch } from '@material-ui/icons';
 
-function EditarPerfil({ setOpenModal }) {
+
+function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 	const { token } = useContext(AuthContext);
 	const [categorias, setCategorias] = useState([])
+	const [showEditSuccess, setShowEditSuccess] = useState(false)
 	const [details, setDetails] = useState({
 		usuario: {}, restaurante: {}
 	})
@@ -111,11 +111,11 @@ function EditarPerfil({ setOpenModal }) {
 	const onSubmit = async () => {
 		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
 		const values = getValues()
-		console.log(values)
 
 		const perfilEditado = {
 			nome: values.nome,
 			email: values.email,
+			senha: values.senha,
 			restaurante: {
 				nome: values.restaurante_nome,
 				descricao: values.descricao,
@@ -123,14 +123,18 @@ function EditarPerfil({ setOpenModal }) {
 				taxaEntrega: getCents(values.taxa_entrega),
 				tempoEntregaEmMinutos: parseInt(values.tempo_entrega_minutos),
 				valorMinimoPedido: getCents(values.valor_minimo_pedido),
-				senha: values.senha,
+
 				nomeImagem: file,
 				imagem: baseImage,
 			}
 		}
-		console.log(perfilEditado)
 
-		await putEditProfile(token, perfilEditado);
+		const result = await putEditProfile(token, perfilEditado);
+
+		if (!result.error) {
+			setShowEditSuccess(true)
+			baseImage && setImagemPerfil(`data:image/jpeg;base64,${baseImage}`)
+		}
 	}
 
 	const renderInputs = () => (
@@ -268,8 +272,9 @@ function EditarPerfil({ setOpenModal }) {
 						id="input-tempo-entrega"
 						type='text'
 						variant="outlined"
-						defaultValue={details.restaurante.tempo_entrega_minutos}
 						placeholder="Tempo de entrega em minutos"
+						error={Boolean(errors.tempo_entrega_minutos)}
+						helperText={errors.tempo_entrega_minutos ? "Campo Obrigatório" : false}
 						autoComplete="off"
 						{...field}
 					/>
@@ -330,7 +335,11 @@ function EditarPerfil({ setOpenModal }) {
 
 		<div className='wrapperEditProfile'>
 			<div className='font-montserrat containerEditProfile'>
-				<h1>Editar Perfil</h1>
+				<div className='headerEditPerfil'>
+					<h1>Editar Perfil</h1>
+					{showEditSuccess && <Alert onClose={handleClose}>Cadastro editado com sucesso!</Alert>}
+
+				</div>
 				<form className='formsEditProfile' id='forms-edit-profile' onSubmit={handleSubmit(onSubmit)} method='post'>
 					{isLoadingDetails ? (
 						<div className='loadingContainer'>
@@ -349,6 +358,7 @@ function EditarPerfil({ setOpenModal }) {
 						/>
 						<img src={baseImage ? `data:image/jpeg;base64,${baseImage}` : details.restaurante.imagem} className='profileImage' alt="" />
 					</div>
+
 				</form>
 
 				<div className='flex-row actionButtons '>

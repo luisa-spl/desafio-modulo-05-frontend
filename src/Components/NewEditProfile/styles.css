@@ -26,7 +26,7 @@
 	font-family: 'Baloo 2', sans-serif;
 	color: #D13201;
 	font-size: 32px;
-	transform: translateX(-260px);
+margin-left: 250px;
 }
 
 .formsEditProfile{
@@ -66,5 +66,12 @@
 	width: 400px;
 	display: flex;
 	justify-content: center;
+	align-items: center;
+}
+
+.headerEditPerfil{
+	display: flex;
+	height: 50px;
+	margin: 35px auto;
 	align-items: center;
 }

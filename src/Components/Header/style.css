@@ -1,6 +1,6 @@
 .headerProducts {
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: auto;
 		background-color: lightgrey;
     border-radius: 0px 0px 232.147px 0px;
     width: 100%;
@@ -19,6 +19,8 @@
     margin-left: 5rem;
     margin-right: 2rem;
     margin-top: 5rem;
+		width: 171px;
+		height: 171px;
     position: absolute;
     z-index: 1;
 }
