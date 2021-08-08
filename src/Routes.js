@@ -12,7 +12,6 @@ import Login from "./Pages/Login";
 import Cadastro from "./Pages/Cadastro";
 import Produtos from './Pages/Produtos';
 import { ProductsProvider } from './Contexts/ProductsContext';
-import EditarPerfil from './Components/ModalEditProfile';
 
 function RotasProtegidas(props) {
 	const { token } = useContext(AuthContext);
@@ -29,7 +28,6 @@ function Routes() {
 				<Switch>
 					<Route path="/" exact component={Login} />
 					<Route path="/cadastro" exact component={Cadastro} />
-					<Route path="/editar" exact component={EditarPerfil} />
 					<RotasProtegidas >
 						<ProductsProvider>
 							<Route path="/produtos" exact component={Produtos} />
