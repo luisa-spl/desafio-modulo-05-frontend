@@ -15,28 +15,34 @@ import Alert from '@material-ui/lab/Alert';
 function Produtos() {
 	const { token } = useContext(AuthContext);
 	const [erro, setErro] = useState('');
-	const { produtos, setProdutos } = useProductsContext();
+	const { produtos, setProdutos, atualizaProduto, setAtualizaProduto } = useProductsContext();
 	const [open, setOpen] = useState(false);
 
 	function handleClick() {
 		setOpen(true)
 	}
 
+	
 	useEffect(() => {
 
 
 		async function listarProdutos() {
 			setErro('');
-			const { lista, error } = await getProducts(token);
+			const { lista, erros, errorGet } = await getProducts(token);
 
-			if (error) {
-				return setErro(error)
+			if (erros) {
+				return setErro(erros)
 			}
+
+			if(errorGet){
+				setErro(errorGet)
+			}
+			setAtualizaProduto(false)
 			return setProdutos(lista)
 		};
 
 		listarProdutos();
-	}, []);
+	}, [token, atualizaProduto]);
 
 	return (
 		<div className='flex-column items-center container-products'>

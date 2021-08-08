@@ -92,7 +92,7 @@ export default function CardProduct({ id, nome, preco, descricao, img }) {
         </div>
       </CardContent>
 
-      <div className={ openModal ? classes.modalAberto : classes.modalFechado} onClick={handleClose}>
+      <div  className={ openModal ? classes.modalAberto : classes.modalFechado} onClick={handleClose}>   
             <button 
               className='transparent-btn font-montserrat font-color-orange font-bold'
               onClick={handleDelete}  
