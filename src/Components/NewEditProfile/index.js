@@ -231,7 +231,6 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 			<Controller
 				name="descricao"
 				control={control}
-				rules={{ required: true }}
 				maxLength={100}
 				render={({ field }) => (
 					<TextField
