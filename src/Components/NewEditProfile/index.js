@@ -110,6 +110,10 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 		setBaseImage(formatImg);
 	};
 
+	const handlecloseAlert = () => {
+		setErroSubmit('');
+	}
+
 
 	const onSubmit = async () => {
 		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
@@ -383,7 +387,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 						Salvar edição
 					</button>
 				</div>
-				{erroSubmit && <Alert variant="filled" severity="error" onClose={handleClose}>{erroSubmit}</Alert>}
+				{erroSubmit && <Alert variant="filled" severity="error" onClose={handlecloseAlert}>{erroSubmit}</Alert>}
 				{showEditSuccess && <Alert variant="filled" onClose={handleClose}>Cadastro editado com sucesso!</Alert>}
 
 
