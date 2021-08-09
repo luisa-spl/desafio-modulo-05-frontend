@@ -35,7 +35,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const [ atualiza, setAtualiza ] = useState(false);
     const [ baseImage, setBaseImage ] = useState("");
     const [ file, setFile ] = useState('');
-    const [ erro, setErro ] = useState('');
+    const [ erro, setErro ] = useState('Não foi possível atualizar');
     const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
         produto_ativo: Boolean(item.ativo),
@@ -184,6 +184,12 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                 const { erro, error } = await editProduct({produtoFormatado, id, token})
                 
                 if(erro) {
+                    if(erro.includes('bucketid')){
+                        setErro("Não foi possível atualizar a imagem")
+                        setCarregando(false);
+                        return
+                    }
+                    console.log(erro)
                     setErro(erro);
                     setCarregando(false);
                     return 
@@ -221,7 +227,9 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     return (
         <div className={classes.dialog}>
             <Dialog open={open} onClose={handleClose} aria-labelledby="form-dialog-title" maxWidth='xl'>
+                
                 <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Editar Produto</DialogTitle>
+
                 <DialogContent className={classes.dialogContent}>
                         <form  noValidate autoComplete="off" onSubmit={handleSubmit(onSubmit)} className={classes.form}>
                             <div className={classes.formDiv}>
@@ -295,7 +303,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                         accept='.jpg,.jpeg,.png'
                                         onChange={(e) => {uploadImage(e)}}
                                     />
-                                    <img className='imgProduct' src={img}  alt=""/>
+                                    <img src={baseImage ? `data:image/jpeg;base64,${baseImage}` : img} className='profileImage' alt="" />
                                     <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                     
                                     
@@ -318,17 +326,19 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                                     {carregando && <CircularProgress />}
                                     
                                 </div>
-                                {erro &&
-                                    <Alert severity="error" onClick={handlecloseAlert}>{erro} 
-                                        <IconButton size="small" aria-label="close" color="inherit" onClick={handlecloseAlert}>
-                                        <CloseIcon fontSize="small" />
-                                        </IconButton>
-                                    </Alert> 
-                                } 
-                            </div>
+                                
+                            </div> 
                         </form>
                 </DialogContent>  
+                {erro &&
+                <Alert severity="error" onClick={handlecloseAlert}>{erro} 
+                    <IconButton size="small" aria-label="close" color="inherit" onClick={handlecloseAlert}>
+                    <CloseIcon fontSize="small" />
+                    </IconButton>
+                </Alert> 
+            }
             </Dialog>
+            
         </div>
   );
 }
