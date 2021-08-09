@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import formatCurrency from "format-currency"
 import { AuthContext } from '../../Contexts/AuthContext';
@@ -27,7 +27,7 @@ export default function ModalAddProduct({open, setOpen}) {
     const classes = useStyles(); 
     const { token } = useContext(AuthContext);
     const { setProdutos } = useProductsContext();
-    const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+    const { register, getValues, handleSubmit, formState: { errors }, unregister } = useForm();
     const [ carregando, setCarregando ] = useState(false);
     const [ erro, setErro ] = useState('');
     const [ baseImage, setBaseImage ] = useState("");
@@ -52,11 +52,17 @@ export default function ModalAddProduct({open, setOpen}) {
 
     const valor = register('valor', { required: true });
 
+
     const handleChange= (event) => {
             setActive({ ...active, [event.target.name]: event.target.checked });
     };
 
-    const handleClose = () => {
+    const handleClose = (e) => {
+            e.preventDefault();
+            setErro('')
+            unregister("name")
+            unregister("description")
+            unregister("value")
             setOpen(false);
     };
 
@@ -209,7 +215,6 @@ export default function ModalAddProduct({open, setOpen}) {
                                         type='file' 
                                         accept='.jpg,.jpeg,.png'
                                         onChange={(e) => {uploadImage(e)}}
-                                       
                                     />
                                     <img className='iconUpload' src={UploadIcon} alt='imagem'/>
                                     <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
@@ -219,14 +224,13 @@ export default function ModalAddProduct({open, setOpen}) {
                                     <DialogActions>
                                     <button 
                                         className='transparent-btn font-montserrat font-color-orange font-bold' 
-                                        onClick={handleClose} 
+                                        onClick={(e) => handleClose(e)} 
                                     >
                                             Cancelar
                                     </button>
-
                                     </DialogActions>
                                     <ActionButtonSubmit /> 
-
+                                
                                     {carregando && <CircularProgress />}
                                     {erro && <Alert severity="error">{erro}</Alert>}
                                 </div>
