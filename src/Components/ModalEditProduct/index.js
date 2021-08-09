@@ -22,7 +22,7 @@ import {
         CircularProgress,
         IconButton
     } from '@material-ui/core';
-import { AirlineSeatIndividualSuite } from '@material-ui/icons';
+
 
 
 
@@ -35,7 +35,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const [ atualiza, setAtualiza ] = useState(false);
     const [ baseImage, setBaseImage ] = useState("");
     const [ file, setFile ] = useState('');
-    const [ erro, setErro ] = useState('Não foi possível atualizar');
+    const [ erro, setErro ] = useState('');
     const [ item, setItem ] = useState([]);
     const [ active, setActive ] = useState({
         produto_ativo: Boolean(item.ativo),
@@ -189,7 +189,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
                         setCarregando(false);
                         return
                     }
-                    console.log(erro)
+                   
                     setErro(erro);
                     setCarregando(false);
                     return 

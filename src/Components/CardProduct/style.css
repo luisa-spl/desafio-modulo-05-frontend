@@ -17,3 +17,39 @@
     font-size: 0.8rem;
     letter-spacing: 0.05em;
 }
+
+.modalFechado {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: absolute;
+    backdrop-filter: blur(6px);
+    border-radius: 24px;
+    width: 24rem;
+    height: 10.8rem;
+    z-index: 2;
+    margin-top: -10.8rem;
+    opacity: 0;
+}  
+
+.modalFechado:hover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(6px);
+    border-radius: 24px;
+    width: 24rem;
+    height: 10.8rem;
+    z-index: 2;
+    margin-top: -10.8rem;
+    opacity: 3;
+    
+}
+
+
