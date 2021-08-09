@@ -14,6 +14,7 @@ import { getCategorias, getProfileDetails, putEditProfile } from '../../Services
 import './styles.css';
 
 
+
 function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 	const { token } = useContext(AuthContext);
 	const [categorias, setCategorias] = useState([])
@@ -108,6 +109,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 
 		setBaseImage(formatImg);
 	};
+
 
 	const onSubmit = async () => {
 		const getCents = (value) => parseInt(value.toString().replace(/\D/g, ""));
@@ -340,8 +342,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 			<div className='font-montserrat containerEditProfile'>
 				<div className='headerEditPerfil'>
 					<h1>Editar Perfil</h1>
-					{showEditSuccess && <Alert onClose={handleClose}>Cadastro editado com sucesso!</Alert>}
-					{erroSubmit && <Alert severity="error" onClose={handleClose}>{erroSubmit}</Alert>}
+
 
 				</div>
 				<form className='formsEditProfile' id='forms-edit-profile' onSubmit={handleSubmit(onSubmit)} method='post'>
@@ -350,17 +351,19 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 							<CircularProgress />
 						</div>
 					) : renderInputs()}
-					<div className='uploadDivEditProfile'>
-						<label htmlFor="img-profile" className='labelImageProfile'>
-							Clique ou arraste para adicionar uma imagem</label>
-						<input
-							className='input-img'
-							id='img-profile'
-							type='file'
-							accept='.jpg,.jpeg,.png'
-							onChange={(e) => { uploadImage(e) }}
-						/>
-						<img src={baseImage ? `data:image/jpeg;base64,${baseImage}` : details.restaurante.imagem} className='profileImage' alt="" />
+					<div>
+						<div className='uploadDivEditProfile'>
+							<label htmlFor="img-profile" className='labelImageProfile'>
+								Clique ou arraste para adicionar uma imagem</label>
+							<input
+								className='input-img'
+								id='img-profile'
+								type='file'
+								accept='.jpg,.jpeg,.png'
+								onChange={(e) => { uploadImage(e) }}
+							/>
+							<img src={baseImage ? `data:image/jpeg;base64,${baseImage}` : details.restaurante.imagem} className='profileImage' alt="" />
+						</div>
 					</div>
 
 				</form>
@@ -380,6 +383,10 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 						Salvar edição
 					</button>
 				</div>
+				{erroSubmit && <Alert variant="filled" severity="error" onClose={handleClose}>{erroSubmit}</Alert>}
+				{showEditSuccess && <Alert variant="filled" onClose={handleClose}>Cadastro editado com sucesso!</Alert>}
+
+
 			</div>
 		</div >
 	)
