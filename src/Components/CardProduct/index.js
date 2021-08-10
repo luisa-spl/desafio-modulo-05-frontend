@@ -70,7 +70,7 @@ export default function CardProduct({ id, nome, preco, descricao, img }) {
 
   return (
     <Card id='card' className={classes.root}>
-      <CardContent className={classes.cardContent} onClick={handleClickOpenModal}>
+      <CardContent id='cardContent' className={classes.cardContent} onClick={handleClickOpenModal}>
         <div className={classes.divContent}>
             <h2 className={classes.h2}>{nome}</h2>
             <span className={classes.spanDesc}>{descricao}</span>
@@ -92,7 +92,7 @@ export default function CardProduct({ id, nome, preco, descricao, img }) {
         </div>
       </CardContent>
 
-      <div  className={ openModal ? classes.modalAberto : classes.modalFechado} onClick={handleClose}>   
+      <div  className='modalFechado' onClick={handleClose}>   
             <button 
               className='transparent-btn font-montserrat font-color-orange font-bold'
               onClick={handleDelete}  
@@ -101,7 +101,9 @@ export default function CardProduct({ id, nome, preco, descricao, img }) {
             </button>
             
             <button className='btn-orange-small font-montserrat font-color-white' onClick={() => handleClick()}>
-                <div style={{marginRight: '10px'}}>Editar Produto</div>
+                <div style={{marginRight: '10px'}}>
+                  Editar Produto
+                </div>
                 <img src={PenIcon} alt='' />
             </button> 
             <ModalEditProduct 
