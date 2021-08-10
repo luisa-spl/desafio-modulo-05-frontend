@@ -15,14 +15,14 @@
 .imgProfile {
     border-radius: 50%;
     border: 6px solid white;
-    width: 10rem;
     margin-left: 5rem;
     margin-right: 2rem;
     margin-top: 5rem;
-		width: 171px;
-		height: 171px;
+		width: 180px;
+		height: 180px;
     position: absolute;
     z-index: 1;
+		object-fit: cover;
 }
 
 .btn-logout {

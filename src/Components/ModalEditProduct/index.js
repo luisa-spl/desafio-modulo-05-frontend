@@ -24,8 +24,6 @@ import {
     } from '@material-ui/core';
 
 
-
-
 export default function ModalEditProduct({ open, setOpen, id, img }) {
     const classes = useStyles();
     const { token } = useContext(AuthContext);
@@ -33,7 +31,7 @@ export default function ModalEditProduct({ open, setOpen, id, img }) {
     const [ carregando, setCarregando ] = useState(false);
     const { setProdutos, setAtualizaProduto, atualizaProduto } = useProductsContext();
     const [ atualiza, setAtualiza ] = useState(false);
-    const [ baseImage, setBaseImage ] = useState("");
+    const [ baseImage, setBaseImage ] = useState('');
     const [ file, setFile ] = useState('');
     const [ erro, setErro ] = useState('');
     const [ item, setItem ] = useState([]);
