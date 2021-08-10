@@ -15,7 +15,7 @@ import './styles.css';
 
 
 
-function EditarPerfil({ setOpenModal, setImagemPerfil }) {
+function EditarPerfil({ setOpenModal, setImagemPerfil, setNomeRestaurante, setIdCategoria }) {
 	const { token } = useContext(AuthContext);
 	const [categorias, setCategorias] = useState([])
 	const [showEditSuccess, setShowEditSuccess] = useState(false)
@@ -143,7 +143,8 @@ function EditarPerfil({ setOpenModal, setImagemPerfil }) {
 		} else {
 			setShowEditSuccess(true)
 			baseImage && setImagemPerfil(`data:image/jpeg;base64,${baseImage}`)
-
+			values.restaurante_nome && setNomeRestaurante(values.restaurante_nome)
+			values.categoria_id && setIdCategoria(values.categoria_id)
 		}
 	}
 
