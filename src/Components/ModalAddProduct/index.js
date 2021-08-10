@@ -10,6 +10,7 @@ import { registerProduct, getProducts } from '../../Services/functions';
 
 import Alert from '@material-ui/lab/Alert';
 import ActionButtonSubmit from '../ActionButtonSubmit';
+import CloseIcon from '@material-ui/icons/Close';
 import { 
         Dialog,
         DialogActions,
@@ -19,7 +20,8 @@ import {
         InputLabel,
         Switch,
         TextField,
-        CircularProgress
+        CircularProgress,
+        IconButton
     } from '@material-ui/core';
 
 
@@ -62,40 +64,43 @@ export default function ModalAddProduct({open, setOpen}) {
             setErro('')
             unregister("name")
             unregister("description")
-            unregister("value")
+            setBaseImage("");
             setOpen(false);
     };
 
-
-    const uploadImage = async (e) => {
-        const file = e.target.files[0];
-        setFile(file.name);
-
-        const base64 = await convertBase64(file);
-        const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
-        
-        setBaseImage(formatImg);
-       
-      };
-    
-      const convertBase64 = (file) => {
-        return new Promise((resolve, reject) => {
-          const fileReader = new FileReader();
-          fileReader.readAsDataURL(file);
-    
-          fileReader.onload = () => {
-            resolve(fileReader.result);
-          };
-    
-          fileReader.onerror = (error) => {
-            reject(error);
-          };
-        });
+    const handlecloseAlert = () => {
+            setErro('');
     }
 
+    const uploadImage = async (e) => {
+            const file = e.target.files[0];
+            setFile(file.name);
+
+            const base64 = await convertBase64(file);
+            const formatImg = base64.replace("data:", "").replace(/^.+,/, "")
+            
+            setBaseImage(formatImg);
+        
+        };
+        
+    const convertBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+            const fileReader = new FileReader();
+            fileReader.readAsDataURL(file);
+        
+            fileReader.onload = () => {
+                resolve(fileReader.result);
+            };
+        
+            fileReader.onerror = (error) => {
+                reject(error);
+            };
+            });
+        }
+
     const imagemProduto = {
-        nome : file,
-        imagem: baseImage
+            nome : file,
+            imagem: baseImage
     }
 
    
@@ -117,13 +122,12 @@ export default function ModalAddProduct({open, setOpen}) {
                 imagem: baseImage
         };
         
-        console.log(produtoFormatado, baseImage)
+       
         const { erro } = await registerProduct({produtoFormatado, token})
                 
                 if(erro) {
                     setErro(erro);
                     setCarregando(false);
-                    setOpen(false);
                     return;
                 }; 
 
@@ -136,6 +140,7 @@ export default function ModalAddProduct({open, setOpen}) {
         setProdutos(lista)
         setCarregando(false);
         setOpen(false);
+        setBaseImage("");
     };
 
 
@@ -152,7 +157,7 @@ export default function ModalAddProduct({open, setOpen}) {
                                     type='text'
                                     variant='outlined'
                                     id='name' 
-                                    {...register('name', { required:true, maxLength: 50 })} 
+                                    {...register('name', { maxLength: 50, required:true })} 
                                 />    
                                     {errors.name?.type === 'required' && <Alert severity="error">{'O campo nome é obrigatório'}</Alert>}
                                     {errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}
@@ -216,7 +221,13 @@ export default function ModalAddProduct({open, setOpen}) {
                                         accept='.jpg,.jpeg,.png'
                                         onChange={(e) => {uploadImage(e)}}
                                     />
+                                    {baseImage ? 
+                                    <img className={classes.profilePicture} src={`data:image/jpeg;base64,${baseImage}`} alt=""/>
+
+                                    :
+
                                     <img className='iconUpload' src={UploadIcon} alt='imagem'/>
+                                    }
                                     <label htmlFor='img' className='labelInputImg  font-montserrat'>Clique aqui para adicionar uma imagem</label>
                                 </div>
                                 
@@ -230,13 +241,18 @@ export default function ModalAddProduct({open, setOpen}) {
                                     </button>
                                     </DialogActions>
                                     <ActionButtonSubmit /> 
-                                
                                     {carregando && <CircularProgress />}
-                                    {erro && <Alert severity="error">{erro}</Alert>}
                                 </div>
                             </div>
                         </form>
                 </DialogContent>  
+                {erro &&
+                    <Alert severity="error" onClick={handlecloseAlert}>{erro} 
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handlecloseAlert}>
+                        <CloseIcon fontSize="small" />
+                        </IconButton>
+                    </Alert> 
+                }
             </Dialog>
         </div>
   );
