@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useStyles } from './styles';
 import "./styles.css"
 import CadastroPrimeiroPasso from '../../Components/CadastroPrimeiroPasso'
@@ -8,20 +8,22 @@ import { Stepper, Step, StepLabel, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom';
+import { CadastroContext } from '../../Contexts/CadastroContext'
+
 
 
 function Cadastro() {
 	const classes = useStyles();
-	const [payload, setPayload] = useState({})
+	const { payload, setPayload } = useContext(CadastroContext)
 	const [error, setError] = useState(false)
 	const [etapaAtual, setEtapaAtual] = useState(0)
 	const history = useHistory()
 
 
 	const formularios = [
-		<CadastroPrimeiroPasso nextPage={nextPage} setPayload={setPayload} />,
-		<CadastroSegundoPasso nextPage={nextPage} previousPage={previousPage} setPayload={setPayload} />,
-		<CadastroTerceiroPasso salvarCadastro={salvarCadastro} previousPage={previousPage} payload={payload} />,
+		<CadastroPrimeiroPasso nextPage={nextPage} setPayload={setPayload} payload={payload} />,
+		<CadastroSegundoPasso nextPage={nextPage} previousPage={previousPage} setPayload={setPayload} payload={payload} />,
+		<CadastroTerceiroPasso salvarCadastro={salvarCadastro} previousPage={previousPage} setPayload={setPayload} payload={payload} />,
 	]
 
 	function nextPage() {

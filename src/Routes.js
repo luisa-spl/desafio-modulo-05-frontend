@@ -7,6 +7,7 @@ import {
 import { useContext } from 'react';
 import { AuthContext } from './Contexts/AuthContext'
 import AuthProvider from './Contexts/AuthContext';
+import CadastroProvider from './Contexts/CadastroContext';
 
 import Login from "./Pages/Login";
 import Cadastro from "./Pages/Cadastro";
@@ -27,7 +28,11 @@ function Routes() {
 			<Router>
 				<Switch>
 					<Route path="/" exact component={Login} />
-					<Route path="/cadastro" exact component={Cadastro} />
+					<Route path="/cadastro" exact >
+						<CadastroProvider>
+							<Cadastro />
+						</CadastroProvider>
+					</Route>
 					<RotasProtegidas >
 						<ProductsProvider>
 							<Route path="/produtos" exact component={Produtos} />
