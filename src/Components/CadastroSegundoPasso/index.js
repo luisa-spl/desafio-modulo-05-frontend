@@ -14,9 +14,9 @@ import { useState, useEffect } from 'react';
 
 
 
-function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
+function CadastroSegundoPasso({ nextPage, previousPage, setPayload, payload }) {
 	const classes = useStyles();
-	const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+	const { register, getValues, handleSubmit, setValue, formState: { errors } } = useForm();
 	const [categorias, setCategorias] = useState([])
 
 
@@ -28,8 +28,18 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 			})
 	}
 
+
+	const getPayload = () => {
+		payload.nomeRestaurante && setValue("nomeRestaurante", payload.nomeRestaurante)
+		payload.idCategoria && setValue("idCategoria", payload.idCategoria)
+		payload.descricao && setValue("descricao", payload.descricao)
+	}
+
+
+
 	useEffect(() => {
 		getCategorias()
+		getPayload()
 	}, [])
 
 
@@ -48,6 +58,7 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 						className={classes.textField}
 						margin="normal"
 						variant="outlined"
+						defaultValue={payload.nomeRestaurante}
 						autoComplete="off"
 						error={Boolean(errors.nomeRestaurante)}
 						helperText={errors.nomeRestaurante ? "Campo Obrigatório" : false}
@@ -59,6 +70,7 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 						id="categoria-restaurante"
 						select
 						variant="outlined"
+						defaultValue={payload.idCategoria}
 						error={Boolean(errors.idCategoria)}
 						helperText={errors.idCategoria ? "Campo Obrigatório" : false}
 						{...register('idCategoria', { required: true })}
@@ -76,6 +88,7 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload }) {
 						className={classes.textField}
 						margin="normal"
 						variant="outlined"
+						defaultValue={payload.descricao}
 						autoComplete="off"
 						placeholder="Máx. 100 caracteres"
 						error={Boolean(errors.descricao)}

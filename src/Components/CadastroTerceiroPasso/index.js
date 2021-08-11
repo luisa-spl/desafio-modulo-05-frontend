@@ -7,14 +7,21 @@ import {
 } from '@material-ui/core';
 import { useForm } from "react-hook-form";
 import formatCurrency from "format-currency"
+import { useEffect } from 'react'
 
 
-function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
+function CadastroSegundoPasso({ previousPage, salvarCadastro, setPayload, payload }) {
 	const classes = useStyles();
-	const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+	const { register, getValues, handleSubmit, setValue, formState: { errors } } = useForm();
 
 	const onSubmit = async () => {
 		await salvarCadastro({ ...payload, ...getValues() })
+	}
+
+	const returnPage = () => {
+		console.log(getValues())
+		setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }));
+		previousPage();
 	}
 
 	const setCurrencyMask = (e) => {
@@ -33,6 +40,18 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 	const taxaEntrega = register('taxaEntrega', { required: true })
 	const valorMinimoPedido = register('valorMinimoPedido', { required: true })
 
+	const getPayload = () => {
+		payload.taxaEntrega && setValue("taxaEntrega", payload.taxaEntrega)
+		payload.valorMinimoPedido && setValue("valorMinimoPedido", payload.valorMinimoPedido)
+		payload.tempoEntregaEmMinutos && setValue("tempoEntregaEmMinutos", payload.tempoEntregaEmMinutos)
+	}
+
+
+
+	useEffect(() => {
+		getPayload()
+	}, [])
+
 
 	return (
 		<div className={classes.root}>
@@ -45,6 +64,7 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 						type='text'
 						variant="outlined"
 						autoComplete="off"
+						defaultValue={payload.taxaEntrega}
 						error={Boolean(errors.taxaEntrega)}
 						helperText={errors.taxaEntrega ? "Campo Obrigatório" : false}
 						{...taxaEntrega}
@@ -58,6 +78,7 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 						id="input-tempo-entrega"
 						type='text'
 						variant="outlined"
+						defaultValue={payload.tempoEntregaEmMinutos}
 						placeholder="Tempo de entrega em minutos"
 						autoComplete="off"
 						error={Boolean(errors.tempoEntregaEmMinutos)}
@@ -70,6 +91,7 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 						variant="outlined"
 						id="input-valor-minimo"
 						autoComplete="off"
+						defaultValue={payload.valorMinimoPedido}
 						error={Boolean(errors.valorMinimoPedido)}
 						helperText={errors.valorMinimoPedido ? "Campo Obrigatório" : false}
 						{...valorMinimoPedido}
@@ -80,7 +102,7 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 
 
 					<div className={classes.containerButtonCadastro}>
-						<Button color="secondary" onClick={previousPage}>
+						<Button color="secondary" onClick={returnPage}>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit" >

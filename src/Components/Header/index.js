@@ -62,15 +62,15 @@ function Header() {
 	useEffect(() => {
 		!idCategoria && getDetailsProfile()
 		idCategoria && getImagemCategoria()
-	}, [idCategoria])
+	}, [idCategoria,])
 
 	//------------------------------------------//-------------------------------------------------//
 
 	return (
 		<div className='flex-row items-flex-end headerProducts' style={{ backgroundImage: `url(${imagemCategoria})`, backgroundSize: "cover", }}>
 			<img className='imgProfile' src={imagemPerfil} alt='background pizzaria' onClick={handleOpenModal} />
-			{openModal && <NewEditProfile setOpenModal={setOpenModal} setImagemPerfil={setImagemPerfil} />}
-			<h1 className='font-baloo font-color-white title-header'>{nomeRestaurante}</h1>
+			{openModal && <NewEditProfile setOpenModal={setOpenModal} setImagemPerfil={setImagemPerfil} setNomeRestaurante={setNomeRestaurante} setIdCategoria={setIdCategoria} />}
+			<h1 className='font-baloo font-color-white title-header' >{nomeRestaurante}</h1>
 			<button className='font-montserrat font-color-white btn-logout' onClick={() => logout()}>Logout</button>
 		</div>
 	)
