@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useStyles from './styles';
 import './styles.css'
 import {
@@ -7,12 +7,13 @@ import {
 	Typography,
 } from '@material-ui/core';
 import InputSenha from '../InputSenha/inputSenha'
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 
 function CadastroPrimeiroPasso({ nextPage, setPayload, payload }) {
 	const classes = useStyles();
-	const { register, getValues, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+	const { register, getValues, control, handleSubmit, watch, setValue, formState: { errors } } = useForm();
+
 
 	const onSubmit = () => {
 		setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }))
@@ -20,19 +21,11 @@ function CadastroPrimeiroPasso({ nextPage, setPayload, payload }) {
 
 	}
 
-	// setValue("nome", payload.nome)
-
-	// setValue("email", result.usuario.email)
-	// setValue("restaurante_nome", result.restaurante.nome)
-	// setValue("descricao", result.restaurante.descricao)
-	// setValue("categoria_id", result.restaurante.categoria_id)
-	// setValue("taxa_entrega", currencyFormatter(result.restaurante.taxa_entrega))
-	// setValue("tempo_entrega_minutos", result.restaurante.tempo_entrega_minutos)
-	// setValue("valor_minimo_pedido", currencyFormatter(result.restaurante.valor_minimo_pedido))
-
 	const getPayload = () => {
 		payload.nome && setValue("nome", payload.nome)
 		payload.email && setValue("email", payload.email)
+		payload.senha && setValue("senha", payload.senha)
+		payload.senhaRepetida && setValue("senhaRepetida", payload.senhaRepetida)
 	}
 
 	useEffect(() => {
@@ -45,46 +38,77 @@ function CadastroPrimeiroPasso({ nextPage, setPayload, payload }) {
 
 
 
+
 	return (
 		<div className={classes.root}>
 			<div className={classes.cardCadastro}>
 				<form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)} >
 					<Typography className='credentialsStyle font-montserrat'>Nome de usuário</Typography>
-					<TextField
-						id="input-nome"
-						type='text'
-						variant="outlined"
-						defaultValue={payload.nome}
-						autoComplete="off"
-						error={Boolean(errors.nome)}
-						helperText={errors.nome ? "Campo Obrigatório" : false}
-						{...register('nome', { required: true })} />
+					<Controller
+						control={control}
+						name="nome"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<TextField
+								id="input-nome"
+								type='text'
+								variant="outlined"
+								autoComplete="off"
+								error={Boolean(errors.nome)}
+								helperText={errors.nome ? "Campo Obrigatório" : false}
+								{...field}
+							/>
+
+						)
+						}
+					/>
+
 
 					<Typography className='credentialsStyle font-montserrat'>Email</Typography>
-					<TextField
-						id="input-email"
-						type='email'
-						variant="outlined"
-						defaultValue={payload.email}
-						autoComplete="off"
-						error={Boolean(errors.email)}
-						helperText={errors.email ? "Campo Obrigatório" : false}
-						{...register('email', { required: true })} />
+					<Controller
+						control={control}
+						name="email"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<TextField
+								id="input-email"
+								type='email'
+								variant="outlined"
+								autoComplete="off"
+								error={Boolean(errors.email)}
+								helperText={errors.email ? "Campo Obrigatório" : false}
+								{...field} />
+						)
+						}
+					/>
 
 					<Typography className='credentialsStyle font-montserrat'>Senha</Typography>
-					<InputSenha
-						register={() => register('senha', { required: true })}
-						id="inputSenhaCadastro"
-						error={Boolean(errors.senha)}
-						helperText={errors.senha ? "Campo Obrigatório" : false} />
+					<Controller
+						control={control}
+						name="senha"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<InputSenha
+								id="inputSenhaCadastro"
+								error={errors.senha ? "Campo Obrigatório" : false}
+								{...field} />
+						)
+						}
+					/>
 
 					<Typography className='credentialsStyle font-montserrat'>Repita sua senha</Typography>
-					<InputSenha
-						register={() => register('senhaRepetida', {
-							required: true,
-							validate: (value) => value === watch('senha') || "Senhas não conferem"
-						})}
-						id="inputSenhaRepetidaCadastro" />
+					<Controller
+						control={control}
+						name="senhaRepetida"
+						rules={{ required: true, validate: (value) => value === watch('senha') || "Senhas não conferem" }}
+						render={({ field }) => (
+							<InputSenha
+								error={errors.senhaRepetida ? "Senhas não conferem" : false}
+								id="inputSenhaRepetidaCadastro"
+								{...field} />
+						)
+						}
+					/>
 
 					<div className={classes.containerButtonCadastro}>
 						<Button disabled>
