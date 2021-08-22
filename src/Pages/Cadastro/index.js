@@ -7,6 +7,7 @@ import CadastroTerceiroPasso from '../../Components/CadastroTerceiroPasso'
 import { Stepper, Step, StepLabel, Typography } from '@material-ui/core';
 import Alert from '@material-ui/lab/Alert';
 import { useState } from 'react'
+import { useForm } from "react-hook-form";
 import { useHistory } from 'react-router-dom';
 import { CadastroContext } from '../../Contexts/CadastroContext'
 
@@ -15,6 +16,7 @@ import { CadastroContext } from '../../Contexts/CadastroContext'
 function Cadastro() {
 	const classes = useStyles();
 	const { payload, setPayload } = useContext(CadastroContext)
+	const { unregister } = useForm();
 	const [error, setError] = useState(false)
 	const [etapaAtual, setEtapaAtual] = useState(0)
 	const history = useHistory()
@@ -28,10 +30,12 @@ function Cadastro() {
 
 	function nextPage() {
 		setEtapaAtual(etapaAtual + 1)
+		console.log(payload)
 	}
 
 	function previousPage() {
 		setEtapaAtual(etapaAtual - 1)
+		unregister("email")
 	}
 
 

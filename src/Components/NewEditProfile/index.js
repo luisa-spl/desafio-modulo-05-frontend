@@ -26,6 +26,7 @@ function EditarPerfil({ setOpenModal, setImagemPerfil, setNomeRestaurante, setId
 	const { register, handleSubmit, getValues, setValue, watch, control, formState: { errors } } = useForm();
 	const [baseImage, setBaseImage] = useState("");
 	const [file, setFile] = useState('');
+
 	const handleClose = () => {
 		setOpenModal(false)
 	}
