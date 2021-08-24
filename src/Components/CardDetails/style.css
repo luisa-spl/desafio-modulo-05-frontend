@@ -1,0 +1,34 @@
+.containerProductCart{
+	display: flex;
+	align-items: center;
+  gap: 20px;
+  margin-bottom: 20px;
+	height: 82px;
+	width: 346px;
+	line-height: 60%;
+	font-family: 'Montserrat', sans-serif;
+	color: #525459;
+}
+
+.containerProductCart h3 {
+font-size: 20px;
+}
+
+.containerProductCart p {
+	font-size: 14px;
+}
+
+.containerProductCart img{
+	height: 77px;
+	width: 77px;
+	border: 2px solid rgba(251, 59, 0, 0.2);
+	border-radius: 16px;
+}
+
+.valueBox{
+	color: #0D8A4F;
+	background-color: rgba(13, 138, 79, 0.10);
+	border-radius: 4px;
+	padding: 4px;
+	font-size: 10px;
+}
