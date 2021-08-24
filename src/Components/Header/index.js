@@ -67,11 +67,28 @@ function Header() {
 	//------------------------------------------//-------------------------------------------------//
 
 	return (
-		<div className='flex-row items-flex-end headerProducts' style={{ backgroundImage: `url(${imagemCategoria})`, backgroundSize: "cover", }}>
-			<img className='imgProfile' src={imagemPerfil} alt='background pizzaria' onClick={handleOpenModal} />
+		<div className='flex-column  headerProducts' style={{ backgroundImage: `url(${imagemCategoria})`, backgroundSize: "cover", }}>
 			{openModal && <NewEditProfile setOpenModal={setOpenModal} setImagemPerfil={setImagemPerfil} setNomeRestaurante={setNomeRestaurante} setIdCategoria={setIdCategoria} />}
-			<h1 className='font-baloo font-color-white title-header' >{nomeRestaurante}</h1>
-			<button className='font-montserrat font-color-white btn-logout' onClick={() => logout()}>Logout</button>
+			<img className='imgProfile' src={imagemPerfil} alt='background pizzaria' onClick={handleOpenModal} />
+			<div className='flex-row items-flex-end div-info-header'>
+				<h1 className='font-baloo font-color-white title-header' >{nomeRestaurante}</h1>
+				<button className='font-montserrat font-color-white font-bold btn-logout' onClick={() => logout()}>Logout</button>
+			</div>
+			<div className='flex-row div-btn-header '>
+				<button 
+					className='btn-white-small font-montserrat font-color-orange'
+					onClick={() => history.push('/produtos')}
+				>
+					Cardapio
+				</button>
+
+				<button 
+					className='btn-white-small font-montserrat font-color-orange'
+					onClick={() => history.push('/pedidos')}
+				>
+					Pedidos
+				</button>
+			</div>
 		</div>
 	)
 }
