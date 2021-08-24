@@ -99,7 +99,7 @@ function Pedidos() {
 								<div>{`${p.cliente[0].cep}`}</div>
 							</div>
 							<div className='flex-row items-header'>{p.cliente[0].nome}</div>
-							<div className='flex-row items-header'>{`R$${(p.total / 100).toFixed(2)}`}</div>
+							<div className='flex-row font-bold items-header'>{`R$${(p.total / 100).toFixed(2)}`}</div>
 						</div>
 					)
 				})
