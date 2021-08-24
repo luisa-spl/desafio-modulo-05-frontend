@@ -60,7 +60,7 @@ function Pedidos() {
 				</button>
 			</div>
 
-			<div className='flex-row items-center table-header'>
+			<div className='flex-row items-center font-lato table-header'>
 				<div className='flex-row items-header'>Pedido</div>
 				<div className='flex-row items-header'>Itens</div>
 				<div className='flex-row items-header'>Endereço</div>
@@ -73,17 +73,31 @@ function Pedidos() {
 			{pedidos && pedidos.length > 0 ?
 				pedidos.map((p) => {
 					return (
-						<div className='flex-row items-center table-line' onClick={() => handleClick(p)}>
-							<div className='flex-row items-header'>{p.id}</div>
+						<div className='flex-row items-center table-line font-lato' onClick={() => handleClick(p)}>
+							<div className='flex-row items-header'>{p.id>9 ? `0${p.id}` : `00${p.id}`}</div>
 							<div className='flex-column items-header'>
-								<div>{`${p.produtos[0].nome} - ${p.produtos[0].quantidade}und `}</div>
-								{p.produtos[1] ?
-									<div>{`${p.produtos[1].nome} - ${p.produtos[1].quantidade}und`}</div>
+								<div>{`${p.produtos[0].nome} - ${p.produtos[0].quantidade} uni `}</div>
+								{p.produtos.length >1 ?
+									<div>{`${p.produtos[1].nome} - ${p.produtos[1].quantidade} uni`}</div>
+									:
+									""
+								}
+								{p.produtos.length >2 ?
+									<div 
+										className='font-color-orange font-size-2 font-bold font-size-2'
+										style={{cursor: 'pointer'}}
+									>
+										ver mais
+									</div>
 									:
 									""
 								}
 							</div>
-							<div className='flex-row items-header'>{`${p.cliente[0].endereco},${p.cliente[0].complemento},${p.cliente[0].cep}`}</div>
+							<div className='flex-column items-header'>
+								<div>{`${p.cliente[0].endereco}`} </div>
+								<div>{`${p.cliente[0].complemento}`}</div>
+								<div>{`${p.cliente[0].cep}`}</div>
+							</div>
 							<div className='flex-row items-header'>{p.cliente[0].nome}</div>
 							<div className='flex-row items-header'>{`R$${(p.total / 100).toFixed(2)}`}</div>
 						</div>

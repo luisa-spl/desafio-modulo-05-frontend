@@ -63,4 +63,7 @@
 
 .items-header {
     color: rgba(0, 0, 0, 1);
+    width: 20%;
+    justify-content: center;
+    align-items: center;
 }
