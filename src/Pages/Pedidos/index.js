@@ -10,9 +10,9 @@ import OrderDetails from '../../Components/OrderDetails'
 function Pedidos() {
 	const { token } = useContext(AuthContext);
 	const { pedido, setPedido } = useProductsContext();
-	const [erro, setErro] = useState('');
-	const [pedidos, setPedidos] = useState([]);
-	const [openModal, setOpenModal] = useState(false);
+	const [ erro, setErro ] = useState('');
+	const [ pedidos, setPedidos ] = useState([]);
+	const [ openModal, setOpenModal ] = useState(false);
 
 	async function listarPedidos() {
 		setErro('');
@@ -31,7 +31,7 @@ function Pedidos() {
 
 	useEffect(() => {
 		listarPedidos()
-	}, [token])
+	}, [token, openModal])
 
 
 
