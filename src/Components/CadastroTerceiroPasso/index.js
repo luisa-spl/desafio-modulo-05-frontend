@@ -19,7 +19,6 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, setPayload, payloa
 	}
 
 	const returnPage = () => {
-		console.log(getValues())
 		setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }));
 		previousPage();
 	}

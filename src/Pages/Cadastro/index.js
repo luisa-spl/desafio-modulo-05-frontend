@@ -30,7 +30,6 @@ function Cadastro() {
 
 	function nextPage() {
 		setEtapaAtual(etapaAtual + 1)
-		console.log(payload)
 	}
 
 	function previousPage() {

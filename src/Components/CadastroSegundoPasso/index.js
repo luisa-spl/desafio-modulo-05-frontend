@@ -78,7 +78,6 @@ function CadastroSegundoPasso({ nextPage, previousPage, setPayload, payload }) {
 						name="idCategoria"
 						rules={{ required: true }}
 						render={({ field }) => {
-							console.log(field, categorias)
 							return (
 								<TextField
 									id="categoria-restaurante"

@@ -8,7 +8,6 @@ import { useContext } from 'react';
 import { AuthContext } from './Contexts/AuthContext'
 import AuthProvider from './Contexts/AuthContext';
 import CadastroProvider from './Contexts/CadastroContext';
-
 import Login from "./Pages/Login";
 import Cadastro from "./Pages/Cadastro";
 import Produtos from './Pages/Produtos';
