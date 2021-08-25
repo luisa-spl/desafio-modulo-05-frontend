@@ -4,12 +4,21 @@
 		background-color: lightgrey;
     border-radius: 0px 0px 232.147px 0px;
     width: 100%;
-    height: 11rem;
+    height: 12rem;
 }
 
-.title-header{
+.title-header {
     z-index: 0;
     margin-left: 18rem;
+}
+
+.div-btn-header {
+    margin-left: 18rem;
+    gap: 1.5rem;
+}
+
+.div-info-header {
+    margin-top: 2rem;
 }
 
 .imgProfile {

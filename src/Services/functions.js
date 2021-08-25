@@ -236,6 +236,27 @@ export async function enviaPedido({ token, id }) {
 	}
 }
 
+export async function getOrders(token) {
+	try {
+		const resposta = await fetch('https://icubus.herokuapp.com/pedidos', {
+			headers: {
+				'Authorization': `Bearer ${token}`,
+				'Content-Type': 'application/json'
+			}
+		});
+
+		const lista = await resposta.json();
+
+		if (resposta.status >= 400) {
+			return { erros: lista }
+		}
+
+		return { lista }
+	}
+	catch (error) {
+		return { errorGet: error.message };
+	}
+};
 
 
 

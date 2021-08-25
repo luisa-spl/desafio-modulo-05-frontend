@@ -11,6 +11,7 @@ import CadastroProvider from './Contexts/CadastroContext';
 import Login from "./Pages/Login";
 import Cadastro from "./Pages/Cadastro";
 import Produtos from './Pages/Produtos';
+import Pedidos from './Pages/Pedidos';
 import { ProductsProvider } from './Contexts/ProductsContext';
 
 function RotasProtegidas(props) {
@@ -34,6 +35,7 @@ function Routes() {
 					</Route>
 					<RotasProtegidas >
 						<ProductsProvider>
+							<Route path='/pedidos' exact component={Pedidos} />
 							<Route path="/produtos" exact component={Produtos} />
 						</ProductsProvider>
 					</RotasProtegidas>
