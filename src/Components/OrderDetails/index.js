@@ -4,25 +4,23 @@ import './styles.css';
 import CardDetails from '../CardDetails'
 import closeIcon from '../../Assets/close-icon.svg'
 import { useState, useContext } from 'react';
-import { useHistory } from "react-router-dom";
 import { AuthContext } from '../../Contexts/AuthContext'
 import { ProductsContext } from '../../Contexts/ProductsContext'
 import { enviaPedido } from '../../Services/functions'
 
-function RealCart() {
+function RealCart({ setOpenModal }) {
 	const { token } = useContext(AuthContext);
-	const { produtos, confirmCart } = useContext(ProductsContext);
+	const { pedido } = useContext(ProductsContext);
 	const [erroSubmit, setErroSubmit] = useState(false)
 	const [showSuccess, setShowSuccess] = useState(false)
-	const history = useHistory()
 
 	const handleClose = () => {
-		history.push('/pedidos')
+		setOpenModal(false)
 	}
 
 	const onSubmit = async () => {
 
-		const result = await enviaPedido({ token, id: confirmCart.pedidoId });
+		const result = await enviaPedido({ token, id: pedido.id });
 
 		if (result.error) {
 			setErroSubmit(result.error)
@@ -44,25 +42,25 @@ function RealCart() {
 					<img src={closeIcon} className='closeModal' alt="fechar" onClick={handleClose} />
 					<div className='boxContainer'>
 						<header className='headerModal'>
-							<h1>{confirmCart.pedidoId}</h1>
-							<h2>Cliente: {confirmCart.cliente_nome}</h2>
+							<h1>{pedido.id}</h1>
+							<h2>Cliente: {pedido.cliente[0].nome}</h2>
 						</header>
 						<div className='contentModal'>
 							<p className='font-color-orange font-bold'>Endereço de Entrega: <span className='font-color-gray font-weight-normal '>
-								{confirmCart.endereco}	</span> </p>
+								{pedido.cliente[0].endereco}	{pedido.cliente[0].complemento} {pedido.cliente[0].cep}</span> </p>
 
-							{produtos.map((produto) => (
+							{pedido.produtos.map((produto) => (
 								<CardDetails
 									imagem={produto.imagem}
 									nome={produto.nome}
 									quantidade={produto.quantidade}
-									precoTotal={produto.precoTotal}
+									precoTotal={produto.preco_total}
 								/>
 							))}
 
 							<img src={lineModal} alt="" />
 							<div className='finalCart font-color-gray font-size-3 '>
-								<p className='finalCartStyle'>Total <spam className='font-size-1'>R$ {(confirmCart.total) / 100}</spam> </p>
+								<p className='finalCartStyle'>Total <spam className='font-size-1'>R$ {(pedido.total) / 100}</spam> </p>
 							</div>
 							<div className='flex-row actionButtons '>
 								<button
