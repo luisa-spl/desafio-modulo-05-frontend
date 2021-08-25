@@ -3,32 +3,26 @@ import Alert from '@material-ui/lab/Alert';
 import './styles.css';
 import CardDetails from '../CardDetails'
 import closeIcon from '../../Assets/close-icon.svg'
-import { useState, useEffect, useContext } from 'react';
+import { useState, useContext } from 'react';
 import { useHistory } from "react-router-dom";
 import { AuthContext } from '../../Contexts/AuthContext'
 import { ProductsContext } from '../../Contexts/ProductsContext'
 import { enviaPedido } from '../../Services/functions'
 
-function RealCart({ setProdutoEscolhido, setOpenCarrinho, closeRevisaoPedido }) {
+function RealCart() {
 	const { token } = useContext(AuthContext);
 	const { produtos, confirmCart } = useContext(ProductsContext);
 	const [erroSubmit, setErroSubmit] = useState(false)
 	const [showSuccess, setShowSuccess] = useState(false)
+	const history = useHistory()
 
 	const handleClose = () => {
-		''
-	}
-
-
-	function openProductDetails(produto) {
-		setProdutoEscolhido(produto);
-		setOpenCarrinho(true);
-		closeRevisaoPedido();
+		history.push('/pedidos')
 	}
 
 	const onSubmit = async () => {
 
-		const result = await enviaPedido({ token, id: confirmCart.clienteId });
+		const result = await enviaPedido({ token, id: confirmCart.pedidoId });
 
 		if (result.error) {
 			setErroSubmit(result.error)
@@ -37,13 +31,10 @@ function RealCart({ setProdutoEscolhido, setOpenCarrinho, closeRevisaoPedido }) 
 		}
 	}
 
-
-	const handleCloseErrorAlert = () => {
+	const handleCloseAlert = () => {
 		setErroSubmit('')
+		setShowSuccess('')
 	}
-
-
-
 
 	return (
 		<div>
@@ -52,16 +43,10 @@ function RealCart({ setProdutoEscolhido, setOpenCarrinho, closeRevisaoPedido }) 
 				<div className='font-montserrat containerModal'>
 					<img src={closeIcon} className='closeModal' alt="fechar" onClick={handleClose} />
 					<div className='boxContainer'>
-
 						<header className='headerModal'>
 							<h1>{confirmCart.pedidoId}</h1>
-							<h2>{confirmCart.cliente_nome}</h2>
+							<h2>Cliente: {confirmCart.cliente_nome}</h2>
 						</header>
-						<div className='alert-confirmacao-pedido'>
-							{erroSubmit && <Alert variant="filled" severity="error" onClose={handleCloseErrorAlert}>{erroSubmit}</Alert>}
-						</div>
-
-
 						<div className='contentModal'>
 							<p className='font-color-orange font-bold'>Endereço de Entrega: <span className='font-color-gray font-weight-normal '>
 								{confirmCart.endereco}	</span> </p>
@@ -72,12 +57,10 @@ function RealCart({ setProdutoEscolhido, setOpenCarrinho, closeRevisaoPedido }) 
 									nome={produto.nome}
 									quantidade={produto.quantidade}
 									precoTotal={produto.precoTotal}
-									onClick={() => openProductDetails(produto)}
 								/>
 							))}
 
 							<img src={lineModal} alt="" />
-
 							<div className='finalCart font-color-gray font-size-3 '>
 								<p className='finalCartStyle'>Total <spam className='font-size-1'>R$ {(confirmCart.total) / 100}</spam> </p>
 							</div>
@@ -90,19 +73,15 @@ function RealCart({ setProdutoEscolhido, setOpenCarrinho, closeRevisaoPedido }) 
 									Enviar Pedido
 								</button>
 							</div>
-
+							<div className='alert-confirmacao-pedido'>
+								{erroSubmit && <Alert variant="filled" severity="error" onClose={handleCloseAlert}>{erroSubmit}</Alert>}
+								{showSuccess && <Alert variant="filled" severity="success" onClose={handleCloseAlert}>Pedido enviado com sucesso</Alert>}
+							</div>
 						</div>
-
-
-
 					</div>
-
-
 				</div>
 			</div>
 		</div>
-
-
 	)
 }
 

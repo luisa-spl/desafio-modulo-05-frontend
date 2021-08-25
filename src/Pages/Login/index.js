@@ -47,7 +47,7 @@ export default function Login() {
 				setError(data)
 			} else {
 				setToken(data.token)
-				history.push('/produtos')
+				history.push('/pedidos')
 			}
 		});
 	}

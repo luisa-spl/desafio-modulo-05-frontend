@@ -23,8 +23,8 @@
 
 .containerModal h1 {
 	font-family: 'Baloo 2', sans-serif;
-	color: #D13201;
-	font-size: 32px;
+	color: #121212;
+	font-size: 40px;
 	margin: 0;
 }
 
@@ -74,6 +74,7 @@
 
 .headerModal h2{
 	margin: 0;
+	color: #525459;
 }
 
 .headerModal {
@@ -196,7 +197,7 @@
 }
 
 .alert-confirmacao-pedido{
-	margin-top: 20px;
+	margin-bottom: 20px;
 }
 
 .content-modal-sucess-pedido{

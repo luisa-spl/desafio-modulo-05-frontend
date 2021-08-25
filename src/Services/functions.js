@@ -217,7 +217,7 @@ export async function putEditProfile(token, perfilEditado) {
 	}
 }
 
-export async function enviaPedido(token, id) {
+export async function enviaPedido({ token, id }) {
 	try {
 		const resposta = await fetch(`https://icubus.herokuapp.com/pedidos/${id}/enviado`, {
 			method: 'POST',
