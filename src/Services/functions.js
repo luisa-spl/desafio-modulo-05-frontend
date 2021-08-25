@@ -21,7 +21,6 @@ export async function getProducts(token) {
 };
 
 export async function getSingleProduct({ id, token }) {
-	console.log('entrou aqui')
 	try {
 		const resposta = await fetch(`https://icubus.herokuapp.com/produtos/${id}`, {
 			headers: {
@@ -30,7 +29,7 @@ export async function getSingleProduct({ id, token }) {
 		});
 
 		const dados = await resposta.json();
-		console.log(dados)
+
 		if (resposta.status >= 400) {
 			return { erro: dados }
 		}
@@ -155,7 +154,7 @@ export async function deleteProduct({ id, token }) {
 
 	}
 	catch (error) {
-		return console.log(error.message)
+		return { error: error.message }
 	}
 }
 
