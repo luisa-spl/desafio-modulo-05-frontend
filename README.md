@@ -29,26 +29,6 @@ e então:
 
 Uma aba será aberta localmente no seu browser (http://localhost:3000) para rodar as duas ao mesmo tempo, rode em duas portas distintas (http://localhost:3001)
 
-**Prévia da aplicação:**
+## Prévia do fluxo aplicação cliente - restaurante:
 
-## Login:
-
-<img src="./preview/loginICubos.png" alt="imagem-tela-login" />
-
-## Cadastro:
-
-<img src="./preview/cadastroFirstStep.png" alt="imagem-tela-cadastro-primeiro-passo" />
-
-<img src="./preview/cadastroSecondStep.png" alt="imagem-tela-cadastro-segundo-passo" />
-
-<img src="./preview/cadastroThirdStep.png" alt="imagem-tela-cadastro-terceiro-passo" />
-
-<img src="./preview/listaProdutos.png" alt="imagem-tela-lista-de-produtos" />
-
-<img src="./preview/editDelete.png" alt="imagem-tela-editar-ou-deletar-produto" />
-
-<img src="./preview/editProduct.png" alt="imagem-tela-editar-produto" />
-
-<img src="./preview/newProduct.png" alt="imagem-tela-novo-produto" />
-
-
+## Prévia do fluxo aplicação cliente - consumidor:
