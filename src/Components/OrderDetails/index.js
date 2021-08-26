@@ -26,12 +26,12 @@ function RealCart({ setOpenModal }) {
 			setErroSubmit(result.error)
 		} else {
 			setShowSuccess(true)
+
 		}
 	}
 
 	const handleCloseAlert = () => {
 		setErroSubmit('')
-		setShowSuccess('')
 	}
 
 	return (
@@ -67,13 +67,15 @@ function RealCart({ setOpenModal }) {
 									className='btn-orange-small font-montserrat font-color-white'
 									type='submit'
 									onClick={onSubmit}
+									style={{ display: showSuccess ? 'none' : 'flex' }}
+
 								>
 									Enviar Pedido
 								</button>
 							</div>
 							<div className='alert-confirmacao-pedido'>
 								{erroSubmit && <Alert variant="filled" severity="error" onClose={handleCloseAlert}>{erroSubmit}</Alert>}
-								{showSuccess && <Alert variant="filled" severity="success" onClose={handleCloseAlert}>Pedido enviado com sucesso</Alert>}
+								{showSuccess && <Alert variant="filled" severity="success">Pedido enviado com sucesso</Alert>}
 							</div>
 						</div>
 					</div>
