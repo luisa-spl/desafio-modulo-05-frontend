@@ -9,7 +9,7 @@ function CardCart(props) {
 			<img src={props.imagem} alt="imagem-do-produto" />
 			<div>
 				<h3>{props.nome}</h3>
-				<p>{props.quantidade}</p>
+				<p>{props.quantidade} un</p>
 				<p className='valueBox'> R$ {props.precoTotal / 100}</p>
 			</div>
 		</div>
