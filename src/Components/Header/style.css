@@ -1,26 +1,37 @@
 .headerProducts {
-    background-image: url('../../Assets/bg-pizzaria.png');
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: auto;
+		background-color: lightgrey;
     border-radius: 0px 0px 232.147px 0px;
     width: 100%;
-    height: 11rem;
+    height: 12rem;
 }
 
-.title-header{
+.title-header {
     z-index: 0;
     margin-left: 18rem;
+}
+
+.div-btn-header {
+    margin-left: 18rem;
+    gap: 1.5rem;
+}
+
+.div-info-header {
+    margin-top: 2rem;
 }
 
 .imgProfile {
     border-radius: 50%;
     border: 6px solid white;
-    width: 10rem;
     margin-left: 5rem;
     margin-right: 2rem;
     margin-top: 5rem;
+		width: 180px;
+		height: 180px;
     position: absolute;
     z-index: 1;
+		object-fit: cover;
 }
 
 .btn-logout {

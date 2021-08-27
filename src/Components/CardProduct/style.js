@@ -47,24 +47,5 @@ export default makeStyles((theme) => ({
           marginTop: '0.3rem',
           color: 'rgba(34, 34, 34, 0,87)'
       },
-    
-      modalAberto: {
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-          gap: '1rem',
-          position: 'absolute',
-          background: 'rgba(255, 255, 255, 0.6)',
-          backdropFilter: 'blur(6px)',
-          borderRadius: '24px',
-          width: '24rem',
-          height: '10.8rem',
-          zIndex: 2,
-          marginTop: '-10.8rem',
-      },
-    
-      modalFechado: {
-          display: 'none'
-      }
+      
 }));

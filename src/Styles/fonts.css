@@ -2,6 +2,10 @@
     font-family: 'Baloo 2', sans-serif;
 }
 
+.font-lato {
+    font-family: 'Lato', sans-serif;
+}
+
 .font-montserrat {
     font-family: 'Montserrat', sans-serif;
 }
@@ -20,4 +24,13 @@
 
 .font-bold {
     font-weight: bold;
+}
+
+
+.font-size-1 {
+	font-size: 24px;
+}
+
+.font-size-2 {
+    font-size: 14px;
 }

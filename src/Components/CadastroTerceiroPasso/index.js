@@ -5,16 +5,22 @@ import {
 	Button,
 	Typography,
 } from '@material-ui/core';
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import formatCurrency from "format-currency"
+import { useEffect } from 'react'
 
 
-function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
+function CadastroSegundoPasso({ previousPage, salvarCadastro, setPayload, payload }) {
 	const classes = useStyles();
-	const { register, getValues, handleSubmit, formState: { errors } } = useForm();
+	const { register, getValues, handleSubmit, control, setValue, formState: { errors } } = useForm();
 
 	const onSubmit = async () => {
 		await salvarCadastro({ ...payload, ...getValues() })
+	}
+
+	const returnPage = () => {
+		setPayload((currentPayload) => ({ ...currentPayload, ...getValues() }));
+		previousPage();
 	}
 
 	const setCurrencyMask = (e) => {
@@ -33,6 +39,18 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 	const taxaEntrega = register('taxaEntrega', { required: true })
 	const valorMinimoPedido = register('valorMinimoPedido', { required: true })
 
+	const getPayload = () => {
+		payload.taxaEntrega && setValue("taxaEntrega", payload.taxaEntrega)
+		payload.valorMinimoPedido && setValue("valorMinimoPedido", payload.valorMinimoPedido)
+		payload.tempoEntregaEmMinutos && setValue("tempoEntregaEmMinutos", payload.tempoEntregaEmMinutos)
+	}
+
+
+
+	useEffect(() => {
+		getPayload()
+	}, [])
+
 
 	return (
 		<div className={classes.root}>
@@ -40,47 +58,71 @@ function CadastroSegundoPasso({ previousPage, salvarCadastro, payload }) {
 				<form className={classes.formsCadastro} onSubmit={handleSubmit(onSubmit)} >
 
 					<Typography className='credentialsStyle'>Taxa de entrega</Typography>
-					<TextField
-						id="input-taxa-entrega"
-						type='text'
-						variant="outlined"
-						autoComplete="off"
-						error={Boolean(errors.taxaEntrega)}
-						helperText={errors.taxaEntrega ? "Campo Obrigatório" : false}
-						{...taxaEntrega}
-						onChange={(e) => {
-							taxaEntrega.onChange(setCurrencyMask(e))
-						}}
+					<Controller
+						control={control}
+						name="taxaEntrega"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<TextField
+								id="input-taxa-entrega"
+								type='text'
+								variant="outlined"
+								autoComplete="off"
+								error={Boolean(errors.taxaEntrega)}
+								helperText={errors.taxaEntrega ? "Campo Obrigatório" : false}
+								{...field}
+								onChange={(e) => {
+									field.onChange(setCurrencyMask(e))
+								}}
+							/>
+						)
+						}
 					/>
 
 					<Typography className='credentialsStyle'>Tempo estimado de entrega</Typography>
-					<TextField
-						id="input-tempo-entrega"
-						type='text'
-						variant="outlined"
-						placeholder="Tempo de entrega em minutos"
-						autoComplete="off"
-						error={Boolean(errors.tempoEntregaEmMinutos)}
-						helperText={errors.tempoEntregaEmMinutos ? "Campo Obrigatório" : false}
-						{...register('tempoEntregaEmMinutos', { required: true })}
+					<Controller
+						control={control}
+						name="tempoEntregaEmMinutos"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<TextField
+								id="input-tempo-entrega"
+								type='text'
+								variant="outlined"
+								placeholder="Tempo de entrega em minutos"
+								autoComplete="off"
+								error={Boolean(errors.tempoEntregaEmMinutos)}
+								helperText={errors.tempoEntregaEmMinutos ? "Campo Obrigatório" : false}
+								{...field}
+							/>
+						)
+						}
 					/>
 
 					<Typography className='credentialsStyle'>Valor mínimo do pedido</Typography>
-					<TextField
-						variant="outlined"
-						id="input-valor-minimo"
-						autoComplete="off"
-						error={Boolean(errors.valorMinimoPedido)}
-						helperText={errors.valorMinimoPedido ? "Campo Obrigatório" : false}
-						{...valorMinimoPedido}
-						onChange={(e) => {
-							valorMinimoPedido.onChange(setCurrencyMask(e))
-						}}
+					<Controller
+						control={control}
+						name="valorMinimoPedido"
+						rules={{ required: true }}
+						render={({ field }) => (
+							<TextField
+								variant="outlined"
+								id="input-valor-minimo"
+								autoComplete="off"
+								error={Boolean(errors.valorMinimoPedido)}
+								helperText={errors.valorMinimoPedido ? "Campo Obrigatório" : false}
+								{...field}
+								onChange={(e) => {
+									field.onChange(setCurrencyMask(e))
+								}}
+							/>
+						)
+						}
 					/>
 
 
 					<div className={classes.containerButtonCadastro}>
-						<Button color="secondary" onClick={previousPage}>
+						<Button color="secondary" onClick={returnPage}>
 							Anterior
 						</Button>
 						<Button className={classes.buttonCadastro} variant="contained" type="submit" >

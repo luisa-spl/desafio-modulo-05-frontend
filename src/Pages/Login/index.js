@@ -20,7 +20,7 @@ export default function Login() {
 	const classes = useStyles();
 	const history = useHistory();
 	const [error, setError] = useState(false)
-	const { register, handleSubmit } = useForm()
+	const { register, handleSubmit, formState: { errors } } = useForm()
 	const [showRegisterSuccess, setShowRegisterSuccess] = useState(() =>
 		history.location.state && history.location.state.registerSuccess
 	)
@@ -47,7 +47,7 @@ export default function Login() {
 				setError(data)
 			} else {
 				setToken(data.token)
-				history.push('/produtos')
+				history.push('/pedidos')
 			}
 		});
 	}
@@ -81,12 +81,16 @@ export default function Login() {
 								id="input-email"
 								type='email'
 								variant="outlined"
+								error={Boolean(errors.email)}
+								helperText={errors.email ? "Campo Obrigatório" : false}
 								{...register('email', { required: true })}
 							/>
 						</div>
 						<div className={classes.formsLogin}>
 							<h2 className='placeholderLogin font-montserrat'>Senha</h2>
 							<InputSenha
+								error={Boolean(errors.senha)}
+								helperText={errors.senha ? "Campo Obrigatório" : false}
 								register={() => register('senha', { required: true })}
 								id="inputSenhaLogin" />
 						</div>
