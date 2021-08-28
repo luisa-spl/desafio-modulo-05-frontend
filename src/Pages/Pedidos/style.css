@@ -47,7 +47,7 @@
 
 .table-header {
     width: 80%;
-    height: 2.5rem;
+    min-height: 2.5rem;
     margin-top: 2.5rem;
     justify-content: space-around;
     background-color: rgba(240, 240, 240, 1);
@@ -55,10 +55,13 @@
 
 .table-line {
     width: 80%;
-    height: 4rem;
+    min-height: 4rem;
+    padding-top: 0.7rem;
+    padding-bottom: 0.7rem;
     justify-content: space-around;
     background-color: #FFFFFF;
     border-bottom: 1px solid #E0E0E0;
+    cursor: pointer;
 }
 
 .items-header {
@@ -66,4 +69,18 @@
     width: 20%;
     justify-content: center;
     align-items: center;
+}
+
+.items-header-adress {
+    color: rgba(0, 0, 0, 1);
+    width: 20%;
+    justify-content: center;
+    align-items: center;
+}
+
+.div-adress{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 14rem;
 }

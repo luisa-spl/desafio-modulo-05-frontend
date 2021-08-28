@@ -35,5 +35,5 @@ margin: 0;
 	border-radius: 4px;
 	padding: 4px;
 	font-size: 10px;
-	max-width: 40px;
+	max-width: max-content;
 }
