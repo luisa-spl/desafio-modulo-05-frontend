@@ -10,8 +10,7 @@
     margin-right: 5rem;
 }
 
-.btn-orange-order {
-    background-color: #D13201;
+.btn-left-order {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -27,8 +26,11 @@
     cursor: pointer;
 }
 
-.btn-gray-order {
-    background-color: rgba(249, 249, 249, 1);
+.background-orange {
+    background-color: #D13201;
+}
+
+.btn-right-order {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -45,6 +47,10 @@
     color: rgba(18, 18, 18, 0,8);
 }
 
+.background-gray {
+    background-color: rgba(249, 249, 249, 1);
+}
+
 .table-header {
     width: 80%;
     min-height: 2.5rem;
@@ -54,7 +60,7 @@
 }
 
 .table-line {
-    width: 80%;
+    width: 100%;
     min-height: 4rem;
     padding-top: 0.7rem;
     padding-bottom: 0.7rem;
@@ -83,4 +89,8 @@
     justify-content: center;
     text-align: center;
     width: 14rem;
+}
+
+.orders-main-div {
+    width: 80%;
 }
