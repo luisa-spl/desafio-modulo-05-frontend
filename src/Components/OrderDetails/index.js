@@ -8,7 +8,7 @@ import { AuthContext } from '../../Contexts/AuthContext'
 import { ProductsContext } from '../../Contexts/ProductsContext'
 import { enviaPedido } from '../../Services/functions'
 
-function RealCart({ setOpenModal }) {
+function RealCart({ setOpenModal, foiEntregue }) {
 	const { token } = useContext(AuthContext);
 	const { pedido } = useContext(ProductsContext);
 	const [erroSubmit, setErroSubmit] = useState(false)
@@ -62,7 +62,7 @@ function RealCart({ setOpenModal }) {
 							<div className='finalCart font-color-gray font-size-3 '>
 								<p className='finalCartStyle'>Total <spam className='font-size-1'>R$ {(pedido.total) / 100}</spam> </p>
 							</div>
-							<div className='flex-row actionButtons '>
+							<div className={foiEntregue ? "none" : 'flex-row actionButtons '}>
 								<button
 									className='btn-orange-small font-montserrat font-color-white'
 									type='submit'
