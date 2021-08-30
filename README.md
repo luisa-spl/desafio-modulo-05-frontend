@@ -23,7 +23,7 @@ Proposta é criar uma plataforma para restaurantes venderem seus produtos
 
 Na pasta raiz do projeto, você pode rodar:
 
-#### `npm install`
+#### `npm install` e `npm install @material-ui/core`
 
 e então:
 
