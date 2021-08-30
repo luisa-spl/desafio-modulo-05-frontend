@@ -64,6 +64,7 @@ export default function ModalAddProduct({ open, setOpen }) {
 		setErro('')
 		unregister("name")
 		unregister("description")
+		unregister("valor")
 		setBaseImage("");
 		setOpen(false);
 	};
@@ -141,6 +142,7 @@ export default function ModalAddProduct({ open, setOpen }) {
 		setProdutos(lista)
 		unregister("name")
 		unregister("description")
+		unregister("valor")
 		setCarregando(false);
 		setOpen(false);
 		setBaseImage("");
@@ -160,9 +162,11 @@ export default function ModalAddProduct({ open, setOpen }) {
 								type='text'
 								variant='outlined'
 								id='name'
+								error={Boolean(errors.name)}
+								helperText={errors.name?.type === 'required' ? "Campo Obrigatório" : false}
 								{...register('name', { maxLength: 50, required: true })}
 							/>
-							{errors.name?.type === 'required' && <Alert severity="error">{'O campo nome é obrigatório'}</Alert>}
+							{/* {errors.name?.type === 'required' && <Alert severity="error">{'O campo nome é obrigatório'}</Alert>} */}
 							{errors.name?.type === 'maxLength' && <Alert severity="error">{'O nome deve ter até 50 caracteres'}</Alert>}
 
 							<InputLabel htmlFor="description">Descrição</InputLabel>
@@ -188,7 +192,7 @@ export default function ModalAddProduct({ open, setOpen }) {
 									valor.onChange(setCurrencyMask(e))
 								}}
 							/>
-							{errors.valor?.type === 'required' && <Alert severity="error">{'O campo preço é obrigatório'}</Alert>}
+							
 
 							<FormControlLabel
 								control={
