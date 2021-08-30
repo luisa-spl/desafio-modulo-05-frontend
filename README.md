@@ -13,7 +13,7 @@ Proposta é criar uma plataforma para restaurantes venderem seus produtos
 1. **APLICAÇÃO CLIENTE RESTAURANTE -** [FRONT-END](https://github.com/luisa-spl/desafio-modulo-05-frontend/tree/master)
 2. **API CLIENTE RESTAURANTE -** [BACK-END](https://github.com/DevVane/desafio-modulo-05-backend/tree/main)
 3. **API CLIENTE RESTAURANTE -** [ BACK-END - DEPLOY](https://icubus.herokuapp.com)
-4. **APLICAÇÃO CLIENTE CONSUMIDOR -** [FRONT-END](https://github.com/cboscariol/desafio-modulo-5-frontend/tree/master)
+4. **APLICAÇÃO CLIENTE CONSUMIDOR -** [FRONT-END](https://github.com/cboscariol/desafio-modulo-05-frontend/tree/master)
 5. **API CLIENTE CONSUMIDOR -** [BACK-END](https://github.com/DevVane/desafio-modulo-05-backend-icubus-cliente/tree/main)
 6. **API CLIENTE CONSUMIDOR -** [BACK-END - DEPLOY](https://icubus-clientes.herokuapp.com)
 
