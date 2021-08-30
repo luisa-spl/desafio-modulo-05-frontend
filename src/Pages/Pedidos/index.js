@@ -93,8 +93,8 @@ function Pedidos() {
 									""
 								}
 							</div>
-							<div className='flex-column items-header'>
-								<div>{`${p.cliente[0].endereco}`} </div>
+							<div className='flex-column items-header-adress'>
+								<div className='div-adress'>{`${p.cliente[0].endereco}`} </div>
 								<div>{`${p.cliente[0].complemento}`}</div>
 								<div>{`${p.cliente[0].cep}`}</div>
 							</div>
